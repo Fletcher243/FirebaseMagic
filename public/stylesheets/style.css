@@ -1,0 +1,95 @@
+body {
+  padding: 25px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image:url("Planeswalkers.jpg");
+  background-size:cover;
+  background-attachment:fixed;
+  color: white;
+}
+
+h1{
+  text-shadow: 3px 3px 6px #000000;
+  font-size: 3em;
+  font-family: sans-serif;
+}
+
+#displayDeck {
+  float: right;
+}
+
+.button {
+  box-shadow: 8px 8px 4px #212115;
+  cursor: pointer;
+  background-color: rgba(12, 88, 114, 0.62);
+  color: white;
+  padding: 10px 18px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 20px;
+  margin: 4px 2px;
+  border-radius: 15px;
+}
+
+.button:hover {
+  background-color: rgb(12, 88, 114);
+  border: 2px solid #42b2da;
+}
+
+input {
+  padding: 12px 20px;
+  margin: 0px 8;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  box-shadow: 8px 8px 4px #212115;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#images {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+img {
+  padding: 0px;
+  box-shadow: 15px 20px 16px #111108;
+  margin: 15px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  opacity: .95;
+}
+
+img:hover {
+  transform: scale(1.1, 1.1); 
+  opacity: 1;
+}
+
+#displayTextBox{
+  text-shadow: 4px 4px 8px #000000;
+  font-size: 30px;
+  width: 50%;
+  position: relative;
+  left: 25%;
+  padding: 15px;
+  opacity:1;
+
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: black;
+  text-align: center;
+  opacity: .6;  
+}

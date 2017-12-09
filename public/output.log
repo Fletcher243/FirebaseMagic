@@ -1,0 +1,12 @@
+nohup: ignoring input
+module.js:471
+    throw err;
+    ^
+
+Error: Cannot find module '/opt/bitnami/apache2/htdocs/lab4/public/bin/www'
+    at Function.Module._resolveFilename (module.js:469:15)
+    at Function.Module._load (module.js:417:25)
+    at Module.runMain (module.js:604:10)
+    at run (bootstrap_node.js:390:7)
+    at startup (bootstrap_node.js:150:9)
+    at bootstrap_node.js:505:3
