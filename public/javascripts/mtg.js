@@ -128,13 +128,16 @@ angular.module('cardeck', ["firebase"])
   }
 
   $scope.getCards = function() {
+	  
     if($scope.cardField == "") { return;}
 	$scope.deckField = "";
 	
-	$scope.adding = false;
-	$scope.deckcards = [];
-		
-    $scope.displayText = "Click on a card to add it to your '" + $scope.activeDeck.name + "' deck!"
+	var user = firebase.auth().currentUser;
+    if(user){
+	  $scope.adding = false;
+	  $scope.deckcards = [];
+      $scope.displayText = "Click on a card to add it to your '" + $scope.activeDeck.name + "' deck!"
+	}
     var myurl= "/getcard?q=";
     myurl += $scope.cardField;
 	$scope.cardField = "";
@@ -146,6 +149,7 @@ angular.module('cardeck', ["firebase"])
 
   $scope.logout = function() {
     $scope.logged = false;
+	$scope.manage = false;
     $scope.nameofthatbutton = "Login";
     $scope.deckcards = [];
 	$scope.mycards = [];

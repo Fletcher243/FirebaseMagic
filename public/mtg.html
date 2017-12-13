@@ -52,7 +52,7 @@
 </form>
 </div>
 </div>
-<div ng-hide="manage">
+<div ng-hide="manage || !logged">
   <h1 id="deckHead">Enter A Card to Find:  </h1>
   <form ng-submit="getCards()" id="deckHead">
     <input id="centered" type="text" ng-model="cardField" value="">
@@ -60,10 +60,10 @@
   </form>
 </div>
 <span id="images">
-  <div ng-repeat="card in mycards.cards" ng-hide="manage" ng-if="card.imageUrl!=null">
+  <div ng-repeat="card in mycards.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
     <img src="{{card.imageUrl}}" ng-click="addCard(card)">
   </div>
-  <div ng-show="manage" ng-repeat="card in deckcards | orderBy:['cmc','name']">
+  <div ng-show="manage && logged" ng-repeat="card in deckcards | orderBy:['cmc','name']">
     <img id="deckCard" src="{{card.imageUrl}}" ng-click="removeCard(card)">
   </div>
 </span>
