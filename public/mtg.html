@@ -42,7 +42,7 @@
 
 <button ng-click="removeDeck()" class="button" ng-show="logged">Remove</button>
 
-<select id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
+<select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
 </select>
 
 <button ng-click="nameDeck()" ng-hide="adding" class="button"> New Deck</button>
