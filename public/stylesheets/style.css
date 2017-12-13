@@ -22,10 +22,10 @@ h1{
 #deckRow{
     display: flex;
   flex-direction: row;
-  justify-content: left;
+  justify-content: center;
   width: 100%;
   flex-wrap: wrap;
-  align-items: left;
+  align-items: right;
 }
 
 #dropDown {

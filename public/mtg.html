@@ -35,11 +35,11 @@
 <form ng-submit="getDeck()" >
 <button type="submit" class="button" id="displayDeck">{{nameofthatbutton}}</button>
 </form>
-
-<div id="deckRow" ng-show="logged">
-<form ng-submit="logout()">
+<form ng-submit="logout()" ng-show="logged">
 <button type="submit" class="button" ng-show="logged">Logout</button>
 </form>
+<div id="deckRow" ng-show="logged">
+
 
 <form ng-submit="removeDeck()">
 <button type="submit" class="button" ng-show="logged">Remove</button>
@@ -52,8 +52,6 @@
 <h1>Enter A Deck to Add:  </h1><input type="text" ng-model="deckField" value="">
 <button type="submit" class="button">Add</button><br>
 </form>
-
-
 
 </div>
 
