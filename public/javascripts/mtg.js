@@ -87,8 +87,9 @@ console.log($scope.decks.$getRecord($scope.activeDeck.$id));
                 console.log(newItem);
 		newRef.set(newItem).then(function(){
     		$scope.activeDeck = newItem;
-           $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
+                $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
                 $scope.deckField = "";
+                $scope.deckcards = [];
                 $scope.$apply();
                 });  
 }
@@ -118,6 +119,7 @@ console.log($scope.decks.$getRecord($scope.activeDeck.$id));
             }
             var key = $scope.decks.$keyAt(0);
             $scope.activeDeck = $scope.decks.$getRecord(key);
+            $scope.deckcards = [];
             $scope.$apply();
           });
           console.log($scope.decks);
