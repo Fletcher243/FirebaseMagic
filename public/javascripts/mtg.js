@@ -103,7 +103,12 @@ angular.module('cardeck', ["firebase"])
   $scope.clearDisplay = function(){
 	  $scope.deckField = "";
 	  $scope.adding = false;
-	  $scope.deckcards = [];
+	  if($scope.mycards.cards == null){
+		
+	    $scope.getDeck();
+	  } else {
+	    $scope.deckcards = [];
+	  }
 	  $scope.$apply();
   }
 
@@ -127,12 +132,14 @@ angular.module('cardeck', ["firebase"])
   $scope.getCards = function() {
     if($scope.cardField == "") { return;}
 	$scope.deckField = "";
+	
 	$scope.adding = false;
 	$scope.deckcards = [];
 		
     $scope.displayText = "Click on a card to add it to the deck!"
     var myurl= "/getcard?q=";
     myurl += $scope.cardField;
+	$scope.cardField = "";
     
     return $http.get(myurl).success(function(data){
       angular.copy(data, $scope.mycards);
@@ -156,7 +163,7 @@ angular.module('cardeck', ["firebase"])
 	  var userId = firebase.auth().currentUser.uid;
       var ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id + "/cards")
       $scope.deckcards = $firebaseArray(ref);
-      $scope.displayText = "This is your current deck, click a card to remove it."
+      $scope.displayText = "This is your '" + $scope.activeDeck.name + "' deck, click a card to remove it."
       $scope.deckField = "";
 	  $scope.adding = false;
 	  $scope.mycards = [];
