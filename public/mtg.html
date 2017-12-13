@@ -16,8 +16,8 @@
   firebase.initializeApp(config);
 </script>
 
+<title>MTG Deck Manager </title>
 
-<title>MTG Deck Manager	</title>
 
 <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
 
@@ -35,35 +35,35 @@
 <button ng-click="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button>
 
 <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
-
+<div ng-show="manage">
 <h1 ng-show="logged" id="deckHead">Manage Decks</h1>
 <div id="deckRow" ng-show="logged">
 
 
-<button ng-click="removeDeck()" class="button" ng-show="logged">Remove</button>
+<button ng-click="removeDeck()" class="button" ng-show="logged">Remove Deck</button>
 
 <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
 </select>
 
-<button ng-click="nameDeck()" ng-hide="adding" class="button"> New Deck</button>
+<button ng-click="nameDeck()" ng-hide="adding" class="button">New Deck</button>
 <form ng-submit="addDeck()" ng-show="adding">
 <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
 <button type="submit" class="button">Add</button><br>
 </form>
-
 </div>
-
-<h1 id="deckHead">Enter A Card to Find:  </h1>
-<form ng-submit="getCards()" id="deckHead">
-<input id="centered" type="text" ng-model="cardField" value="">
-<button type="submit" class="button">Search</button><br>
-</form>
-
+</div>
+<div ng-hide="manage">
+  <h1 id="deckHead">Enter A Card to Find:  </h1>
+  <form ng-submit="getCards()" id="deckHead">
+    <input id="centered" type="text" ng-model="cardField" value="">
+    <button type="submit" class="button">Search</button><br>
+  </form>
+</div>
 <span id="images">
-  <div ng-repeat="card in mycards.cards" ng-if="card.imageUrl!=null">
+  <div ng-repeat="card in mycards.cards" ng-hide="manage" ng-if="card.imageUrl!=null">
     <img src="{{card.imageUrl}}" ng-click="addCard(card)">
   </div>
-  <div ng-repeat="card in deckcards | orderBy:['cmc','name']">
+  <div ng-show="manage" ng-repeat="card in deckcards | orderBy:['cmc','name']">
     <img id="deckCard" src="{{card.imageUrl}}" ng-click="removeCard(card)">
   </div>
 </span>
