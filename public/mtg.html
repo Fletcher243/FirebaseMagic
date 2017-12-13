@@ -32,24 +32,19 @@
 
 <body ng-app='cardeck' ng-controller="MainCtrl">
 
-<form ng-submit="getDeck()" >
-<button type="submit" class="button" id="displayDeck">{{nameofthatbutton}}</button>
-</form>
-<form ng-submit="logout()" ng-show="logged">
-<button type="submit" class="button" ng-show="logged">Logout</button>
-</form>
+<button ng-submit="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button>
+
+<button ng-click="logout()" class="button" ng-show="logged">Logout</button>
+
 <div id="deckRow" ng-show="logged">
 
-
-<form ng-submit="removeDeck()">
-<button type="submit" class="button" ng-show="logged">Remove</button>
-</form>
+<button ng-click="removeDeck()" class="button" ng-show="logged">Remove</button>
 
 <select id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
 </select>
 
 <form ng-submit="addDeck()">
-<h1>Enter A Deck to Add:  </h1><input type="text" ng-model="deckField" value="">
+<h1>Deck Name:  </h1><input type="text" ng-model="deckField" value="">
 <button type="submit" class="button">Add</button><br>
 </form>
 
