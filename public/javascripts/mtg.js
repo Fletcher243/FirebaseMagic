@@ -40,15 +40,12 @@ angular.module('cardeck', ["firebase"])
         .catch(function(error) {
           console.log("Error:", error);
         });
-        console.log($scope.activeDeck);
-        console.log($scope.decks);
         $scope.nameofthatbutton = "Display Deck";
         $scope.logged = true;
         $scope.$apply() 	
       } else {
         $scope.nameofthatbutton = "Login";
-	    $scope.$apply() 
-        console.log("Please authenticate");
+	    $scope.$apply();
       }
     });    
   
@@ -60,6 +57,8 @@ angular.module('cardeck', ["firebase"])
 	  	
     var user = firebase.auth().currentUser;
     if(user){
+	  $scope.deckField = "";
+	  $scope.adding = false;
       var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards");
       var newRef = ref.push();
       var newItem = {
@@ -67,7 +66,7 @@ angular.module('cardeck', ["firebase"])
         imageUrl: card.imageUrl
       };
       newRef.set(newItem).then(function(){  
-	    $scope.displayText = card.name + " added to your " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
+	    $scope.displayText = card.name + " added to your '" + $scope.decks.$getRecord($scope.activeDeck.$id).name + "' deck!";
 	    $scope.$apply();
 	  });
     }	
@@ -84,10 +83,8 @@ angular.module('cardeck', ["firebase"])
 		newRef.set(newItem).then(function(){
     	  $scope.activeDeck = newItem;
           $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
-          $scope.deckField = "";
-          $scope.deckcards = [];
-          $scope.adding = false;
-          $scope.$apply();
+		  $scope.displayText =  "'" + $scope.deckField + "'" +  " deck added!";
+          $scope.clearDisplay();
         });  
     }
   }
@@ -104,7 +101,8 @@ angular.module('cardeck', ["firebase"])
   }
   
   $scope.clearDisplay = function(){
-	  console.log("hello!");
+	  $scope.deckField = "";
+	  $scope.adding = false;
 	  $scope.deckcards = [];
 	  $scope.$apply();
   }
@@ -112,6 +110,8 @@ angular.module('cardeck', ["firebase"])
   $scope.removeDeck = function(){
 	var user = firebase.auth().currentUser;
     if(user){
+		
+		$scope.displayText =  "'" + $scope.activeDeck.name + "'" +  " deck removed!";
 	  firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id).remove().then(function() {
         if($scope.decks.length == 0){
           $scope.deckField = "default"; 
@@ -119,20 +119,21 @@ angular.module('cardeck', ["firebase"])
         }
         var key = $scope.decks.$keyAt(0);
         $scope.activeDeck = $scope.decks.$getRecord(key);
-        $scope.deckcards = [];
-        $scope.$apply();
+        $scope.clearDisplay();
       });
-      console.log($scope.decks);
-      console.log($scope.activeDeck.$id);
 	}
   }
 
   $scope.getCards = function() {
     if($scope.cardField == "") { return;}
+	$scope.deckField = "";
+	$scope.adding = false;
+	$scope.deckcards = [];
+		
     $scope.displayText = "Click on a card to add it to the deck!"
     var myurl= "/getcard?q=";
     myurl += $scope.cardField;
-    $scope.deckcards = [];
+    
     return $http.get(myurl).success(function(data){
       angular.copy(data, $scope.mycards);
     });
@@ -140,7 +141,10 @@ angular.module('cardeck', ["firebase"])
 
   $scope.logout = function() {
     $scope.logged = false;
+    $scope.nameofthatbutton = "Login";
     $scope.deckcards = [];
+	$scope.mycards = [];
+	$scope.cardField = '';
     firebase.auth().signOut();
   }
 
@@ -153,8 +157,9 @@ angular.module('cardeck', ["firebase"])
       var ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id + "/cards")
       $scope.deckcards = $firebaseArray(ref);
       $scope.displayText = "This is your current deck, click a card to remove it."
-      $scope.mycards = [];
-	  $scope.$apply();
+      $scope.deckField = "";
+	  $scope.adding = false;
+	  $scope.mycards = [];
     } else {
       var provider = new firebase.auth.GoogleAuthProvider();
       firebase.auth().signInWithRedirect(provider);
