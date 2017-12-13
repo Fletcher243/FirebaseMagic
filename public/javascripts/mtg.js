@@ -30,10 +30,8 @@ angular.module('cardeck', ["firebase"])
         var ref = firebase.database().ref().child("users/" + user.uid + "/decks");
         $scope.decks = $firebaseArray(ref);
         $scope.decks.$loaded().then(function() {
-          if($scope.decks.length == 0){
-            $scope.deckField = "Default"; 
-            $scope.addDeck();
-          }
+          $scope.deckField = "Default"; 
+          $scope.addDeck();
           var key = $scope.decks.$keyAt(0);
           $scope.activeDeck = $scope.decks.$getRecord(key);
           })
@@ -83,10 +81,8 @@ angular.module('cardeck', ["firebase"])
 		newRef.set(newItem).then(function(){
     	  $scope.activeDeck = newItem;
           $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
-		  if($scope.manage){
-		    $scope.displayText =  "'" + $scope.deckField + "'" +  " deck added!";
-            $scope.clearDisplay();
-		  }
+          $scope.clearDisplay();
+		  
         });  
     }
   }
@@ -121,7 +117,7 @@ angular.module('cardeck', ["firebase"])
 		$scope.displayText =  "'" + $scope.activeDeck.name + "'" +  " deck removed!";
 	  firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id).remove().then(function() {
         if($scope.decks.length == 0){
-          $scope.deckField = "default"; 
+          $scope.deckField = "Default"; 
           $scope.addDeck();
         }
         var key = $scope.decks.$keyAt(0);
