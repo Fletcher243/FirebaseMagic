@@ -30,8 +30,10 @@ angular.module('cardeck', ["firebase"])
         var ref = firebase.database().ref().child("users/" + user.uid + "/decks");
         $scope.decks = $firebaseArray(ref);
         $scope.decks.$loaded().then(function() {
-          $scope.deckField = "Default"; 
-          $scope.addDeck();
+		  if($scope.decks.length < 1){
+            $scope.deckField = "Default"; 
+            $scope.addDeck();
+		  }
           var key = $scope.decks.$keyAt(0);
           $scope.activeDeck = $scope.decks.$getRecord(key);
           })
@@ -100,7 +102,7 @@ angular.module('cardeck', ["firebase"])
   $scope.clearDisplay = function(){
 	  $scope.deckField = "";
 	  $scope.adding = false;
-	  console.log($scope.manage);
+	  $scope.adding = false;
 	  if($scope.manage){
 		$scope.manage = false;
 	    $scope.getDeck();
@@ -167,8 +169,8 @@ angular.module('cardeck', ["firebase"])
 		$scope.displayText = ""
 		$scope.$apply();
 	  } else {
-		  $scope.manage = true;
-		  var userId = firebase.auth().currentUser.uid;
+		$scope.manage = true;
+		var userId = firebase.auth().currentUser.uid;
         var ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id + "/cards")
         $scope.deckcards = $firebaseArray(ref);
         $scope.displayText = "This is your '" + $scope.activeDeck.name + "' deck, click a card to remove it."
