@@ -11,6 +11,7 @@ angular.module('cardeck', ["firebase"])
   $scope.displayText = '';
   $scope.nameofthatbutton = "Login";
   $scope.logged = false;
+  $scope.adding = false;
   
    firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -24,8 +25,6 @@ angular.module('cardeck', ["firebase"])
   	  var newItem = {
   	    name: "default"
   	  };
-
-
       var ref = firebase.database().ref().child("users/" + user.uid + "/decks");
       $scope.decks = $firebaseArray(ref);
       $scope.decks.$loaded()
@@ -54,6 +53,11 @@ angular.module('cardeck', ["firebase"])
     });    
   
 
+
+  $scope.nameDeck = function(){
+    $scope.adding = true;
+  }
+
   $scope.addCard = function(card){
 	  	
     var user = firebase.auth().currentUser;
@@ -70,7 +74,7 @@ angular.module('cardeck', ["firebase"])
 console.log($scope.decks.$getRecord($scope.activeDeck.$id));
 
    return $http.post('/addcard', card).success(function(data){
-	  $scope.displayText = card.name + " added to " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
+	  $scope.displayText = card.name + " added to your " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
     });
   }
 
@@ -90,6 +94,7 @@ console.log($scope.decks.$getRecord($scope.activeDeck.$id));
                 $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
                 $scope.deckField = "";
                 $scope.deckcards = [];
+                $scope.adding = false;
                 $scope.$apply();
                 });  
 }
