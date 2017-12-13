@@ -58,7 +58,7 @@ angular.module('cardeck', ["firebase"])
 	  	
     var user = firebase.auth().currentUser;
     if(user){
-      var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id);
+      var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards");
       var newRef = ref.push();
       var newItem = {
         name: card.name,
@@ -103,7 +103,7 @@ console.log($scope.decks.$getRecord($scope.activeDeck.$id));
     if(user){
 		console.log($scope.deckcards);
 		console.log(card);
-		var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/" + card.$id).remove();
+		var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards/" + card.$id).remove();
 		$scope.getDeck();
 	}
   }
@@ -130,9 +130,6 @@ console.log($scope.decks.$getRecord($scope.activeDeck.$id));
   }
 
   $scope.getCards = function() {
-
-
-   
     if($scope.cardField == "") { return;}
     $scope.displayText = "Click on a card to add it to the deck!"
     var myurl= "/getcard?q=";
@@ -156,7 +153,7 @@ $scope.logout = function() {
     if(user){
         console.log($scope.activeDeck);
 	var userId = firebase.auth().currentUser.uid;
-        var ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id)
+        var ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id + "/cards")
         $scope.deckcards = $firebaseArray(ref);
 	console.log($scope.deckcards);
         $scope.displayText = "This is your current deck, click a card to remove it."
