@@ -13,7 +13,7 @@ angular.module('cardeck', ["firebase"])
     $scope.nameofthatbutton = "Login";
     $scope.logged = false;
     $scope.adding = false;
-	$scope.manage = false;
+	$scope.manage = true;
   
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -40,7 +40,7 @@ angular.module('cardeck', ["firebase"])
         .catch(function(error) {
           console.log("Error:", error);
         });
-        $scope.nameofthatbutton = "Manage Decks";
+        $scope.nameofthatbutton = "Add Cards";
         $scope.logged = true;
         $scope.$apply() 	
       } else {
