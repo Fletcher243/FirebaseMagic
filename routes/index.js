@@ -5,7 +5,7 @@ var https = require('https');
 var request = require('request');
 var mongoose = require('mongoose'); //Adds mongoose as a usable dependency
 
-mongoose.connect('mongodb://localhost/deckDB', { useMongoClient: true }); //Connects to a mongo database called "commentDB"
+mongoose.connect('mongodb://localhost/deckDB', { useNewUrlParser: true }); //Connects to a mongo database called "commentDB"
 
 var commentSchema = mongoose.Schema({ //Defines the Schema for this database
 name: String,
