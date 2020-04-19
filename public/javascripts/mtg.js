@@ -14,7 +14,8 @@ angular.module('cardeck', ["firebase"])
     $scope.logged = false;
     $scope.adding = false;
     $scope.manage = true;
-    $scope.addToSecondDeck = true;
+    $scope.addToSecondDeck = false;
+    $scope.removeFromDeck = true;
     $scope.secondDeck;
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -94,12 +95,13 @@ angular.module('cardeck', ["firebase"])
   $scope.removeCard = function(card){
     var user = firebase.auth().currentUser;
     if(user) {
-      if(!$scope.addToSecondDeck) {
+      if($scope.removeFromDeck) {
         var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards/" + card.$id).remove().then(function(){
           $scope.displayText = card.name + " removed from your " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
           $scope.$apply();
         });
-      } else {
+      }
+      if ($scope.addToSecondDeck) {
 	let temp = $scope.activeDeck
         $scope.activeDeck = $scope.secondDeck
 	$scope.addCard(card)

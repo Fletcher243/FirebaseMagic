@@ -52,7 +52,8 @@
 </form>
 <select ng-change="clearDisplay()" id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
 </select>
-<input type="checkbox" ng-model='addToSecondDeck' >
+<input type="checkbox" ng-model='addToSecondDeck'> Add
+<input type="checkbox" ng-model='removeFromDeck'> Remove
 </div>
 </div>
 <div ng-hide="manage || !logged">
