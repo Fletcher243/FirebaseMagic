@@ -92,7 +92,7 @@ angular.module('cardeck', ["firebase"])
     }
   }
 
-  $scope.removeCard = function(card){
+  $scope.clickDeckCard = function(card){
     var user = firebase.auth().currentUser;
     if(user) {
       if($scope.removeFromDeck) {
