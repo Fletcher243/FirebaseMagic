@@ -14,6 +14,8 @@ angular.module('cardeck', ["firebase"])
     $scope.logged = false;
     $scope.adding = false;
     $scope.manage = true;
+    $scope.addToSecondDeck = true;
+    $scope.secondDeck;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -36,6 +38,8 @@ angular.module('cardeck', ["firebase"])
           }
           var key = $scope.decks.$keyAt(0);
           $scope.activeDeck = $scope.decks.$getRecord(key);
+	  $scope.secondDeck = $scope.activeDeck
+	  $scope.clearDisplay()
         }).catch(function(error) {
           console.log("Error:", error);
         });
@@ -55,6 +59,7 @@ angular.module('cardeck', ["firebase"])
   $scope.addCard = function(card){	  	
     var user = firebase.auth().currentUser;
     if(user){
+      let deckname = $scope.decks.$getRecord($scope.activeDeck.$id).name
       $scope.deckField = "";
       $scope.adding = false;
       var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards");
@@ -64,7 +69,7 @@ angular.module('cardeck', ["firebase"])
         imageUrl: card.imageUrl
       };
       newRef.set(newItem).then(function(){  
-      $scope.displayText = card.name + " added to your '" + $scope.decks.$getRecord($scope.activeDeck.$id).name + "' deck!";
+      $scope.displayText = card.name + " added to your '" + deckname + "' deck!";
       $scope.$apply();
       });
     }	
@@ -88,17 +93,23 @@ angular.module('cardeck', ["firebase"])
 
   $scope.removeCard = function(card){
     var user = firebase.auth().currentUser;
-    if(user){
-      var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards/" + card.$id).remove().then(function(){
-        $scope.displayText = card.name + " removed from your " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
-        $scope.$apply();
-      });
+    if(user) {
+      if(!$scope.addToSecondDeck) {
+        var ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards/" + card.$id).remove().then(function(){
+          $scope.displayText = card.name + " removed from your " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
+          $scope.$apply();
+        });
+      } else {
+	let temp = $scope.activeDeck
+        $scope.activeDeck = $scope.secondDeck
+	$scope.addCard(card)
+	$scope.activeDeck = temp
+      }
     }
   }
   
   $scope.clearDisplay = function(){
     $scope.deckField = "";
-    $scope.adding = false;
     $scope.adding = false;
     if($scope.manage){
       $scope.manage = false;
