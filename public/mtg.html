@@ -61,10 +61,10 @@
     </form>
   </div>
   <span id="images">
-    <div ng-repeat="card in mycards.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
+    <div ng-repeat="card in searchResults.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
       <img src="{{card.imageUrl}}" ng-click="addCard(card)">
     </div>
-    <div ng-show="manage && logged" ng-repeat="card in deckcards | orderBy:['cmc','name']">
+    <div ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
       <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
     </div>
   </span>
@@ -75,7 +75,5 @@
     </div>
   </div>
 
-
 </body>
-
 </html>
