@@ -64,7 +64,7 @@
     <div ng-repeat="card in mycards.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
       <img src="{{card.imageUrl}}" ng-click="addCard(card)">
     </div>
-    <div id="battleCards" ng-show="manage && logged" ng-repeat="card in deckcards | orderBy:['cmc','name']">
+    <div id="battleCards" ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
       <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
     </div>
   </span>
