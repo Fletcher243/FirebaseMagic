@@ -1,5 +1,5 @@
 body {
-  padding: 25px 25px 75px;
+  padding: 25px 50px 110px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-image:url("Planeswalkers.jpg");
   background-size:cover;
@@ -27,7 +27,7 @@ h1{
   float:right;
 }
 
-#deckRow{
+#deckRow {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -132,4 +132,5 @@ img:hover {
   background-color: black;
   text-align: center;
   opacity: .6;  
+  z-index: 12;
 }

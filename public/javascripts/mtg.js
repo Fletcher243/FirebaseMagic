@@ -16,7 +16,7 @@ angular.module('cardeck', ["firebase"])
     $scope.adding = false;
     $scope.manage = true;
     $scope.addToSecondDeck = false;
-    $scope.removeFromDeck = true;
+    $scope.removeFromDeck = false;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
