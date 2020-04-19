@@ -1,6 +1,5 @@
 <html>
 <head>
-
   <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
 
   <script>
@@ -16,27 +15,28 @@
     firebase.initializeApp(config);
   </script>
 
-  <title>MTG Deck Manager </title>
+  <title>MTG Battlefield </title>
 
   <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <link rel="stylesheet" type="text/css" href="stylesheets/battlefieldStyles.css">
 
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <!-- AngularFire -->
   <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
 
-
   <script src="javascripts/mtg.js"></script>
 </head>
 
 <body ng-app='cardeck' ng-controller="MainCtrl">
 
-  <button ng-click="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button>
+  <!-- <button ng-click="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button> -->
 
   <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
   <div ng-show="manage">
-    <h1 ng-show="logged" id="deckHead">Manage Decks</h1>
-    <div id="deckRow" ng-show="logged">
+    <h1 ng-show="logged" id="deckHead">Battlefield</h1>
+    <!-- <div id="deckRow" ng-show="logged">
+
       <button ng-click="removeDeck()" class="button" ng-show="logged">Remove Deck</button>
 
       <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
@@ -51,7 +51,7 @@
       </select>
       <input type="checkbox" ng-model='addToSecondDeck'> Add
       <input type="checkbox" ng-model='removeFromDeck'> Remove
-    </div>
+    </div> -->
   </div>
   <div ng-hide="manage || !logged">
     <h1 id="deckHead">Enter A Card to Find: </h1>
@@ -74,8 +74,6 @@
       {{displayText}}
     </div>
   </div>
-
-
 </body>
 
 </html>

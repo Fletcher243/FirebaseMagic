@@ -175,14 +175,15 @@ angular.module('cardeck', ["firebase"])
         $scope.$apply();
       } else {
         $scope.manage = true;
+        $scope.nameofthatbutton = "Add Cards"
+        //$scope.displayText = "This is your '" + $scope.activeDeck.name + "' deck, click a card to remove it."
+        $scope.displayText = "Click a card to remove it."
         let userId = firebase.auth().currentUser.uid;
         let ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id + "/cards")
         $scope.deckcards = $firebaseArray(ref);
-        $scope.displayText = "This is your '" + $scope.activeDeck.name + "' deck, click a card to remove it."
         $scope.deckField = "";
         $scope.adding = false;
         $scope.mycards = [];
-        $scope.nameofthatbutton = "Add Cards"
         $scope.$apply();
       } 
     } else {
