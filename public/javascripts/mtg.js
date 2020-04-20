@@ -147,8 +147,6 @@ angular.module('cardeck', ['firebase'])
       $scope.footerText = `Click on a card to add it to your '${$scope.activeDeck.name}' deck!`
     }
     let myurl= `/getcard?q=${$scope.cardField}`;
-    //myurl = $scope.cardField;
-    //$scope.cardField = '';
 
     return $http.get(myurl).success(function(data){
       angular.copy(data, $scope.searchResults);
