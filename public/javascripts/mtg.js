@@ -1,4 +1,4 @@
-angular.module('cardeck', ["firebase"])
+angular.module('cardeck', ['firebase'])
 .controller('MainCtrl', [
   '$scope','$http','$firebaseArray',
   function($scope,$http, $firebaseArray){
@@ -11,7 +11,7 @@ angular.module('cardeck', ["firebase"])
     $scope.cardField = '';
     $scope.footerText = '';
     $scope.deckField = '';
-    $scope.nameofthatbutton = "Login";
+    $scope.nameofthatbutton = 'Login';
     $scope.logged = false;
     $scope.adding = false;
     $scope.manage = true;
@@ -21,19 +21,19 @@ angular.module('cardeck', ["firebase"])
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if (user) {
-        firebase.database().ref('users/' + user.uid).update({
+        firebase.database().ref(`users/${user.uid}`).update({
           username:user.displayName
         });
 
-        let newRef = firebase.database().ref('users/' + user.uid + "/decks/default").push();
+        let newRef = firebase.database().ref(`users/${user.uid}/decks/default`).push();
         let newItem = {
-          name: "default"
+          name: 'default'
         };
-        let ref = firebase.database().ref().child("users/" + user.uid + "/decks");
+        let ref = firebase.database().ref().child(`users/${user.uid}/decks`);
         $scope.decks = $firebaseArray(ref);
         $scope.decks.$loaded().then(function() {
           if($scope.decks.length < 1){
-            $scope.deckField = "Default";
+            $scope.deckField = 'Default';
             $scope.addDeck();
           }
           let key = $scope.decks.$keyAt(0);
@@ -41,13 +41,13 @@ angular.module('cardeck', ["firebase"])
         $scope.secondDeck = $scope.activeDeck
         $scope.clearDisplay()
         }).catch(function(error) {
-          console.log("Error:", error);
+          console.log('Error:', error);
         });
-        $scope.nameofthatbutton = "Add Cards";
+        $scope.nameofthatbutton = 'Add Cards';
         $scope.logged = true;
         $scope.$apply()
       } else {
-        $scope.nameofthatbutton = "Login";
+        $scope.nameofthatbutton = 'Login';
         $scope.$apply();
       }
     });
@@ -61,16 +61,18 @@ angular.module('cardeck', ["firebase"])
     if(user){
       let deckId = secondDeck ? $scope.secondDeck.$id : $scope.activeDeck.$id
       let deckname = $scope.decks.$getRecord(deckId).name
-      $scope.deckField = "";
+      $scope.deckField = '';
       $scope.adding = false;
-      let ref = firebase.database().ref('users/' + user.uid + "/decks/" + deckId + "/cards");
+      let path = `users/${user.uid}/decks/${deckId}/cards`
+      let ref = firebase.database().ref(path);
       let newRef = ref.push();
       let newItem = {
         name: card.name,
-        imageUrl: card.imageUrl
+        imageUrl: card.imageUrl,
+        deck: deckId
       };
       newRef.set(newItem).then(function(){
-      $scope.footerText = card.name + " added to your '" + deckname + "' deck!";
+      $scope.footerText = `${card.name} added to your '${deckname}' deck!`;
       $scope.$apply();
       });
     }
@@ -78,8 +80,8 @@ angular.module('cardeck', ["firebase"])
 
   $scope.addDeck = function(){
     let user = firebase.auth().currentUser;
-    if(user && $scope.deckField != ""){
-      let ref = firebase.database().ref('users/' + user.uid + "/decks");
+    if(user && $scope.deckField != ''){
+      let ref = firebase.database().ref(`users/${user.uid}/decks`);
       let newRef = ref.push();
       let newItem = {
         name: $scope.deckField
@@ -96,8 +98,8 @@ angular.module('cardeck', ["firebase"])
     let user = firebase.auth().currentUser;
     if(user) {
       if($scope.removeFromDeck) {
-        let ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards/" + card.$id).remove().then(function(){
-          $scope.footerText = card.name + " removed from your " + $scope.decks.$getRecord($scope.activeDeck.$id).name + " deck!";
+        let ref = firebase.database().ref(`users/${user.uid}/decks/${$scope.activeDeck.$id}/cards/${card.$id}`).remove().then(function(){
+          $scope.footerText = `${card.name} removed from your ${$scope.activeDeck.name} deck!`;
           $scope.$apply();
         });
       }
@@ -108,7 +110,7 @@ angular.module('cardeck', ["firebase"])
   }
 
   $scope.clearDisplay = function(){
-    $scope.deckField = "";
+    $scope.deckField = '';
     $scope.adding = false;
     if($scope.manage){
       $scope.manage = false;
@@ -122,10 +124,10 @@ angular.module('cardeck', ["firebase"])
   $scope.removeDeck = function(){
     let user = firebase.auth().currentUser;
     if(user){
-      $scope.footerText =  "'" + $scope.activeDeck.name + "'" +  " deck removed!";
-      firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id).remove().then(function() {
+      $scope.footerText =  `'${$scope.activeDeck.name}' deck removed!`;
+      firebase.database().ref(`users/${user.uid}/decks/${$scope.activeDeck.$id}`).remove().then(function() {
         if($scope.decks.length == 0){
-          $scope.deckField = "Default";
+          $scope.deckField = 'Default';
           $scope.addDeck();
         }
         let key = $scope.decks.$keyAt(0);
@@ -136,17 +138,17 @@ angular.module('cardeck', ["firebase"])
   }
 
   $scope.getCards = function() {
-    if($scope.cardField == "") { return;}
-      $scope.deckField = "";
+    if($scope.cardField == '') { return;}
+      $scope.deckField = '';
       let user = firebase.auth().currentUser;
     if(user){
       $scope.adding = false;
       $scope.deckCards = [];
-      $scope.footerText = "Click on a card to add it to your '" + $scope.activeDeck.name + "' deck!"
+      $scope.footerText = `Click on a card to add it to your '${$scope.activeDeck.name}' deck!`
     }
-    let myurl= "/getcard?q=";
+    let myurl= '/getcard?q=';
     myurl += $scope.cardField;
-    $scope.cardField = "";
+    $scope.cardField = '';
 
     return $http.get(myurl).success(function(data){
       angular.copy(data, $scope.searchResults);
@@ -156,7 +158,7 @@ angular.module('cardeck', ["firebase"])
   $scope.logout = function() {
     $scope.logged = false;
     $scope.manage = false;
-    $scope.nameofthatbutton = "Login";
+    $scope.nameofthatbutton = 'Login';
     $scope.deckCards = [];
     $scope.searchResults = [];
     $scope.cardField = '';
@@ -168,18 +170,18 @@ angular.module('cardeck', ["firebase"])
     if(user){
       if($scope.manage){
         $scope.manage = false;
-        $scope.nameofthatbutton = "Manage Decks";
-        $scope.footerText = ""
+        $scope.nameofthatbutton = 'Manage Decks';
+        $scope.footerText = ''
         $scope.$apply();
       } else {
         $scope.manage = true;
-        $scope.nameofthatbutton = "Add Cards"
-        //$scope.footerText = "This is your '" + $scope.activeDeck.name + "' deck, click a card to remove it."
-        $scope.footerText = "Click a card to remove it."
+        $scope.nameofthatbutton = 'Add Cards'
+        //$scope.footerText = `This is your '${$scope.activeDeck.name}' deck, click a card to remove it.`
+        $scope.footerText = 'Click a card to remove it.'
         let userId = firebase.auth().currentUser.uid;
-        let ref = firebase.database().ref('/users/' + userId + "/decks/" + $scope.activeDeck.$id + "/cards")
+        let ref = firebase.database().ref(`/users/${userId}/decks/${$scope.activeDeck.$id}/cards`)
         $scope.deckCards = $firebaseArray(ref);
-        $scope.deckField = "";
+        $scope.deckField = '';
         $scope.adding = false;
         $scope.searchResults = [];
         $scope.$apply();
