@@ -56,13 +56,14 @@ angular.module('cardeck', ["firebase"])
     $scope.adding = true;
   }
 
-  $scope.addCard = function(card){
+  $scope.addCard = function(card, secondDeck = false){
     let user = firebase.auth().currentUser;
     if(user){
-      let deckname = $scope.decks.$getRecord($scope.activeDeck.$id).name
+      let deckId = secondDeck ? $scope.secondDeck.$id : $scope.activeDeck.$id
+      let deckname = $scope.decks.$getRecord(deckId).name
       $scope.deckField = "";
       $scope.adding = false;
-      let ref = firebase.database().ref('users/' + user.uid + "/decks/" + $scope.activeDeck.$id + "/cards");
+      let ref = firebase.database().ref('users/' + user.uid + "/decks/" + deckId + "/cards");
       let newRef = ref.push();
       let newItem = {
         name: card.name,
@@ -101,10 +102,7 @@ angular.module('cardeck', ["firebase"])
         });
       }
       if ($scope.addToSecondDeck) {
-        let temp = $scope.activeDeck
-        $scope.activeDeck = $scope.secondDeck
-        $scope.addCard(card)
-        $scope.activeDeck = temp
+        $scope.addCard(card, true)
       }
     }
   }
