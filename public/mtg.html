@@ -47,7 +47,7 @@
         <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
         <button type="submit" class="button">Add</button><br>
       </form>
-      <select ng-change="clearDisplay()" id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
+      <select id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
       </select>
       <input type="checkbox" ng-model='addToSecondDeck'> Add
       <input type="checkbox" ng-model='removeFromDeck'> Remove

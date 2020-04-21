@@ -18,6 +18,8 @@ angular.module('cardeck', ['firebase'])
     $scope.addToSecondDeck = false;
     $scope.removeFromDeck = false;
 
+    $scope.battlefieldCards = [];
+
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if (user) {
@@ -31,6 +33,13 @@ angular.module('cardeck', ['firebase'])
         };
         let ref = firebase.database().ref().child(`users/${user.uid}/decks`);
         $scope.decks = $firebaseArray(ref);
+        let ref2 = ref.child('Battlefield') 
+        $scope.battlefieldDecks = $firebaseArray(ref2)
+        $scope.battlefieldDecks.$loaded().then(function() {
+          $scope.clearDisplay();
+        }).catch(function(error) {
+          console.log('Error:', error);
+        });
         $scope.decks.$loaded().then(function() {
           if($scope.decks.length < 1){
             $scope.deckField = 'Default';
@@ -38,8 +47,8 @@ angular.module('cardeck', ['firebase'])
           }
           let key = $scope.decks.$keyAt(0);
           $scope.activeDeck = $scope.decks.$getRecord(key);
-        $scope.secondDeck = $scope.activeDeck
-        $scope.clearDisplay()
+          $scope.secondDeck = $scope.activeDeck
+          $scope.clearDisplay()
         }).catch(function(error) {
           console.log('Error:', error);
         });
@@ -60,19 +69,23 @@ angular.module('cardeck', ['firebase'])
     let user = firebase.auth().currentUser;
     if(user){
       let deckId = secondDeck ? $scope.secondDeck.$id : $scope.activeDeck.$id
-      let deckname = $scope.decks.$getRecord(deckId).name
+      let deckName = $scope.activeDeck.name
       $scope.deckField = '';
       $scope.adding = false;
-      let path = `users/${user.uid}/decks/${deckId}/cards`
+      console.log($scope.secondDeck.name)
+      console.log($scope.secondDeck.name === 'Battlefield')
+      console.log($scope.activeDeck.name)
+      console.log(deckName)
+      let path = `users/${user.uid}/decks/${deckId}${secondDeck && $scope.secondDeck.name === 'Battlefield' ? `/${deckName}` : ''}/cards`
+      console.log(path)
       let ref = firebase.database().ref(path);
       let newRef = ref.push();
       let newItem = {
         name: card.name,
-        imageUrl: card.imageUrl,
-        deck: deckId
+        imageUrl: card.imageUrl
       };
       newRef.set(newItem).then(function(){
-      $scope.footerText = `${card.name} added to your '${deckname}' deck!`;
+      $scope.footerText = `${card.name} added to your '${deckName}' deck!`;
       $scope.$apply();
       });
     }

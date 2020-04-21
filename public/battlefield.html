@@ -29,29 +29,9 @@
 </head>
 
 <body ng-app='cardeck' ng-controller="MainCtrl">
-
-  <!-- <button ng-click="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button> -->
-
   <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
   <div ng-show="manage">
     <h1 ng-show="logged" id="deckHead">Battlefield</h1>
-    <!-- <div id="deckRow" ng-show="logged">
-
-      <button ng-click="removeDeck()" class="button" ng-show="logged">Remove Deck</button>
-
-      <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
-      </select>
-
-      <button ng-click="nameDeck()" ng-hide="adding" class="button">New Deck</button>
-      <form ng-submit="addDeck()" ng-show="adding">
-        <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
-        <button type="submit" class="button">Add</button><br>
-      </form>
-      <select ng-change="clearDisplay()" id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
-      </select>
-      <input type="checkbox" ng-model='addToSecondDeck'> Add
-      <input type="checkbox" ng-model='removeFromDeck'> Remove
-    </div> -->
   </div>
   <div ng-hide="manage || !logged">
     <h1 id="deckHead">Enter A Card to Find: </h1>
@@ -64,8 +44,11 @@
     <div ng-repeat="card in mycards.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
       <img src="{{card.imageUrl}}" ng-click="addCard(card)">
     </div>
-    <div id="battleCards" ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
-      <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
+    <div ng-show="manage && logged" ng-repeat="deck in battlefieldDecks">
+      {{deck.name}}
+      <div id="battleCards" ng-show="manage && logged" ng-repeat="card in deck.cards">
+        <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
+      </div>
     </div>
   </span>
 
