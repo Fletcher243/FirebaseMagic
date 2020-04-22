@@ -32,9 +32,9 @@
 <body ng-app='cardeck' ng-controller="MainCtrl">
 
   <!-- name of button == View Battlefield or View Hand -->
-  <button onclick="location.href='../battlefield'" class="button" id="displayDeck">View Battlefield</button> 
+  <button onclick="location.href='../battlefield'" class="button" id="floatRight">View Battlefield</button> 
 
-  <button onclick="location.href='../'" class="button" ng-show="logged">Leave Game</button>
+  <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
   <div ng-show="manage">
     <h1 ng-show="logged" id="deckHead">My Cards</h1>
     <div id="deckRow" ng-show="logged">
@@ -42,6 +42,9 @@
       <button ng-hide="adding" class="button">Search Deck</button>
       <input type="checkbox" ng-model='addToSecondDeck'> Send to Battlefield
       <input type="checkbox" ng-model='removeFromDeck'> Discard
+      <input type="checkbox" ng-model='removeFromDeck'> Place on Top of Deck
+      <input type="checkbox" ng-model='removeFromDeck'> Place on Bottom of Deck
+      <input type="checkbox" ng-model='removeFromDeck'> Exile
     </div>
   </div>
 

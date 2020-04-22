@@ -1,4 +1,5 @@
 <html>
+
 <head>
 
   <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
@@ -16,7 +17,7 @@
     firebase.initializeApp(config);
   </script>
 
-  <title>Deck Manager</title>
+  <title>Manage Decks</title>
 
   <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 
@@ -31,26 +32,29 @@
 
 <body ng-app='cardeck' ng-controller="MainCtrl">
 
-  <button ng-click="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button>
+  <span id="floatRight">
+    <button ng-click="removeDeck()" class="button" ng-show="logged">Delete Deck</button>
+    <button ng-click="nameDeck()" ng-hide="adding" class="button">Create New Deck</button>
 
-  <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
+    <form ng-submit="addDeck()" ng-show="adding">
+      <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
+      <button type="submit" class="button">Add</button><br>
+    </form>
+    <button class="button" ng-show="logged">Remove Cards</button>
+    <button ng-click="getDeck()" ng-show="logged" class="button">{{nameofthatbutton}}</button>
+  </span>
+
+  <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
   <div ng-show="manage">
     <h1 ng-show="logged" id="deckHead">Manage Decks</h1>
     <div id="deckRow" ng-show="logged">
-      <button ng-click="removeDeck()" class="button" ng-show="logged">Remove Deck</button>
-
       <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
-
-      <button ng-click="nameDeck()" ng-hide="adding" class="button">New Deck</button>
-      <form ng-submit="addDeck()" ng-show="adding">
-        <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
-        <button type="submit" class="button">Add</button><br>
-      </form>
+      <!-- 
       <select id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
       </select>
       <input type="checkbox" ng-model='addToSecondDeck'> Add
-      <input type="checkbox" ng-model='removeFromDeck'> Remove
+      <input type="checkbox" ng-model='removeFromDeck'> Remove -->
     </div>
   </div>
   <div ng-hide="manage || !logged">
@@ -76,4 +80,5 @@
   </div>
 
 </body>
+
 </html>
