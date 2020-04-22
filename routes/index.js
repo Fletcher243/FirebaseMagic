@@ -6,11 +6,19 @@ var request = require('request');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.sendFile('mtg.html', {root: 'public'});
+  res.sendFile('index.html', {root: 'public'});
+});
+
+router.get('/managedecks/', function(req, res, next) {
+  res.sendFile('html/manageDecks.html', {root: 'public'});
+});
+
+router.get('/deck/', function(req, res, next) {
+  res.sendFile('html/deck.html', {root: 'public'});
 });
 
 router.get('/battlefield/', function(req, res, next) {
-  res.sendFile('battlefield.html', {root: 'public'});
+  res.sendFile('html/battlefield.html', {root: 'public'});
 });
 
 router.get('/getcard', function(req,res,next){

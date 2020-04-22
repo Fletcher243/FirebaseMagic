@@ -1,0 +1,48 @@
+<html>
+
+<head>
+
+    <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyDta0h9G8OW19PjIFppaZHH2vXkrrUz5zw",
+            authDomain: "magiccreative-61c57.firebaseapp.com",
+            databaseURL: "https://magiccreative-61c57.firebaseio.com",
+            projectId: "magiccreative-61c57",
+            storageBucket: "magiccreative-61c57.appspot.com",
+            messagingSenderId: "22624823794"
+        };
+        firebase.initializeApp(config);
+    </script>
+
+    <title>MTG</title>
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+    <!-- AngularFire -->
+    <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+
+
+    <script src="javascripts/mtg.js"></script>
+</head>
+
+<body ng-app='cardeck' ng-controller="MainCtrl">
+    <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
+    <div ng-show="manage">
+        <h1 ng-show="logged" id="deckHead">Welcome to Gamenight</h1>
+        <div id="deckRow" ng-show="logged">
+
+            <button onclick="location.href = 'manageDecks';" class="button" ng-show="logged">Build Decks</button>
+            <button onclick="location.href = 'deck';" class="button" ng-show="logged">My Cards</button>
+            <button onclick="location.href = 'Battlefield';" class="button" ng-show="logged">Battlefield</button>
+
+        </div>
+    </div>
+
+</body>
+
+</html

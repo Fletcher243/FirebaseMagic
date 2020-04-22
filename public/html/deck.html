@@ -16,9 +16,9 @@
     firebase.initializeApp(config);
   </script>
 
-  <title>MTG Deck Manager </title>
+  <title>My Cards</title>
 
-  <link rel="stylesheet" type="text/css" href="stylesheets/style.css">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
 
   <!-- AngularJS -->
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
@@ -26,40 +26,25 @@
   <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
 
 
-  <script src="javascripts/mtg.js"></script>
+  <script src="../javascripts/mtg.js"></script>
 </head>
 
 <body ng-app='cardeck' ng-controller="MainCtrl">
 
-  <button ng-click="getDeck()" class="button" id="displayDeck">{{nameofthatbutton}}</button>
+  <!-- name of button == View Battlefield or View Hand -->
+  <button onclick="location.href='../battlefield'" class="button" id="displayDeck">View Battlefield</button> 
 
-  <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
+  <button onclick="location.href='../'" class="button" ng-show="logged">Leave Game</button>
   <div ng-show="manage">
-    <h1 ng-show="logged" id="deckHead">Manage Decks</h1>
+    <h1 ng-show="logged" id="deckHead">My Cards</h1>
     <div id="deckRow" ng-show="logged">
-      <button ng-click="removeDeck()" class="button" ng-show="logged">Remove Deck</button>
-
-      <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
-      </select>
-
-      <button ng-click="nameDeck()" ng-hide="adding" class="button">New Deck</button>
-      <form ng-submit="addDeck()" ng-show="adding">
-        <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
-        <button type="submit" class="button">Add</button><br>
-      </form>
-      <select id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
-      </select>
-      <input type="checkbox" ng-model='addToSecondDeck'> Add
-      <input type="checkbox" ng-model='removeFromDeck'> Remove
+      <button class="button" ng-show="logged">Draw Card</button>
+      <button ng-hide="adding" class="button">Search Deck</button>
+      <input type="checkbox" ng-model='addToSecondDeck'> Send to Battlefield
+      <input type="checkbox" ng-model='removeFromDeck'> Discard
     </div>
   </div>
-  <div ng-hide="manage || !logged">
-    <h1 id="deckHead">Enter A Card to Find: </h1>
-    <form ng-submit="getCards()" id="deckHead">
-      <input id="centered" type="text" ng-model="cardField" value="">
-      <button type="submit" class="button">Search</button><br>
-    </form>
-  </div>
+
   <span id="images">
     <div ng-repeat="card in searchResults.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
       <img src="{{card.imageUrl}}" ng-click="addCard(card)">

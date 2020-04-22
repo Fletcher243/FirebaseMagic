@@ -1,0 +1,65 @@
+<html>
+<head>
+  <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+
+  <script>
+    // Initialize Firebase
+    var config = {
+      apiKey: "AIzaSyDta0h9G8OW19PjIFppaZHH2vXkrrUz5zw",
+      authDomain: "magiccreative-61c57.firebaseapp.com",
+      databaseURL: "https://magiccreative-61c57.firebaseio.com",
+      projectId: "magiccreative-61c57",
+      storageBucket: "magiccreative-61c57.appspot.com",
+      messagingSenderId: "22624823794"
+    };
+    firebase.initializeApp(config);
+  </script>
+
+  <title>Battlefield</title>
+
+  <link rel="stylesheet" type="text/css" href="../stylesheets/style.css">
+  <link rel="stylesheet" type="text/css" href="../stylesheets/battlefieldStyles.css">
+
+  <!-- AngularJS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+  <!-- AngularFire -->
+  <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
+
+  <script src="../javascripts/mtg.js"></script>
+</head>
+
+<body ng-app='cardeck' ng-controller="MainCtrl">
+  <button onclick="location.href='../deck'" class="button" id="displayDeck">View My Cards</button> 
+
+  <button onclick="location.href='../'" class="button" ng-show="logged">Leave Game</button>
+
+  <div ng-show="manage">
+    <h1 ng-show="logged" id="deckHead">Battlefield</h1>
+  </div>
+  <div ng-hide="manage || !logged">
+    <h1 id="deckHead">Enter A Card to Find: </h1>
+    <form ng-submit="getCards()" id="deckHead">
+      <input id="centered" type="text" ng-model="cardField" value="">
+      <button type="submit" class="button">Search</button><br>
+    </form>
+  </div>
+  <span id="images">
+    <div ng-repeat="card in mycards.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
+      <img src="{{card.imageUrl}}" ng-click="addCard(card)">
+    </div>
+    <div ng-show="manage && logged" ng-repeat="deck in battlefieldDecks">
+      {{deck.name}}
+      <div id="battleCards" ng-show="manage && logged" ng-repeat="card in deck.cards">
+        <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
+      </div>
+    </div>
+  </span>
+
+  <div class="footer" ng-show="logged">
+    <div id="displayTextBox">
+      {{displayText}}
+    </div>
+  </div>
+</body>
+
+</html>
