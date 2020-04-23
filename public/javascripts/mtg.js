@@ -6,11 +6,13 @@ angular.module('cardeck', ['firebase'])
     $scope.searchResults = [];
     $scope.deckCards = [];
     $scope.decks = [];
+
     $scope.activeDeck;
     $scope.secondDeck;
     $scope.cardField = '';
     $scope.footerText = '';
     $scope.deckField = '';
+
     $scope.nameofthatbutton = 'Login';
     $scope.logged = false;
     $scope.adding = false;
@@ -18,28 +20,16 @@ angular.module('cardeck', ['firebase'])
     $scope.addToSecondDeck = false;
     $scope.removeFromDeck = false;
 
-    $scope.battlefieldCards = [];
-
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if (user) {
+        firebase.database().ref('cards/').remove()
         firebase.database().ref(`users/${user.uid}`).update({
-          username:user.displayName
+          username: user.displayName
         });
 
-        let newRef = firebase.database().ref(`users/${user.uid}/decks/default`).push();
-        let newItem = {
-          name: 'default'
-        };
-        let ref = firebase.database().ref().child(`users/${user.uid}/decks`);
-        $scope.decks = $firebaseArray(ref);
-        let ref2 = ref.child('Battlefield') 
-        $scope.battlefieldDecks = $firebaseArray(ref2)
-        $scope.battlefieldDecks.$loaded().then(function() {
-          $scope.clearDisplay();
-        }).catch(function(error) {
-          console.log('Error:', error);
-        });
+        let decksRef = firebase.database().ref().child(`users/${user.uid}/decks`);
+        $scope.decks = $firebaseArray(decksRef);
         $scope.decks.$loaded().then(function() {
           if($scope.decks.length < 1){
             $scope.deckField = 'Default';
@@ -54,14 +44,14 @@ angular.module('cardeck', ['firebase'])
         });
         $scope.nameofthatbutton = 'Add Cards';
         $scope.logged = true;
-        $scope.$apply()
+        $scope.$apply();
       } else {
         $scope.nameofthatbutton = 'Login';
         $scope.$apply();
       }
     });
 
-  $scope.nameDeck = function(){
+  $scope.nameDeck = function() {
     $scope.adding = true;
   }
 
@@ -72,26 +62,17 @@ angular.module('cardeck', ['firebase'])
       let deckName = $scope.activeDeck.name
       $scope.deckField = '';
       $scope.adding = false;
-      console.log($scope.secondDeck.name)
-      console.log($scope.secondDeck.name === 'Battlefield')
-      console.log($scope.activeDeck.name)
-      console.log(deckName)
-      let path = `users/${user.uid}/decks/${deckId}${secondDeck && $scope.secondDeck.name === 'Battlefield' ? `/${deckName}` : ''}/cards`
-      console.log(path)
+      let path = `users/${user.uid}/decks/${deckId}/cards`
       let ref = firebase.database().ref(path);
       let newRef = ref.push();
-      let newItem = {
-        name: card.name,
-        imageUrl: card.imageUrl
-      };
-      newRef.set(newItem).then(function(){
-      $scope.footerText = `${card.name} added to your '${deckName}' deck!`;
-      $scope.$apply();
+      newRef.set(card).then(function() {
+        $scope.footerText = `${card.name} added to your '${deckName}' deck!`;
+        $scope.$apply();
       });
     }
   }
 
-  $scope.addDeck = function(){
+  $scope.addDeck = function() {
     let user = firebase.auth().currentUser;
     if(user && $scope.deckField != ''){
       let ref = firebase.database().ref(`users/${user.uid}/decks`);
@@ -100,9 +81,22 @@ angular.module('cardeck', ['firebase'])
         name: $scope.deckField
       };
       newRef.set(newItem).then(function(){
-        $scope.activeDeck = newItem;
         $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
         $scope.clearDisplay();
+      });
+    }
+  }
+
+  $scope.joinGame = function() {
+    let user = firebase.auth().currentUser;
+    if(user) {
+      let ref = firebase.database().ref(`game/${user.uid}`)
+      ref.update({
+        name: user.displayName,
+        deck: {
+          name: $scope.activeDeck.name,
+          cards: $scope.activeDeck.cards
+        }
       });
     }
   }
@@ -160,7 +154,6 @@ angular.module('cardeck', ['firebase'])
       $scope.footerText = `Click on a card to add it to your '${$scope.activeDeck.name}' deck!`
     }
     let myurl= `/getcard?q=${$scope.cardField}`;
-
     return $http.get(myurl).success(function(data){
       angular.copy(data, $scope.searchResults);
     });
