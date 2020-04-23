@@ -12,6 +12,7 @@ angular.module('cardeck', ['firebase'])
     $scope.cardField = '';
     $scope.footerText = '';
     $scope.deckField = '';
+    $scope.players = [];
 
     $scope.nameofthatbutton = 'Login';
     $scope.logged = false;
@@ -42,6 +43,14 @@ angular.module('cardeck', ['firebase'])
         }).catch(function(error) {
           console.log('Error:', error);
         });
+        let playersRef = firebase.database().ref().child('game')
+        $scope.players = $firebaseArray(playersRef)
+         $scope.players.$loaded().then(function() {
+           $scope.$apply();
+         }).catch(function(error) {
+           console.log('Error:', error);
+         });
+        console.log($scope.players)
         $scope.nameofthatbutton = 'Add Cards';
         $scope.logged = true;
         $scope.$apply();
