@@ -1,9 +1,6 @@
 <html>
-
 <head>
-
   <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
-
   <script>
     // Initialize Firebase
     var config = {
@@ -25,7 +22,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
   <!-- AngularFire -->
   <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
-
 
   <script src="../javascripts/mtg.js"></script>
 </head>
@@ -50,11 +46,6 @@
     <div id="deckRow" ng-show="logged">
       <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
-      <!-- 
-      <select id="dropDown" ng-model="secondDeck" ng-options="deck.name for deck in decks">
-      </select>
-      <input type="checkbox" ng-model='addToSecondDeck'> Add
-      <input type="checkbox" ng-model='removeFromDeck'> Remove -->
     </div>
   </div>
   <div ng-hide="manage || !logged">
@@ -65,11 +56,11 @@
     </form>
   </div>
   <span id="images">
-    <div ng-repeat="card in searchResults.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
-      <img src="{{card.imageUrl}}" ng-click="addCard(card)">
+    <div ng-repeat="card in searchResults" ng-hide="!logged || manage">
+      <img src="{{card.image_uris.normal}}" ng-click="addCard(card)">
     </div>
     <div ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
-      <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
+      <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickDeckCard(card)">
     </div>
   </span>
 
@@ -78,7 +69,5 @@
       {{footerText}}
     </div>
   </div>
-
 </body>
-
 </html>

@@ -164,7 +164,7 @@ angular.module('cardeck', ['firebase'])
     }
     let myurl= `/getcard?q=${$scope.cardField}`;
     return $http.get(myurl).success(function(data){
-      angular.copy(data, $scope.searchResults);
+      angular.copy(data.data, $scope.searchResults);
     });
   }
 

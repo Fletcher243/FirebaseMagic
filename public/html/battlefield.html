@@ -36,27 +36,17 @@
   <div ng-show="manage">
     <h1 ng-show="logged" id="deckHead">Battlefield</h1>
   </div>
-  <div ng-hide="manage || !logged">
-    <h1 id="deckHead">Enter A Card to Find: </h1>
-    <form ng-submit="getCards()" id="deckHead">
-      <input id="centered" type="text" ng-model="cardField" value="">
-      <button type="submit" class="button">Search</button><br>
-    </form>
-  </div>
   <span id="images">
-    <div ng-repeat="card in mycards.cards" ng-hide="!logged || manage" ng-if="card.imageUrl!=null">
-      <img src="{{card.imageUrl}}" ng-click="addCard(card)">
-    </div>
     <div id="battleCards" ng-show="manage && logged" ng-repeat="player in players">
       <div ng-repeat="card in player.battlefield">
-        <img id="deckCard" src="{{card.imageUrl}}" ng-click="clickDeckCard(card)">
+        <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickDeckCard(card)">
       </div>
     </div>
   </span>
 
   <div class="footer" ng-show="logged">
     <div id="displayTextBox">
-      {{displayText}}
+      {{footerText}}
     </div>
   </div>
 </body>

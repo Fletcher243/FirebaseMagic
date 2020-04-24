@@ -22,7 +22,10 @@ router.get('/battlefield/', function(req, res, next) {
 });
 
 router.get('/getcard', function(req,res,next){
-  var url = 'https://api.magicthegathering.io/v1/cards?name=' + req.query.q
+  var url = `https://api.scryfall.com/cards/search?q=${req.query.q}&include_extras=true`
+  console.log(url)
+  //var url = 'https://api.magicthegathering.io/v1/cards?name=' + req.query.q
+
   //var url = "https://api.magicthegathering.io/v1/sets/" + req.query.q + "/booster";
   request(url).pipe(res);
 });
