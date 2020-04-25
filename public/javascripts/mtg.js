@@ -85,7 +85,7 @@ angular.module('cardeck', ['firebase'])
 
   $scope.getForPlayer = function(player, field) {
     return $scope.battlefield.filter(function(item) {
-      return item.$id = player.$id
+      return item.$id == player.$id
     })[0][field] 
   }
 
