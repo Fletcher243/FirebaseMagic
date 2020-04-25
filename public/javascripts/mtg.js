@@ -152,11 +152,8 @@ angular.module('cardeck', ['firebase'])
     if(user) {
       let ref = firebase.database().ref(`game/${user.uid}`)
       ref.update({
-        name: user.displayName,
-        deck: {
-          name: $scope.activeDeck.name,
-          cards: $scope.activeDeck.cards
-        }
+        name: $scope.activeDeck.name,
+        cards: $scope.activeDeck.cards
       });
     }
   }
