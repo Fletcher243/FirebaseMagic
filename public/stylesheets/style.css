@@ -100,16 +100,16 @@ a {
 img {
   padding: 0px;
   box-shadow: 15px 20px 16px #111108;
-  margin: 15px;
+  margin: 5px;
   cursor: pointer;
   transition: 0.3s ease;
   opacity: .95;
   border-radius: 15px;
-  height: 200px;
+  height: 60px;
 }
 
 img:hover {
-  transform: scale(1.1, 1.1); 
+  transform: scale(1.5, 1.5); 
   opacity: 1;
 }
 

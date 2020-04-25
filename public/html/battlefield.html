@@ -37,7 +37,7 @@
     <h1 ng-show="logged" id="deckHead">Battlefield</h1>
   </div>
   <span id="images">
-    <div ng-repeat="player in battlefield" style="width: 100%;">
+    <div ng-repeat="player in battlefield" id="playerField">
       <h2>{{player.name}}</h2>
       <br>
       <div>
@@ -47,7 +47,6 @@
           <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'hand')">
         </div>
       </div>
-      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].battlefield"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].battlefield"> Show Battlefield
@@ -55,7 +54,6 @@
           <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'battlefield')">
         </div>
       </div>
-      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].library"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].library">Show Library
@@ -64,7 +62,6 @@
           <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'library')">
         </span>
       </div>
-      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].graveyard"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].graveyard">Show Graveyard
@@ -72,7 +69,6 @@
           <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'graveyard')">
         </div>
       </div>
-      <br>  
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].exile"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].exile"> Show Exile

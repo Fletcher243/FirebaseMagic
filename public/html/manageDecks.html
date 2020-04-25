@@ -46,6 +46,7 @@
     <div id="deckRow" ng-show="logged">
       <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
+      <button  ng-click="joinGame()" class="button" ng-show="logged" onclick="location.href='../battlefield'">Join Game</button>
     </div>
   </div>
   <div ng-hide="manage || !logged">

@@ -27,3 +27,10 @@
   .tap {
     transform: rotate(20deg);
   }
+
+  #playerField {
+    width: 100%; 
+    border: 2px solid white; 
+    box-shadow: 5px 10px 15px #eeeeee;
+    margin-bottom: 5px;
+  }
