@@ -37,8 +37,9 @@
     <h1 ng-show="logged" id="deckHead">Battlefield</h1>
   </div>
   <span id="images">
-    <div ng-repeat="player in battlefield">
-      <h1>{{player.name}}</h1>
+    <div ng-repeat="player in battlefield" style="width: 100%;">
+      <h2>{{player.name}}</h2>
+      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].hand"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].hand"> Show Hand
@@ -46,6 +47,7 @@
           <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'hand')">
         </div>
       </div>
+      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].battlefield"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].battlefield"> Show Battlefield
@@ -53,20 +55,24 @@
           <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'battlefield')">
         </div>
       </div>
+      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].library"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].library">Show Library
-        <div ng-repeat="card in getForPlayer(player, 'library')" ng-show="showForPlayer[player.name].library">
+        <br>
+        <span ng-repeat="card in getForPlayer(player, 'library')" ng-show="showForPlayer[player.name].library">
           <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'library')">
-        </div>
+        </span>
       </div>
+      <br>
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].graveyard"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].graveyard">Show Graveyard
         <div ng-repeat="card in getForPlayer(player, 'graveyard')" ng-show="showForPlayer[player.name].graveyard')">
           <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'graveyard')">
         </div>
-      </div>  
+      </div>
+      <br>  
       <div>
         <input type="checkbox" ng-model="addForPlayer[player.name].exile"> Add
         <input type="checkbox" ng-model="showForPlayer[player.name].exile"> Show Exile

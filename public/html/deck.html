@@ -49,9 +49,6 @@
   </div>
 
   <span id="images">
-    <div ng-repeat="card in searchResults.cards" ng-hide="!logged || manage">
-      <img src="{{card.image_uris.normal}}" ng-click="addCard(card)">
-    </div>
     <div ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
       <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickDeckCard(card)">
     </div>
