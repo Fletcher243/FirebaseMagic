@@ -93,6 +93,15 @@ angular.module('cardeck', ['firebase'])
 
   }
 
+  $scope.getImage = function(card) {
+    if(card.hasOwnProperty('image_uris')) {
+      return card.image_uris.normal
+    }
+    if(card.hasOwnProperty('card_faces')) {
+      return card.card_faces[0].image_uris.normal
+    }
+  }
+
   $scope.removeExtraFields = function(card) {
     if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
     if(card.hasOwnProperty('arena_id')) delete card.arena_id
@@ -190,7 +199,6 @@ angular.module('cardeck', ['firebase'])
       let handRef = ref.child('hand')
       $scope.hand = $firebaseArray(handRef)
     }
-
   }
 
   $scope.clickDeckCard = function(card){
