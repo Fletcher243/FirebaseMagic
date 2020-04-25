@@ -31,13 +31,13 @@
 </head>
 
 <body ng-app='cardeck' ng-controller="MainCtrl">
-    <button ng-click="logout()" class="button" ng-show="logged">Logout</button>
+  <button ng-click="logout()" class="button">{{logButton}}</button>
     <div ng-show="manage">
         <h1 ng-show="logged" id="deckHead">Welcome to Gamenight</h1>
         <div id="deckRow" ng-show="logged">
 
             <button onclick="location.href = 'manageDecks';" class="button" ng-show="logged">Build Decks</button>
-            <button ng-click="joinGame()" onclick="location.href = 'battlefield';" class="button" ng-show="logged">Battlefield</button>
+            <button ng-click="joinGame()" class="button" ng-show="logged">Battlefield</button>
 
         </div>
     </div>

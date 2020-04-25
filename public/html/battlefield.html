@@ -33,13 +33,46 @@
 
   <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
 
-  <div ng-show="manage">
+  <div>
     <h1 ng-show="logged" id="deckHead">Battlefield</h1>
   </div>
   <span id="images">
-    <div id="battleCards" ng-show="manage && logged" ng-repeat="player in players">
-      <div ng-repeat="card in player.battlefield">
-        <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickDeckCard(card)">
+    <div ng-repeat="player in battlefield">
+      <h1>{{player.name}}</h1>
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.name].hand"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.name].hand"> Show Hand
+        <div ng-repeat="card in getForPlayer(player, 'hand')" ng-show="showForPlayer[player.name].hand">
+          <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'hand')">
+        </div>
+      </div>
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.name].battlefield"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.name].battlefield"> Show Battlefield
+        <div ng-repeat="card in getForPlayer(player, 'battlefield')" ng-show="showForPlayer[player.name].battlefield">
+          <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'battlefield')">
+        </div>
+      </div>
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.name].library"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.name].library">Show Library
+        <div ng-repeat="card in getForPlayer(player, 'library')" ng-show="showForPlayer[player.name].library">
+          <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'library')">
+        </div>
+      </div>
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.name].graveyard"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.name].graveyard">Show Graveyard
+        <div ng-repeat="card in getForPlayer(player, 'graveyard')" ng-show="showForPlayer[player.name].graveyard')">
+          <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'graveyard')">
+        </div>
+      </div>  
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.name].exile"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.name].exile"> Show Exile
+        <div ng-repeat="card in getForPlayer(player, 'exile')" ng-show="showForPlayer[player.name].exile')">
+          <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickGameCard(card, player, 'exile')">
+        </div>
       </div>
     </div>
   </span>

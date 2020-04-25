@@ -12,9 +12,13 @@ angular.module('cardeck', ['firebase'])
     $scope.cardField = '';
     $scope.footerText = '';
     $scope.deckField = '';
-    $scope.players = [];
+    $scope.battlefield = [];
+
+    $scope.addForPlayer = {};
+    $scope.showForPlayer = {};
 
     $scope.nameofthatbutton = 'Login';
+    $scope.logButton = 'Login'
     $scope.logged = false;
     $scope.adding = false;
     $scope.manage = true;
@@ -43,24 +47,50 @@ angular.module('cardeck', ['firebase'])
         }).catch(function(error) {
           console.log('Error:', error);
         });
-        let playersRef = firebase.database().ref().child('game')
-        $scope.players = $firebaseArray(playersRef)
-         $scope.players.$loaded().then(function() {
-           $scope.$apply();
-         }).catch(function(error) {
+        let battlefieldRef = firebase.database().ref().child('game')
+        $scope.battlefield = $firebaseArray(battlefieldRef)
+        $scope.battlefield.$loaded().then(function() {
+          $scope.battlefield.forEach(function(player) {
+            $scope.addForPlayer[player.name] = {
+              hand: false,
+              battlefield: false,
+              library: false,
+              graveyrd: false,
+              exile: false
+            }
+            $scope.showForPlayer[player.name] = {
+              hand: false,
+              battlefield: true,
+              library: true,
+              graveyard: false,
+              exile: false
+            }
+          });
+          $scope.$apply();
+        }).catch(function(error) {
            console.log('Error:', error);
          });
         $scope.nameofthatbutton = 'Add Cards';
         $scope.logged = true;
+        $scope.logButton = 'Logout'
         $scope.$apply();
       } else {
         $scope.nameofthatbutton = 'Login';
         $scope.$apply();
       }
     });
-
-  $scope.nameDeck = function() {
+    $scope.nameDeck = function() {
     $scope.adding = true;
+  }
+
+  $scope.getForPlayer = function(player, field) {
+    return $scope.battlefield.filter(function(item) {
+      return item.$id = player.$id
+    })[0][field] 
+  }
+
+  $scope.clickGameCard = function(card, player, field) {
+
   }
 
   $scope.removeExtraFields = function(card) {
@@ -153,9 +183,14 @@ angular.module('cardeck', ['firebase'])
       let ref = firebase.database().ref(`game/${user.uid}`)
       ref.update({
         name: $scope.activeDeck.name,
-        cards: $scope.activeDeck.cards
+        library: $scope.activeDeck.cards
       });
+      let libraryRef = ref.child('library')
+      $scope.library = $firebaseArray(libraryRef)
+      let handRef = ref.child('hand')
+      $scope.hand = $firebaseArray(handRef)
     }
+
   }
 
   $scope.clickDeckCard = function(card){
@@ -217,13 +252,19 @@ angular.module('cardeck', ['firebase'])
   }
 
   $scope.logout = function() {
-    $scope.logged = false;
-    $scope.manage = false;
-    $scope.nameofthatbutton = 'Login';
-    $scope.deckCards = [];
-    $scope.searchResults = [];
-    $scope.cardField = '';
-    firebase.auth().signOut();
+    if(!$scope.logged) {
+      let provider = new firebase.auth.GoogleAuthProvider();
+      firebase.auth().signInWithRedirect(provider);
+    } else {
+      $scope.logged = false;
+      $scope.manage = false;
+      $scope.logButton = 'Login';
+      $scope.nameofthatbutton = 'Login';
+      $scope.deckCards = [];
+      $scope.searchResults = [];
+      $scope.cardField = '';
+      firebase.auth().signOut();
+    }
   }
 
   $scope.getDeck = function() {
