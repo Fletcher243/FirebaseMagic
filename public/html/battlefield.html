@@ -41,40 +41,44 @@
       <h2>{{player.name}}</h2>
       <br>
       <div>
-        <input type="checkbox" ng-model="addForPlayer[player.name].hand"> Add
-        <input type="checkbox" ng-model="showForPlayer[player.name].hand"> Show Hand
-        <div ng-repeat="card in getForPlayer(player, 'hand')" ng-show="showForPlayer[player.name].hand">
-          <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'hand')">
-        </div>
-      </div>
-      <div>
-        <input type="checkbox" ng-model="addForPlayer[player.name].battlefield"> Add
-        <input type="checkbox" ng-model="showForPlayer[player.name].battlefield"> Show Battlefield
-        <div ng-repeat="card in getForPlayer(player, 'battlefield')" ng-show="showForPlayer[player.name].battlefield">
-          <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'battlefield')">
-        </div>
-      </div>
-      <div>
-        <input type="checkbox" ng-model="addForPlayer[player.name].library"> Add
-        <input type="checkbox" ng-model="showForPlayer[player.name].library">Show Library
+        <input type="checkbox" ng-model="addForPlayer[player.$id].hand"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.$id].hand"> Show Hand
         <br>
-        <span ng-repeat="card in getForPlayer(player, 'library')" ng-show="showForPlayer[player.name].library">
+        <span ng-repeat="card in cardsForPlayer[player.$id].hand" ng-show="showForPlayer[player.$id].hand">
+          <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'hand')">
+        </span>
+      </div>
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.$id].battlefield"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.$id].battlefield"> Show Battlefield
+        <br>
+        <span ng-repeat="card in cardsForPlayer[player.$id].battlefield" ng-show="showForPlayer[player.$id].battlefield">
+          <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'battlefield')">
+        </span>
+      </div>
+      <div>
+        <input type="checkbox" ng-model="addForPlayer[player.$id].library"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.$id].library">Show Library
+        <br>
+        <span ng-repeat="card in cardsForPlayer[player.$id].library" ng-show="showForPlayer[player.$id].library">
           <img id="battleCards" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'library')">
         </span>
       </div>
       <div>
-        <input type="checkbox" ng-model="addForPlayer[player.name].graveyard"> Add
-        <input type="checkbox" ng-model="showForPlayer[player.name].graveyard">Show Graveyard
-        <div ng-repeat="card in getForPlayer(player, 'graveyard')" ng-show="showForPlayer[player.name].graveyard')">
+        <input type="checkbox" ng-model="addForPlayer[player.$id].graveyard"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.$id].graveyard">Show Graveyard
+        <br>
+        <span ng-repeat="card in cardsForPlayer[player.$id].graveyard" ng-show="showForPlayer[player.$id].graveyard">
           <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'graveyard')">
-        </div>
+        </span>
       </div>
       <div>
-        <input type="checkbox" ng-model="addForPlayer[player.name].exile"> Add
-        <input type="checkbox" ng-model="showForPlayer[player.name].exile"> Show Exile
-        <div ng-repeat="card in getForPlayer(player, 'exile')" ng-show="showForPlayer[player.name].exile')">
+        <input type="checkbox" ng-model="addForPlayer[player.$id].exile"> Add
+        <input type="checkbox" ng-model="showForPlayer[player.$id].exile"> Show Exile
+        <br>
+        <span ng-repeat="card in cardsForPlayer[player.$id].exile" ng-show="showForPlayer[player.$id].exile">
           <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'exile')">
-        </div>
+        </span>
       </div>
     </div>
   </span>

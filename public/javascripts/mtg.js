@@ -3,6 +3,8 @@ angular.module('cardeck', ['firebase'])
   '$scope','$http','$firebaseArray',
   function($scope,$http, $firebaseArray){
 
+    deckFields = ['hand', 'battlefield', 'library', 'graveyard', 'exile']
+
     $scope.searchResults = [];
     $scope.deckCards = [];
     $scope.decks = [];
@@ -14,6 +16,7 @@ angular.module('cardeck', ['firebase'])
     $scope.deckField = '';
     $scope.battlefield = [];
 
+    $scope.cardsForPlayer = {};
     $scope.addForPlayer = {};
     $scope.showForPlayer = {};
 
@@ -48,28 +51,36 @@ angular.module('cardeck', ['firebase'])
           console.log('Error:', error);
         });
         let battlefieldRef = firebase.database().ref().child('game')
-        $scope.battlefield = $firebaseArray(battlefieldRef)
-        $scope.battlefield.$loaded().then(function() {
-          $scope.battlefield.forEach(function(player) {
-            $scope.addForPlayer[player.name] = {
+        let battlefieldArray = $firebaseArray(battlefieldRef)
+        battlefieldArray.$loaded().then(function() {
+          battlefieldArray.forEach(function(player) {
+          $scope.battlefield.push({name:player.name, $id: player.$id})
+          $scope.addForPlayer[player.$id] = {
               hand: false,
               battlefield: false,
               library: false,
               graveyrd: false,
               exile: false
             }
-            $scope.showForPlayer[player.name] = {
+            $scope.showForPlayer[player.$id] = {
               hand: false,
               battlefield: true,
               library: true,
               graveyard: false,
               exile: false
             }
+            let playerRef = battlefieldRef.child(player.$id)
+            $scope.cardsForPlayer[player.$id] = {
+              hand: $firebaseArray(playerRef.child('hand')),
+              battlefield: $firebaseArray(playerRef.child('battlefield')),
+              library: $firebaseArray(playerRef.child('library')),
+              graveyard: $firebaseArray(playerRef.child('graveyard')),
+              exile: $firebaseArray(playerRef.child('exile'))
+            }
           });
-          $scope.$apply();
         }).catch(function(error) {
-           console.log('Error:', error);
-         });
+          console.log('Error:', error);
+        });
         $scope.nameofthatbutton = 'Add Cards';
         $scope.logged = true;
         $scope.logButton = 'Logout'
@@ -86,14 +97,31 @@ angular.module('cardeck', ['firebase'])
   $scope.getForPlayer = function(player, field) {
     return $scope.battlefield.filter(function(item) {
       return item.$id == player.$id
-    })[0][field] 
+    })[0][field];
   }
 
   $scope.clickGameCard = function(card, player, field) {
+    let id = card.$id
+    delete card.$id
+    delete card.$priority
+    delete card.$$hashKey
 
+    $scope.battlefield.forEach(function(player) {
+      deckFields.forEach(function(field) {
+        if($scope.addForPlayer[player.$id][field]) {
+          let path = `game/${player.$id}/${field}`
+          let ref = firebase.database().ref(path).push();
+          ref.set(card)
+        }
+      });
+    });
+    let path = `game/${player.$id}/${field}/${id}`
+    let ref = firebase.database().ref(path).remove()
+    $scope.$apply()
   }
 
   $scope.getImage = function(card) {
+    if(!card) return
     if(card.hasOwnProperty('image_uris')) {
       return card.image_uris.normal
     }
