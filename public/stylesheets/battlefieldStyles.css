@@ -38,3 +38,27 @@
   .highlightCard {
     border: solid yellow;
   }
+
+  #playerName {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-top: 5px;
+    text-shadow: 2px 2px black;
+    position: relative;
+    text-align: left;
+  }
+
+  .lifeTotal {
+    color: yellow;
+    margin-right: 7px;
+    font-size: x-large;
+    position: absolute;
+    left: 50%;
+    right: 50%;
+  }
+
+  h3 {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  
+  }

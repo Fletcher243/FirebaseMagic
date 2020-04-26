@@ -1,4 +1,5 @@
 <html>
+
 <head>
   <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
 
@@ -29,7 +30,7 @@
 </head>
 
 <body ng-app='cardeck' ng-controller="BattleCtrl">
-  <button onclick="location.href='../deck'" class="button" id="floatRight">View My Cards</button> 
+  <button onclick="location.href='../deck'" class="button" id="floatRight">View My Cards</button>
 
   <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
 
@@ -52,16 +53,20 @@
   <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
   <span id='images'>
     <div ng-repeat="player in battlefield" id="playerField">
-      <h2>{{player.name}}</h2>
-      <br>
+      <div id="playerName">
+        <span>{{player.name}}</span>
+        <span class="lifeTotal">40</span>
+      </div>
       <div ng-repeat='field in deckFields'>
         <span ng-show="showCheckboxes">
           <input type="checkbox" ng-model="addForPlayer[player.$id][field]">Add
-          <input type="checkbox" ng-model="showForPlayer[player.$id][field]">Show {{field.charAt(0).toUpperCase() + field.slice(1)}}
+          <input type="checkbox" ng-model="showForPlayer[player.$id][field]">Show
+          {{field.charAt(0).toUpperCase() + field.slice(1)}}
         </span>
         <h3 ng-show="showForPlayer[player.$id][field]">{{field.charAt(0).toUpperCase() + field.slice(1)}}</h3>
         <span ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
+          <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}"
+            ng-click="clickGameCard(card, player, field)">
         </span>
       </div>
     </div>
