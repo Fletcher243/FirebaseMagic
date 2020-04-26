@@ -43,7 +43,8 @@
     <input type='radio' ng-model='clickAction' value='remove'>Remove
     <input type='radio' ng-model='clickAction' value='tap'>Tap
     <input type='radio' ng-model='clickAction' value='flip'>Flip
-    <input type='radio' ng-model='clickAction' value=addremoveflip'>Move Flipped
+    <input type='radio' ng-model='clickAction' value='addremoveflip'>Move Flipped
+    <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
   </form>
   <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
   <span id='images'>
@@ -57,7 +58,7 @@
         </span>
         <h3 ng-show="showForPlayer[player.$id][field]">{{field.charAt(0).toUpperCase() + field.slice(1)}}</h3>
         <span ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img id="battleCards" ng-class="{tap: card.tapped}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
+          <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
         </span>
       </div>
     </div>

@@ -33,3 +33,7 @@
     box-shadow: -5px -10px 30px #ffffff;
     margin-bottom: 10px;
   }
+
+  .highlightCard {
+    border: solid yellow;
+  }

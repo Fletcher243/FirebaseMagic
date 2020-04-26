@@ -71,13 +71,19 @@ angular.module('cardeck', ['firebase'])
     if($scope.clickAction === 'tap') {
       let path = `game/${player.$id}/${field}/${id}`
       card.tapped = !card.tapped
-      let tapped = firebase.database().ref(path).update({tapped: card.tapped});
+      firebase.database().ref(path).update({tapped: card.tapped});
+      return
+    }
+    if($scope.clickAction === 'highlight') {
+      let path = `game/${player.$id}/${field}/${id}`
+      card.highlighted = !card.highlighted
+      firebase.database().ref(path).update({highlighted: card.highlighted});
       return
     }
     if($scope.clickAction === 'flip') {
       let path = `game/${player.$id}/${field}/${id}`
       card.flipped = !card.flipped
-      let flipped = firebase.database().ref(path).update({flipped: card.flipped});
+      firebase.database().ref(path).update({flipped: card.flipped});
       return
     }
     if($scope.clickAction.includes('add')) {
