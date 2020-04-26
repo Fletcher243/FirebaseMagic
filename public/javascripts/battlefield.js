@@ -15,6 +15,7 @@ angular.module('cardeck', ['firebase'])
     $scope.logged = false;
     $scope.clickAction = 'tap';
     $scope.showCheckboxes = false;
+    $scope.flip = false;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -26,7 +27,7 @@ angular.module('cardeck', ['firebase'])
           $scope.battlefield.push({name:player.name, $id: player.$id})
           $scope.addForPlayer[player.$id] = {
               hand: false,
-              battlefield: false,
+              battlefield: player.$id == user.uid,
               library: false,
               graveyrd: false,
               exile: false,
@@ -58,8 +59,7 @@ angular.module('cardeck', ['firebase'])
         $scope.logButton = 'Logout'
         $scope.$apply();
       } else {
-        $scope.nameofthatbutton = 'Login';
-        $scope.$apply();
+        location.href='../'
       }
     });
 
@@ -86,30 +86,46 @@ angular.module('cardeck', ['firebase'])
       firebase.database().ref(path).update({flipped: card.flipped});
       return
     }
+    if($scope.clickAction.includes('remove')) {
+      $scope.removeCard(card, player.$id, field)
+     }
     if($scope.clickAction.includes('add')) {
       $scope.battlefield.forEach(function(player) {
         $scope.deckFields.forEach(function(addField) {
           if($scope.addForPlayer[player.$id][addField]) {
-            let addPath = `game/${player.$id}/${addField}`
-            let addRef = firebase.database().ref(addPath).push();
-            if(card.hasOwnProperty('$id')) delete card.$id
-            if(card.hasOwnProperty('$priority')) delete card.$priority
-            if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
-            if($scope.clickAction.includes('flip')) card.flipped = !card.flipped
-            addRef.set(card)
+            $scope.addCard(card, player.$id, addField)
           }
         });
       });
     }
-    if($scope.clickAction.includes('remove')) {
-      let removePath = `game/${player.$id}/${field}/${id}`
-      firebase.database().ref(removePath).remove().then(function() {
-        $scope.cardsForPlayer[player.$id][field] = $firebaseArray(firebase.database().ref(`game/${player.$id}/${field}`))
-        $scope.cardsForPlayer[player.$id][field].$loaded().then(function() {
-          console.log("Loaded");
-        });
+  }
+  $scope.addCard = function(card, playerId, field) {
+    let addPath = `game/${playerId}/${field}`
+    let addRef = firebase.database().ref(addPath).push();
+    if(card.hasOwnProperty('$id')) delete card.$id
+    if(card.hasOwnProperty('$priority')) delete card.$priority
+    if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
+    if($scope.flip) card.flipped = !card.flipped
+    addRef.set(card)
+  }
+
+  $scope.removeCard = function(card, playerId, field) {
+    let removePath = `game/${playerId}/${field}/${card.$id}`
+    firebase.database().ref(removePath).remove().then(function() {
+      $scope.cardsForPlayer[playerId][field] = $firebaseArray(firebase.database().ref(`game/${playerId}/${field}`))
+      $scope.cardsForPlayer[playerId][field].$loaded().then(function() {
+        console.log("Loaded");
+    console.log($scope.cardsForPlayer[$scope.user.uid].library.length)
       });
-    }
+    });
+  }
+
+  $scope.drawCard = function(flip) {
+    let library = $scope.cardsForPlayer[$scope.user.uid].library
+    let card = library[Math.floor(Math.random() * library.length)]
+    console.log($scope.cardsForPlayer[$scope.user.uid].library.length)
+    $scope.removeCard(card, $scope.user.uid, 'library')
+    $scope.addCard(card, $scope.user.uid, 'hand')
   }
 
   $scope.getImage = function(card) {

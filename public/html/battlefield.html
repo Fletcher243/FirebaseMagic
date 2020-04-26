@@ -43,8 +43,11 @@
     <input type='radio' ng-model='clickAction' value='remove'>Remove
     <input type='radio' ng-model='clickAction' value='tap'>Tap
     <input type='radio' ng-model='clickAction' value='flip'>Flip
-    <input type='radio' ng-model='clickAction' value='addremoveflip'>Move Flipped
     <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
+    <button ng-click="drawCard()" class="button">Draw Card</button>
+    <span ng-show='showCheckboxes'>
+      <input type='checkbox' ng-model='flip'>Draw Facedown
+    </span>
   </form>
   <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
   <span id='images'>
