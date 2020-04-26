@@ -24,12 +24,13 @@
 }
 
   .tap {
-    transform: rotate(20deg);
+    transform: rotate(90deg);
+    margin-left: 10px;
   }
 
   #playerField {
     width: 100%; 
-    border: 1px solid #bbbbbb; 
+    border: 1px solid #2c2424; 
     box-shadow: -5px -10px 30px #ffffff;
     margin-bottom: 10px;
   }
