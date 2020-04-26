@@ -1,13 +1,12 @@
   #battleCards {
     position: relative;
     display: inline-block;
-    transition: 1.5s ease;
     opacity: .95;
   }
 
   #battleCards:hover {
-    transition: 1.5s ease;
-    transform: scale(1.7, 1.7); 
+    transition: 1s ease;
+    transform: scale(2.5, 2.5); 
     opacity: 1;
     z-index: 10;
   }
@@ -30,7 +29,7 @@
 
   #playerField {
     width: 100%; 
-    border: 2px solid white; 
-    box-shadow: 5px 10px 15px #eeeeee;
-    margin-bottom: 5px;
+    border: 1px solid #bbbbbb; 
+    box-shadow: -5px -10px 30px #ffffff;
+    margin-bottom: 10px;
   }

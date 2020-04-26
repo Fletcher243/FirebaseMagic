@@ -59,7 +59,7 @@
         <input type="checkbox" ng-model="showForPlayer[player.name].library">Show Library
         <br>
         <span ng-repeat="card in getForPlayer(player, 'library')" ng-show="showForPlayer[player.name].library">
-          <img id="deckCard" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'library')">
+          <img id="battleCards" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, 'library')">
         </span>
       </div>
       <div>
