@@ -8,7 +8,6 @@ angular.module('cardeck', ['firebase'])
     $scope.decks = [];
 
     $scope.activeDeck;
-    $scope.secondDeck;
     $scope.cardField = '';
     $scope.footerText = '';
     $scope.deckField = '';
@@ -18,8 +17,8 @@ angular.module('cardeck', ['firebase'])
     $scope.logged = false;
     $scope.adding = false;
     $scope.manage = true;
-    $scope.addToSecondDeck = false;
     $scope.removeFromDeck = false;
+    $scope.extras = false;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -38,7 +37,6 @@ angular.module('cardeck', ['firebase'])
           }
           let key = $scope.decks.$keyAt(0);
           $scope.activeDeck = $scope.decks.$getRecord(key);
-          $scope.secondDeck = $scope.activeDeck
           $scope.clearDisplay()
         }).catch(function(error) {
           console.log('Error:', error);
@@ -52,9 +50,10 @@ angular.module('cardeck', ['firebase'])
         $scope.$apply();
       }
     });
+
     $scope.nameDeck = function() {
-    $scope.adding = true;
-  }
+      $scope.adding = true;
+    }
 
   $scope.getImage = function(card) {
     if(!card) return
@@ -117,15 +116,16 @@ angular.module('cardeck', ['firebase'])
     return card
   }
 
-  $scope.addCard = function(card, secondDeck = false){
+  $scope.addCard = function(card){
     let user = firebase.auth().currentUser;
     if(user){
       let newCard = $scope.removeExtraFields(card)
-      let deckId = secondDeck ? $scope.secondDeck.$id : $scope.activeDeck.$id
+      let deckId = $scope.activeDeck.$id
       let deckName = $scope.activeDeck.name
       $scope.deckField = '';
       $scope.adding = false;
-      let path = `users/${user.uid}/decks/${deckId}/cards`
+      let path = $scope.extras ? `users/${user.uid}/decks/${deckId}/extras`
+ : `users/${user.uid}/decks/${deckId}/cards`
       let ref = firebase.database().ref(path);
       let newRef = ref.push();
       newRef.set(newCard).then(function() {
@@ -160,7 +160,8 @@ angular.module('cardeck', ['firebase'])
         hand: {},
         graveyard: {},
         exile: {},
-        battlefield: {}
+        battlefield: {},
+        extras: $scope.activeDeck.extras
       }).then(function(){
         location.href='../battlefield'
       });
@@ -175,9 +176,6 @@ angular.module('cardeck', ['firebase'])
           $scope.footerText = `${card.name} removed from your ${$scope.activeDeck.name} deck!`;
           $scope.$apply();
         });
-      }
-      if ($scope.addToSecondDeck) {
-        $scope.addCard(card, true)
       }
     }
   }
