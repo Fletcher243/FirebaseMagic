@@ -55,6 +55,7 @@
       <input id="centered" type="text" ng-model="cardField" value="">
       <button type="submit" class="button">Search</button><br>
     </form>
+    <input type="checkbox" ng-model="extras">Add to Extras
   </div>
   <span id="images">
     <div ng-repeat="card in searchResults" ng-hide="!logged || manage">

@@ -155,13 +155,15 @@ angular.module('cardeck', ['firebase'])
     if(user) {
       let ref = firebase.database().ref(`game/${user.uid}`)
       ref.update({
-        name: $scope.activeDeck.name,
+        name: user.displayName,
         library: $scope.activeDeck.cards,
         hand: {},
         graveyard: {},
+        lands: {},
         exile: {},
         battlefield: {},
-        extras: $scope.activeDeck.extras
+        extras: $scope.activeDeck.extras,
+        life: 40
       }).then(function(){
         location.href='../battlefield'
       });
