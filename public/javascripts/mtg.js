@@ -3,8 +3,6 @@ angular.module('cardeck', ['firebase'])
   '$scope','$http','$firebaseArray',
   function($scope,$http, $firebaseArray){
 
-    deckFields = ['hand', 'battlefield', 'library', 'graveyard', 'exile']
-
     $scope.searchResults = [];
     $scope.deckCards = [];
     $scope.decks = [];
@@ -14,11 +12,6 @@ angular.module('cardeck', ['firebase'])
     $scope.cardField = '';
     $scope.footerText = '';
     $scope.deckField = '';
-    $scope.battlefield = [];
-
-    $scope.cardsForPlayer = {};
-    $scope.addForPlayer = {};
-    $scope.showForPlayer = {};
 
     $scope.nameofthatbutton = 'Login';
     $scope.logButton = 'Login'
@@ -36,7 +29,7 @@ angular.module('cardeck', ['firebase'])
           username: user.displayName
         });
 
-        let decksRef = firebase.database().ref().child(`users/${user.uid}/decks`);
+        let decksRef = firebase.database().ref(`users/${user.uid}/decks`);
         $scope.decks = $firebaseArray(decksRef);
         $scope.decks.$loaded().then(function() {
           if($scope.decks.length < 1){
@@ -47,37 +40,6 @@ angular.module('cardeck', ['firebase'])
           $scope.activeDeck = $scope.decks.$getRecord(key);
           $scope.secondDeck = $scope.activeDeck
           $scope.clearDisplay()
-        }).catch(function(error) {
-          console.log('Error:', error);
-        });
-        let battlefieldRef = firebase.database().ref().child('game')
-        let battlefieldArray = $firebaseArray(battlefieldRef)
-        battlefieldArray.$loaded().then(function() {
-          battlefieldArray.forEach(function(player) {
-          $scope.battlefield.push({name:player.name, $id: player.$id})
-          $scope.addForPlayer[player.$id] = {
-              hand: false,
-              battlefield: false,
-              library: false,
-              graveyrd: false,
-              exile: false
-            }
-            $scope.showForPlayer[player.$id] = {
-              hand: false,
-              battlefield: true,
-              library: true,
-              graveyard: false,
-              exile: false
-            }
-            let playerRef = battlefieldRef.child(player.$id)
-            $scope.cardsForPlayer[player.$id] = {
-              hand: $firebaseArray(playerRef.child('hand')),
-              battlefield: $firebaseArray(playerRef.child('battlefield')),
-              library: $firebaseArray(playerRef.child('library')),
-              graveyard: $firebaseArray(playerRef.child('graveyard')),
-              exile: $firebaseArray(playerRef.child('exile'))
-            }
-          });
         }).catch(function(error) {
           console.log('Error:', error);
         });
@@ -92,32 +54,6 @@ angular.module('cardeck', ['firebase'])
     });
     $scope.nameDeck = function() {
     $scope.adding = true;
-  }
-
-  $scope.getForPlayer = function(player, field) {
-    return $scope.battlefield.filter(function(item) {
-      return item.$id == player.$id
-    })[0][field];
-  }
-
-  $scope.clickGameCard = function(card, player, field) {
-    let id = card.$id
-    delete card.$id
-    delete card.$priority
-    delete card.$$hashKey
-
-    $scope.battlefield.forEach(function(player) {
-      deckFields.forEach(function(field) {
-        if($scope.addForPlayer[player.$id][field]) {
-          let path = `game/${player.$id}/${field}`
-          let ref = firebase.database().ref(path).push();
-          ref.set(card)
-        }
-      });
-    });
-    let path = `game/${player.$id}/${field}/${id}`
-    let ref = firebase.database().ref(path).remove()
-    $scope.$apply()
   }
 
   $scope.getImage = function(card) {
@@ -220,12 +156,14 @@ angular.module('cardeck', ['firebase'])
       let ref = firebase.database().ref(`game/${user.uid}`)
       ref.update({
         name: $scope.activeDeck.name,
-        library: $scope.activeDeck.cards
+        library: $scope.activeDeck.cards,
+        hand: {},
+        graveyard: {},
+        exile: {},
+        battlefield: {}
+      }).then(function(){
+        location.href='../battlefield'
       });
-      let libraryRef = ref.child('library')
-      $scope.library = $firebaseArray(libraryRef)
-      let handRef = ref.child('hand')
-      $scope.hand = $firebaseArray(handRef)
     }
   }
 

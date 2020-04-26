@@ -46,7 +46,7 @@
     <div id="deckRow" ng-show="logged">
       <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
-      <button  ng-click="joinGame()" class="button" ng-show="logged" onclick="location.href='../battlefield'">Join Game</button>
+      <button  ng-click="joinGame()" class="button" ng-show="logged">Join Game</button>
     </div>
   </div>
   <div ng-hide="manage || !logged">
@@ -58,10 +58,10 @@
   </div>
   <span id="images">
     <div ng-repeat="card in searchResults" ng-hide="!logged || manage">
-      <img src="{{card.image_uris.normal}}" ng-click="addCard(card)">
+      <img src="{{getImage(card)}}" ng-click="addCard(card)">
     </div>
     <div ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
-      <img id="deckCard" src="{{card.image_uris.normal}}" ng-click="clickDeckCard(card)">
+      <img id="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
     </div>
   </span>
 
