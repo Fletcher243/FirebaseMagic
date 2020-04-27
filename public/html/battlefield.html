@@ -37,23 +37,6 @@
   <div>
     <h1 ng-show='logged' id='deckHead'>Battlefield</h1>
   </div>
-  <form>
-    When I click a card:
-    <input type='radio' ng-model='clickAction' value='add'>Add
-    <input type='radio' ng-model='clickAction' value='removeadd'>Move
-    <input type='radio' ng-model='clickAction' value='remove'>Remove
-    <input type='radio' ng-model='clickAction' value='tap'>Tap
-    <input type='radio' ng-model='clickAction' value='flip'>Flip
-    <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
-    <input type='radio' ng-model='clickAction' value='morecounter'>Add Counter
-    <input type='radio' ng-model='clickAction' value='lesscounter'>Remove Counter
-    <button ng-click="drawCard()" class="button">Draw Card</button>
-    <span ng-show='showCheckboxes'>
-      <input type='checkbox' ng-model='flip'>Draw Facedown
-      <input type='checkbox' ng-model='zoom'> Zoom Card on Hover
-    </span>
-  </form>
-  <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
   <span id='images'>
     <div ng-repeat="player in battlefield" id="playerField">
       <div id="playerName">
@@ -82,9 +65,23 @@
   </span>
 
   <div class="footer" ng-show="logged">
-    <div id="displayTextBox">
-      {{footerText}}
-    </div>
+    <form>
+      When I click a card:
+      <input type='radio' ng-model='clickAction' value='add'>Add
+      <input type='radio' ng-model='clickAction' value='removeadd'>Move
+      <input type='radio' ng-model='clickAction' value='remove'>Remove
+      <input type='radio' ng-model='clickAction' value='tap'>Tap
+      <input type='radio' ng-model='clickAction' value='flip'>Flip
+      <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
+      <input type='radio' ng-model='clickAction' value='morecounter'>Add Counter
+      <input type='radio' ng-model='clickAction' value='lesscounter'>Remove Counter
+      <button ng-click="drawCard()" class="button">Draw Card</button>
+      <span ng-show='showCheckboxes'>
+        <input type='checkbox' ng-model='flip'>Draw Facedown
+        <input type='checkbox' ng-model='zoom'> Zoom Card on Hover
+      </span>
+    </form>
+    <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
   </div>
 </body>
 

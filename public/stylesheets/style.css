@@ -130,6 +130,7 @@ img:hover {
   width: 100%;
   background-color: black;
   text-align: center;
-  opacity: .6;  
+  padding-top: 10px;
+  opacity: .8;
   z-index: 12;
 }
