@@ -55,7 +55,11 @@
     <div ng-repeat="player in battlefield" id="playerField">
       <div id="playerName">
         <span>{{player.name}}</span>
-        <span class="lifeTotal">40</span>
+        <span class="lifeTotal">
+          <button>+</button>
+          40
+          <button>-</button>
+        </span>
       </div>
       <div ng-repeat='field in deckFields'>
         <span ng-show="showCheckboxes">
