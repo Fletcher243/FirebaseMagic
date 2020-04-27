@@ -48,6 +48,7 @@
     <button ng-click="drawCard()" class="button">Draw Card</button>
     <span ng-show='showCheckboxes'>
       <input type='checkbox' ng-model='flip'>Draw Facedown
+      <input type='checkbox' ng-model='zoom'> Zoom Card on Hover
     </span>
   </form>
   <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
@@ -69,7 +70,7 @@
         </span>
         <h3 ng-show="showForPlayer[player.$id][field]">{{field.charAt(0).toUpperCase() + field.slice(1)}}</h3>
         <span ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}"
+          <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted, zoom: zoom}" src="{{getImage(card)}}"
             ng-click="clickGameCard(card, player, field)">
         </span>
       </div>

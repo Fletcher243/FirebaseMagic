@@ -16,6 +16,7 @@ angular.module('cardeck', ['firebase'])
     $scope.clickAction = 'tap';
     $scope.showCheckboxes = false;
     $scope.flip = false;
+    $scope.zoom = true;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
