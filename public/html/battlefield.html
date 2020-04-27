@@ -71,10 +71,11 @@
           {{field.charAt(0).toUpperCase() + field.slice(1)}}
         </span>
         <h3 ng-show="showForPlayer[player.$id][field]">{{field.charAt(0).toUpperCase() + field.slice(1)}}</h3>
-        <span ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted, zoom: zoom}" src="{{getImage(card)}}"
+        
+        <span id="battleCards" ng-class="{zoom: zoom}" ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
+          <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}"
             ng-click="clickGameCard(card, player, field)">
-          <span id='counters' ng-show='card.counters'>{{card.counters}}</span>
+          <span  id="counters" ng-show='card.counters'>{{card.counters}}</span>
         </span>
       </div>
     </div>

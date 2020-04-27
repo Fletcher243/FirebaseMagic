@@ -4,9 +4,6 @@
     opacity: .95;
   }
 
-  #battleCards:hover {
-  }
-
   .zoom:hover {
     transition: .5s ease;
     transform: scale(5, 5); 
@@ -22,9 +19,10 @@
     width: 17px;
     height: 17px;
     z-index: 9;
-    margin-left: -53px;
-    margin-top: 48px;
+    left: 0;
+    bottom: 0;
     text-align: center;
+    transform: scale(.5, .5);
  }
 
   #battlefieldCardStatus {
