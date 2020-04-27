@@ -44,14 +44,10 @@ angular.module('cardeck', ['firebase'])
               extras: false,
               lands: true
             }
-            $scope.cardsForPlayer[player.$id] = {
-              hand: $firebaseArray(firebase.database().ref(`game/${player.$id}/hand`)),
-              battlefield: $firebaseArray(firebase.database().ref(`game/${player.$id}/battlefield`)),
-              library: $firebaseArray(firebase.database().ref(`game/${player.$id}/library`)),
-              graveyard: $firebaseArray(firebase.database().ref(`game/${player.$id}/graveyard`)),
-              exile: $firebaseArray(firebase.database().ref(`game/${player.$id}/exile`)),
-              extras: $firebaseArray(firebase.database().ref(`game/${player.$id}/extras`))
-            }
+            $scope.cardsForPlayer[player.$id] = {}
+            $scope.deckFields.forEach(function(field) {
+              $scope.cardsForPlayer[player.$id][field] = $firebaseArray(firebase.database().ref(`game/${player.$id}/${field}`))
+            });
           });
         }).catch(function(error) {
           console.log('Error:', error);
