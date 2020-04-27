@@ -69,21 +69,15 @@ angular.module('cardeck', ['firebase'])
       return
     }
     if($scope.clickAction === 'tap') {
-      let path = `game/${player.$id}/${field}/${id}`
-      card.tapped = !card.tapped
-      firebase.database().ref(path).update({tapped: card.tapped});
+      $scope.changeCard(card, player.$id, field, 'tapped')
       return
     }
     if($scope.clickAction === 'highlight') {
-      let path = `game/${player.$id}/${field}/${id}`
-      card.highlighted = !card.highlighted
-      firebase.database().ref(path).update({highlighted: card.highlighted});
+      $scope.changeCard(card, player.$id, field, 'highlighted')
       return
     }
     if($scope.clickAction === 'flip') {
-      let path = `game/${player.$id}/${field}/${id}`
-      card.flipped = !card.flipped
-      firebase.database().ref(path).update({flipped: card.flipped});
+      $scope.changeCard(card, player.$id, field, 'flipped')
       return
     }
     if($scope.clickAction.includes('remove')) {
@@ -98,6 +92,12 @@ angular.module('cardeck', ['firebase'])
         });
       });
     }
+  }
+
+  $scope.changeCard = function(card, playerId, field, attribute) {
+    let path = `game/${playerId}/${field}/${card.$id}`
+    card[attribute] = !card[attribute]
+    firebase.database().ref(path).update({[attribute]: card[attribute]})
   }
   $scope.addCard = function(card, playerId, field) {
     let addPath = `game/${playerId}/${field}`
