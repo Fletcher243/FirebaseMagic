@@ -112,13 +112,14 @@ angular.module('cardeck', ['firebase'])
     firebase.database().ref(path).update({[attribute]: card[attribute]})
   }
   $scope.addCard = function(card, playerId, field) {
-    let addPath = `game/${playerId}/${field}`
+    console.log(card)
+	  let addPath = `game/${playerId}/${field}`
     let addRef = firebase.database().ref(addPath).push();
     if(card.hasOwnProperty('$id')) delete card.$id
     if(card.hasOwnProperty('$priority')) delete card.$priority
     if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
-    if($scope.flip) card.flipped = !card.flipped
     addRef.set(card)
+    console.log(card)
   }
 
   $scope.removeCard = function(card, playerId, field) {
