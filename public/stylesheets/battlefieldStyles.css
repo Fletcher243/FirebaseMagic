@@ -14,6 +14,18 @@
     z-index: 10;
   }
 
+  #counters {
+    position: absolute;
+    background: white;
+    color: black;
+    border-radius: 50%;
+    width: 17px;
+    height: 17px;
+    z-index: 9;
+    margin-left: -53px;
+    margin-top: 48px;
+    text-align: center;
+ }
 
   #battlefieldCardStatus {
     color:white;
@@ -25,7 +37,7 @@
     top: 95%; /* Adjust this value to move the positioned div up and down */
     text-align: center;
     width: 60%; /* Set the width of the positioned div */
-}
+  }
 
   .tap {
     transform: rotate(90deg);

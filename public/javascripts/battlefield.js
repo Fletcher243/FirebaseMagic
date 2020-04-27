@@ -69,6 +69,17 @@ angular.module('cardeck', ['firebase'])
     if(!id) {
       return
     }
+    if($scope.clickAction === 'morecounter'){
+      let path = `game/${player.$id}/${field}/${card.$id}`
+      card.counters = (card.counters || 0) + 1
+      firebase.database().ref(path).update({counters: card.counters})
+      return
+    }
+    if($scope.clickAction === 'lesscounter') {
+      let path = `game/${player.$id}/${field}/${card.$id}`
+      card.counters = (card.counters || 0) - 1
+      firebase.database().ref(path).update({counters: card.counters})
+    }
     if($scope.clickAction === 'tap') {
       $scope.changeCard(card, player.$id, field, 'tapped')
       return

@@ -45,6 +45,8 @@
     <input type='radio' ng-model='clickAction' value='tap'>Tap
     <input type='radio' ng-model='clickAction' value='flip'>Flip
     <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
+    <input type='radio' ng-model='clickAction' value='morecounter'>Add Counter
+    <input type='radio' ng-model='clickAction' value='lesscounter'>Remove Counter
     <button ng-click="drawCard()" class="button">Draw Card</button>
     <span ng-show='showCheckboxes'>
       <input type='checkbox' ng-model='flip'>Draw Facedown
@@ -72,6 +74,7 @@
         <span ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
           <img id="battleCards" ng-class="{tap: card.tapped, highlightCard: card.highlighted, zoom: zoom}" src="{{getImage(card)}}"
             ng-click="clickGameCard(card, player, field)">
+          <span id='counters' ng-show='card.counters'>{{card.counters}}</span>
         </span>
       </div>
     </div>
