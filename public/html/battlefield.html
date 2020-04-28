@@ -59,6 +59,7 @@
           <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}"
             ng-click="clickGameCard(card, player, field)">
           <span  id="counters" ng-show='card.counters'>{{card.counters}}</span>
+          <button id="extraCardOptions">...</button>
         </span>
       </div>
     </div>

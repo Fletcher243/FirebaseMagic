@@ -10,6 +10,7 @@ angular.module('cardeck', ['firebase'])
     $scope.cardsForPlayer = {};
     $scope.addForPlayer = {};
     $scope.showForPlayer = {};
+    $scope.activeCard;
 
     $scope.logButton = 'Login';
     $scope.logged = false;
