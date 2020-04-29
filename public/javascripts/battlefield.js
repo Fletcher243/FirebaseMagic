@@ -22,6 +22,9 @@ angular.module('cardeck', ['firebase'])
     $scope.flip = false;
     $scope.zoom = true;
 
+    $scope.optionsCard = '';
+    $scope.moveLocation = 'hand';
+
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if (user) {
@@ -119,6 +122,13 @@ angular.module('cardeck', ['firebase'])
     attach.$id = id
     delete attach.playerId
     $scope.removeCard()
+  }
+
+  $scope.moveCardAdvanced = function(card, player, field, moveLocation) {
+    $scope.moveLocation = moveLocation
+    $scope.addCard(card, $scope.user.uid, moveLocation)
+    $scope.removeCard(card, player.$id, field)
+    $scope.optionsCard = ''
   }
 
   $scope.moveCard = function(card, player, field, toField = true) {

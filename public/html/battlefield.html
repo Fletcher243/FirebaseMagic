@@ -53,7 +53,8 @@
         <span id="battleCards" ng-class="{zoom: zoom}" ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
           <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
           <span id="counters" ng-show='card.counters'>{{card.counters}}</span>
-          <button id="extraCardOptions">...</button>
+          <button id="extraCardOptions" ng-hide='optionsCard == card.$id' ng-click='optionsCard = card.$id'>...</button>
+          <select ng-show='optionsCard == card.$id' ng-model='moveLocation' ng-change="moveCardAdvanced(card, player, field, moveLocation)" id="dropDown" ng-options="o as o for o in deckFields"></select>
         </span>
       </div>
     </div>
