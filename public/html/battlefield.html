@@ -31,9 +31,7 @@
 
 <body ng-app='cardeck' ng-controller="BattleCtrl">
   <button onclick="location.href='../deck'" class="button" id="floatRight">View My Cards</button>
-
   <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
-
   <div>
     <h1 ng-show='logged' id='deckHead'>Battlefield</h1>
   </div>
@@ -48,17 +46,13 @@
         </span>
       </div>
       <div ng-repeat='field in deckFields'>
-        <span ng-show="showCheckboxes">
-          <input type="checkbox" ng-model="addForPlayer[player.$id][field]">Add
-          <input type="checkbox" ng-model="showForPlayer[player.$id][field]">Show
+        <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field] || (user.uid == player.$id && moving)' ng-click="moveCard(card, player, field, false)">
+          <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
           {{field.charAt(0).toUpperCase() + field.slice(1)}}
-        </span>
-        <h3 ng-show="showForPlayer[player.$id][field]">{{field.charAt(0).toUpperCase() + field.slice(1)}}</h3>
-        
+        </h3>
         <span id="battleCards" ng-class="{zoom: zoom}" ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}"
-            ng-click="clickGameCard(card, player, field)">
-          <span  id="counters" ng-show='card.counters'>{{card.counters}}</span>
+          <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
+          <span id="counters" ng-show='card.counters'>{{card.counters}}</span>
           <button id="extraCardOptions">...</button>
         </span>
       </div>
@@ -68,18 +62,17 @@
   <div class="footer" ng-show="logged">
     <form>
       When I click a card:
-      <input type='radio' ng-model='clickAction' value='add'>Add
-      <input type='radio' ng-model='clickAction' value='removeadd'>Move
-      <input type='radio' ng-model='clickAction' value='remove'>Remove
+      <input type='radio' ng-model='clickAction' value='move'>Move
       <input type='radio' ng-model='clickAction' value='tap'>Tap
       <input type='radio' ng-model='clickAction' value='flip'>Flip
       <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
-      <input type='radio' ng-model='clickAction' value='morecounter'>Add Counter
-      <input type='radio' ng-model='clickAction' value='lesscounter'>Remove Counter
+      <input type='radio' ng-model='clickAction' value='addcounter'>Add Counter
+      <input type='radio' ng-model='clickAction' value='removecounter'>Remove Counter
       <button ng-click="drawCard()" class="button">Draw Card</button>
       <span ng-show='showCheckboxes'>
         <input type='checkbox' ng-model='flip'>Draw Facedown
-        <input type='checkbox' ng-model='zoom'> Zoom Card on Hover
+        <input type='checkbox' ng-model='zoom'>Zoom Card on Hover
+        <input type='checkbox' ng-model='defaultLocation'>Move to Default Location
       </span>
     </form>
     <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes

@@ -70,6 +70,10 @@
     border: solid yellow;
   }
 
+  .toMove:hover {
+    border: solid orange;
+  }
+
   #playerName {
     font-size: 1.5em;
     font-weight: bold;
