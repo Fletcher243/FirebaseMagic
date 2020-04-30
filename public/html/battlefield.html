@@ -38,6 +38,7 @@
     <div ng-repeat="player in battlefield" id="playerField">
       <div id="playerName">
         <span>{{player.name}}</span>
+        <span><button id="plusMinus" ng-show="player.$id == user.uid" ng-click="untapAll(player)">Untap</button></span>
         <span class="lifeTotal">
           <button id="plusMinus" ng-click="changeLife(player, -1)">-</button>
           <span>{{player.life}}</span>

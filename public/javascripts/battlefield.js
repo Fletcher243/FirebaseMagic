@@ -167,15 +167,25 @@ angular.module('cardeck', ['firebase'])
     if(card.hasOwnProperty('$id')) delete card.$id
     if(card.hasOwnProperty('$priority')) delete card.$priority
     if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
+    if(card.tapped) card.tapped = !card.tapped
     addRef.set(card)
     card.$id = id
   }
 
-    $scope.changeLife = function(player, life) {
-      const path = `game/${player.$id}`
-      let playerRef = firebase.database().ref(path)
-      playerRef.update({life: player.life + life})
-    }
+  $scope.changeLife = function(player, life) {
+    const path = `game/${player.$id}`
+    let playerRef = firebase.database().ref(path)
+    playerRef.update({life: player.life + life})
+  }
+
+  $scope.untapAll = function(player) {
+    $scope.cardsForPlayer[player.$id].battlefield.forEach(function(card) {
+      if (card.tapped) $scope.changeCard(card, player.$id, 'battlefield', 'tapped')
+    })
+    $scope.cardsForPlayer[player.$id].lands.forEach(function(card) {
+      if (card.tapped) $scope.changeCard(card, player.$id, 'lands', 'tapped')
+    })
+  }
 
   $scope.removeCard = function(card, playerId, field) {
     const removePath = `game/${playerId}/${field}/${card.$id}`
