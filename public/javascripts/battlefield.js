@@ -49,7 +49,7 @@ angular.module('cardeck', ['firebase'])
         });
         $scope.$apply();
       } else {
-        location.href='../'
+        location.href = '../'
       }
     });
 

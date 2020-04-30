@@ -23,33 +23,33 @@
   <!-- AngularFire -->
   <script src="https://cdn.firebase.com/libs/angularfire/2.1.0/angularfire.min.js"></script>
 
-  <script src="../javascripts/mtg.js"></script>
+  <script src="../javascripts/manageDecks.js"></script>
 </head>
 
-<body ng-app='cardeck' ng-controller="MainCtrl">
+<body ng-app='cardeck' ng-controller="ManageDecksCtrl">
 
   <span id="floatRight">
-    <button ng-click="removeDeck()" class="button" ng-show="logged">Delete Deck</button>
+    <button ng-click="removeDeck()" class="button">Delete Deck</button>
     <button ng-click="nameDeck()" ng-hide="adding" class="button">Create New Deck</button>
 
     <form ng-submit="addDeck()" ng-show="adding">
       <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
       <button type="submit" class="button">Add</button><br>
     </form>
-    <button class="button" ng-show="logged">Remove Cards</button>
-    <button ng-click="getDeck()" ng-show="logged" class="button">{{nameofthatbutton}}</button>
+    <button class="button" >Remove Cards</button>
+    <button ng-click="getDeck()" class="button">{{nameofthatbutton}}</button>
   </span>
 
-  <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
+  <button onclick="location.href='../'" class="button" >Home</button>
   <div ng-show="manage">
-    <h1 ng-show="logged" id="deckHead">Manage Decks</h1>
-    <div id="deckRow" ng-show="logged">
+    <h1 id="deckHead">Manage Decks</h1>
+    <div id="deckRow" >
       <select ng-change="clearDisplay()" id="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
-      <button  ng-click="joinGame()" class="button" ng-show="logged">Join Game</button>
+      <button  ng-click="joinGame()" class="button" >Join Game</button>
     </div>
   </div>
-  <div ng-hide="manage || !logged">
+  <div ng-hide="manage">
     <h1 id="deckHead">Enter A Card to Find: </h1>
     <form ng-submit="getCards()" id="deckHead">
       <input id="centered" type="text" ng-model="cardField" value="">
@@ -58,15 +58,15 @@
     <input type="checkbox" ng-model="extras">Add to Extras
   </div>
   <span id="images">
-    <div ng-repeat="card in searchResults" ng-hide="!logged || manage">
+    <div ng-repeat="card in searchResults" ng-hide="manage">
       <img src="{{getImage(card)}}" ng-click="addCard(card)">
     </div>
-    <div ng-show="manage && logged" ng-repeat="card in deckCards | orderBy:['cmc','name']">
+    <div ng-show="manage" ng-repeat="card in deckCards | orderBy:['cmc','name']">
       <img id="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
     </div>
   </span>
 
-  <div class="footer" ng-show="logged">
+  <div class="footer" >
     <div id="displayTextBox">
       {{footerText}}
     </div>
