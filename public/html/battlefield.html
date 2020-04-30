@@ -2,7 +2,6 @@
 
 <head>
   <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
-
   <script>
     // Initialize Firebase
     var config = {
@@ -33,7 +32,7 @@
   <button onclick="location.href='../deck'" class="button" id="floatRight">View My Cards</button>
   <button onclick="location.href='../'" class="button" ng-show="logged">Home</button>
   <div>
-    <h1 ng-show='logged' id='deckHead'>Battlefield</h1>
+    <h1 id='deckHead'>Battlefield</h1>
   </div>
   <span id='images'>
     <div ng-repeat="player in battlefield" id="playerField">
@@ -46,38 +45,32 @@
         </span>
       </div>
       <div ng-repeat='field in deckFields'>
-        <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field] || (user.uid == player.$id && moving)' ng-click="moveCard(card, player, field, false)">
+        <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field] || (user.uid == player.$id && moving)'>
           <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
           {{field.charAt(0).toUpperCase() + field.slice(1)}}
         </h3>
         <span id="battleCards" ng-class="{zoom: zoom}" ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
           <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
           <span id="counters" ng-show='card.counters'>{{card.counters}}</span>
-          <button id="extraCardOptions" ng-hide='optionsCard == card.$id' ng-click='optionsCard = card.$id'>...</button>
-          <select ng-show='optionsCard == card.$id' ng-model='moveLocation' ng-change="moveCardAdvanced(card, player, field, moveLocation)" id="dropDown" ng-options="o as o for o in deckFields"></select>
+          <button id="extraCardOptions" ng-hide='optionsCard == card.$id' ng-click='extraOptions(card)'>...</button>
+          <select ng-show='optionsCard == card.$id' ng-model='moveLocation' ng-change="moveCardAdvanced(card, player, field, moveLocation)" id="dropDown" ng-options="o as o for o in allOptions"></select>
         </span>
       </div>
     </div>
   </span>
 
-  <div class="footer" ng-show="logged">
+  <div class="footer">
     <form>
       When I click a card:
-      <input type='radio' ng-model='clickAction' value='move'>Move
-      <input type='radio' ng-model='clickAction' value='tap'>Tap
-      <input type='radio' ng-model='clickAction' value='flip'>Flip
-      <input type='radio' ng-model='clickAction' value='highlight'>Highlight Card
-      <input type='radio' ng-model='clickAction' value='addcounter'>Add Counter
-      <input type='radio' ng-model='clickAction' value='removecounter'>Remove Counter
+          <select ng-model='clickAction' id="dropDown" ng-options="o as o for o in clickOptions"></select>
       <button ng-click="drawCard()" class="button">Draw Card</button>
+      <br/>
       <span ng-show='showCheckboxes'>
         <input type='checkbox' ng-model='flip'>Draw Facedown
         <input type='checkbox' ng-model='zoom'>Zoom Card on Hover
-        <input type='checkbox' ng-model='defaultLocation'>Move to Default Location
       </span>
     </form>
-    <input type='checkbox' ng-model='showCheckboxes'>Show Checkboxes
+    <input type='checkbox' ng-model='showCheckboxes'>Slightly More Advanced Options
   </div>
 </body>
-
 </html>

@@ -4,26 +4,25 @@ angular.module('cardeck', ['firebase'])
   function($scope,$http, $firebaseArray){
 
     $scope.deckFields = ['battlefield', 'lands', 'library', 'graveyard', 'exile', 'extras', 'hand']
+    $scope.moreOptions = ['attach']
+    $scope.allOptions = $scope.deckFields.concat($scope.moreOptions)
+
+    $scope.clickOptions = ['Move', 'Tap', 'Flip', 'Highlight', 'Add Counter', 'Remove Counter']
+    $scope.clickAction = 'Move'
 
     $scope.battlefield = [];
 
     $scope.cardsForPlayer = {};
-    $scope.addForPlayer = {};
     $scope.showForPlayer = {};
-    $scope.activeCard;
-    $scope.cardMoveInfo = {};
-    $scope.defaultLocation = false;
     $scope.moving = false;
 
-    $scope.logButton = 'Login';
-    $scope.logged = false;
-    $scope.clickAction = 'tap';
     $scope.showCheckboxes = false;
-    $scope.flip = false;
     $scope.zoom = true;
+    $scope.flip = false;
 
     $scope.optionsCard = '';
     $scope.moveLocation = 'hand';
+    $scope.attaching = null;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -33,15 +32,6 @@ angular.module('cardeck', ['firebase'])
         battlefieldArray.$loaded().then(function() {
           battlefieldArray.forEach(function(player) {
           $scope.battlefield.push({name:player.name, $id: player.$id})
-          $scope.addForPlayer[player.$id] = {
-              hand: false,
-              battlefield: player.$id == user.uid,
-              library: false,
-              graveyrd: false,
-              exile: false,
-              extras: false,
-              lands: false
-            }
             $scope.showForPlayer[player.$id] = {
               hand: player.$id == user.uid,
               battlefield: true,
@@ -59,8 +49,6 @@ angular.module('cardeck', ['firebase'])
         }).catch(function(error) {
           console.log('Error:', error);
         });
-        $scope.logged = true;
-        $scope.logButton = 'Logout'
         $scope.$apply();
       } else {
         location.href='../'
@@ -68,142 +56,123 @@ angular.module('cardeck', ['firebase'])
     });
 
   $scope.clickGameCard = function(card, player, field) {
-    let id = card.$id
+    const id = card.$id
     if(!id) {
       return
     }
-    if($scope.clickAction === 'addcounter'){
-      let path = `game/${player.$id}/${field}/${card.$id}`
+    if($scope.attaching != null) {
+      if(field != 'battlefield'){
+        console.log('I do not think there is a reason to attach to something outside the battlefield. If you reall think there is open an issue')
+        return
+      }
+      $scope.attachCard(card, player.$id)
+      $scope.attaching = null;
+    
+    }
+    else if($scope.clickAction === 'Add Counter'){
+      const path = `game/${player.$id}/${field}/${card.$id}`
       card.counters = (card.counters || 0) + 1
       firebase.database().ref(path).update({counters: card.counters})
-      return
     }
-    if($scope.clickAction === 'removecounter') {
-      let path = `game/${player.$id}/${field}/${card.$id}`
+    else if($scope.clickAction === 'Remove Counter') {
+      const path = `game/${player.$id}/${field}/${card.$id}`
       card.counters = (card.counters || 0) - 1
       firebase.database().ref(path).update({counters: card.counters})
     }
-    if($scope.clickAction === 'tap') {
+    else if($scope.clickAction === 'Tap') {
       $scope.changeCard(card, player.$id, field, 'tapped')
-      return
     }
-    if($scope.clickAction === 'highlight') {
+    else if($scope.clickAction === 'Highlight') {
       $scope.changeCard(card, player.$id, field, 'highlighted')
-      return
     }
-    if($scope.clickAction === 'flip') {
+    else if($scope.clickAction === 'Flip') {
       $scope.changeCard(card, player.$id, field, 'flipped')
-      return
     }
-    if($scope.clickAction === 'move') {
+    else if($scope.clickAction === 'Move') {
       $scope.moveCard(card, player, field)
-      return
     }
   }
 
   $scope.changeCard = function(card, playerId, field, attribute) {
-    let path = `game/${playerId}/${field}/${card.$id}`
+    const path = `game/${playerId}/${field}/${card.$id}`
     card[attribute] = !card[attribute]
     firebase.database().ref(path).update({[attribute]: card[attribute]})
   }
 
-  $scope.attachCard = function(card, attach, playerId) {
-    let path = `game/${playerId}/battlefield/${card.$id}`
+  $scope.attachCard = function(card, playerId) {
+    const path = `game/${playerId}/battlefield/${card.$id}`
     if(!card.attached_cards) {
       card.attached_cards = []
     }
-    let id = attach.$id
+    let attach = $scope.attaching.card
+    const id = attach.$id
     if(attach.hasOwnProperty('$id')) delete attach.$id
     if(attach.hasOwnProperty('$priority')) delete attach.$priority
     if(attach.hasOwnProperty('$$hashKey')) delete attach.$$hashKey
-    card.playerId = playerId
+    attach.playerId = $scope.attaching.playerId
     card.attached_cards.push(attach)
     firebase.database().ref(path).update({attached_cards: card.attached_cards})
     attach.$id = id
     delete attach.playerId
-    $scope.removeCard()
+    $scope.removeCard($scope.attaching.card, $scope.attaching.playerId, $scope.attaching.field)
   }
 
   $scope.moveCardAdvanced = function(card, player, field, moveLocation) {
-    $scope.moveLocation = moveLocation
-    $scope.addCard(card, $scope.user.uid, moveLocation)
-    $scope.removeCard(card, player.$id, field)
-    $scope.optionsCard = ''
-  }
-
-  $scope.moveCard = function(card, player, field, toField = true) {
-    if(!toField && !$scope.moving) return
-    if($scope.moving) {
-      console.log("Moving")
-      if(!toField) {
-        $scope.addCard($scope.cardMoveInfo.card, player.$id, field);
-        $scope.removeCard();
-        $scope.moving = false;
-      } else {
-        if(field != 'battlefield'){
-          console.log('You probably did not mean to do that...')
-          return
-        }
-        $scope.attachCard(card, $scope.cardMoveInfo.card, $scope.cardMoveInfo.player.$id)
-        $scope.moving = false;
-      }
-    } else if($scope.defaultLocation) {
-      if(player.$id != $scope.user.uid) {
-        return
-      }
-      if(card.type_line.includes("Token")) {
-        if(field === 'battlefield') {
-          $scope.removeCard(card, player.$id, field)
-        } else if(field === 'extras') {
-          $scope.addCard(card, player.$id, 'battlefield')
-        }
-      } else {
-        if(field === 'battlefield') {
-          $scope.addCard(card, player.$id, 'graveyard')
-          $scope.removeCard(card, player.$id, 'battlefield')
-        } else if(field === 'hand') {
-          $scope.addCard(card, player.$id, 'battlefield')
-          $scope.removeCard(card, player.$id, 'hand')
-        } else if(field === 'extras') {
-          $scope.addCard(card, player.$id, 'battlefield')
-          $scope.removeCard(card, player.$id, 'extras')
-        } else {
-          $scope.cardMoveInfo = {
-            card: card,
-            player: player,
-            field: field
-          }
-          console.log(card.name)
-          $scope.moving = true
-        }
-      }
+    if($scope.deckFields.includes(moveLocation)) {
+      $scope.moveLocation = moveLocation
+      $scope.addCard(card, $scope.user.uid, moveLocation)
+      $scope.removeCard(card, player.$id, field)
+      $scope.optionsCard = ''
     } else {
-      $scope.cardMoveInfo = {
+      $scope.attaching = {
         card: card,
-        player: player,
+        playerId: player.$id,
         field: field
       }
-      console.log($scope.cardMoveInfo)
-      $scope.moving = true
-      return
+    }
+  }
+
+  $scope.extraOptions = function(card) {
+    $scope.optionsCard = card.$id
+  }
+
+  $scope.moveCard = function(card, player, field) {
+    if(card.type_line.includes("Token")) {
+      if(field === 'battlefield') {
+        $scope.removeCard(card, player.$id, field)
+      } else if(field === 'extras') {
+        $scope.addCard(card, player.$id, 'battlefield')
+      }
+    } else {
+      if(field === 'battlefield' || field === 'lands') {
+        $scope.addCard(card, player.$id, 'graveyard')
+      } else if(field === 'hand' || field === 'extras') {
+        if(card.type_line.includes('Land')) {
+          $scope.addCard(card, player.$id, 'lands')
+        } else {
+          $scope.addCard(card, player.$id, 'battlefield')
+        }
+      } else {
+        $scope.addCard(card, player.$id, 'hand')
+        console.log('I am not sure what you wanted, but since there is not a default location from there it was added to your hand')
+      }
+      $scope.removeCard(card, player.$id, field)
     }
   }
 
   $scope.addCard = function(card, playerId, field) {
-    console.log(card)
-    let addPath = `game/${playerId}/${field}`
-    let addRef = firebase.database().ref(addPath).push();
-    let id = card.$id
+    const addPath = `game/${playerId}/${field}`
+    const addRef = firebase.database().ref(addPath).push();
+    const id = card.$id
     if(card.hasOwnProperty('$id')) delete card.$id
     if(card.hasOwnProperty('$priority')) delete card.$priority
     if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
     addRef.set(card)
-    console.log(card)
     card.$id = id
   }
 
-  $scope.removeCard = function(card = $scope.cardMoveInfo.card, playerId = $scope.cardMoveInfo.player.$id, field = $scope.cardMoveInfo.field) {
-    let removePath = `game/${playerId}/${field}/${card.$id}`
+  $scope.removeCard = function(card, playerId, field) {
+    const removePath = `game/${playerId}/${field}/${card.$id}`
     if(card.hasOwnProperty('attached_cards')){
       card.attached_cards.forEach(function(card) {
         $scope.addCard(card, card.playerId, 'graveyard')
@@ -214,7 +183,6 @@ angular.module('cardeck', ['firebase'])
       $scope.cardsForPlayer[playerId][field] = $firebaseArray(firebase.database().ref(`game/${playerId}/${field}`))
       $scope.cardsForPlayer[playerId][field].$loaded().then(function() {
         console.log("Loaded");
-        console.log($scope.cardsForPlayer[$scope.user.uid].library.length)
       });
     });
   }
@@ -222,8 +190,8 @@ angular.module('cardeck', ['firebase'])
   $scope.drawCard = function(flip) {
     let library = $scope.cardsForPlayer[$scope.user.uid].library
     let card = library[Math.floor(Math.random() * library.length)]
-    console.log($scope.cardsForPlayer[$scope.user.uid].library.length)
     $scope.removeCard(card, $scope.user.uid, 'library')
+    if($scope.flip) card.flipped = !card.flipped
     $scope.addCard(card, $scope.user.uid, 'hand')
   }
 
@@ -236,7 +204,7 @@ angular.module('cardeck', ['firebase'])
       return card.image_uris.normal
     }
     if(card.hasOwnProperty('card_faces')) {
-      let face = card.flipped ? 1 : 0;
+      const face = card.flipped ? 1 : 0;
       return card.card_faces[face].image_uris.normal
     }
   }
