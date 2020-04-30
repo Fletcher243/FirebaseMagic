@@ -70,10 +70,6 @@
     border: solid yellow;
   }
 
-  .toMove:hover {
-    border: solid orange;
-  }
-
   #playerName {
     font-size: 1.5em;
     font-weight: bold;
@@ -85,7 +81,6 @@
 
   .lifeTotal {
     color: yellow;
-    margin-right: 7px;
     font-size: x-large;
     position: absolute;
     left: 40%;
