@@ -28,10 +28,10 @@ angular.module('cardeck', ['firebase'])
       $scope.user = user
       if (user) {
         let battlefieldRef = firebase.database().ref('game')
-        let battlefieldArray = $firebaseArray(battlefieldRef)
-        battlefieldArray.$loaded().then(function() {
-          battlefieldArray.forEach(function(player) {
-          $scope.battlefield.push({name:player.name, $id: player.$id})
+        $scope.battlefield = $firebaseArray(battlefieldRef)
+        $scope.battlefield.$loaded().then(function() {
+          $scope.battlefield.forEach(function(player) {
+          //$scope.battlefield.push({name:player.name, life: player.life, $id: player.$id})
             $scope.showForPlayer[player.$id] = {
               hand: player.$id == user.uid,
               battlefield: true,
@@ -170,6 +170,12 @@ angular.module('cardeck', ['firebase'])
     addRef.set(card)
     card.$id = id
   }
+
+    $scope.changeLife = function(player, life) {
+      const path = `game/${player.$id}`
+      let playerRef = firebase.database().ref(path)
+      playerRef.update({life: player.life + life})
+    }
 
   $scope.removeCard = function(card, playerId, field) {
     const removePath = `game/${playerId}/${field}/${card.$id}`

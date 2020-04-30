@@ -39,9 +39,9 @@
       <div id="playerName">
         <span>{{player.name}}</span>
         <span class="lifeTotal">
-          <button id="plusMinus">-</button>
-          <span>40</span>
-          <button id="plusMinus">+</button>
+          <button id="plusMinus" ng-click="changeLife(player, -1)">-</button>
+          <span>{{player.life}}</span>
+          <button id="plusMinus" ng-click="changeLife(player, 1)">+</button>
         </span>
       </div>
       <div ng-repeat='field in deckFields'>
