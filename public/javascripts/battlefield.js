@@ -216,7 +216,7 @@ angular.module('cardeck', ['firebase'])
     if(!card) return
     if(card.hasOwnProperty('image_uris')) {
       if(card.flipped){
-        return 'card_back.jpg'
+        return '/Images/card_back.jpg'
       }
       return card.image_uris.normal
     }

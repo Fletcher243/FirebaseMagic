@@ -1,7 +1,7 @@
 body {
   padding: 25px 50px 110px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-image:url("Planeswalkers.jpg");
+  background-image:url("/Images/Planeswalkers.jpg");
   background-size:cover;
   background-attachment:fixed;
   color: white;
@@ -53,6 +53,7 @@ h1{
 #dropDown:hover {
   background-color: rgb(12, 88, 114);
   border: 1px solid #42b2da;
+
 }
 
 .button {
