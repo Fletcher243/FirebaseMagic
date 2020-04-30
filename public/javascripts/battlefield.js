@@ -175,7 +175,7 @@ angular.module('cardeck', ['firebase'])
     const removePath = `game/${playerId}/${field}/${card.$id}`
     if(card.hasOwnProperty('attached_cards')){
       card.attached_cards.forEach(function(card) {
-        let putField = (card.type_line.includes('Aura') ? 'graveyard' : 'battlefield'
+        let putField = (card.type_line.includes('Aura')) ? 'graveyard' : 'battlefield'
         $scope.addCard(card, card.playerId, putField)
       });
       delete card.attached_cards;
