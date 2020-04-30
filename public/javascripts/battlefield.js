@@ -14,14 +14,12 @@ angular.module('cardeck', ['firebase'])
 
     $scope.cardsForPlayer = {};
     $scope.showForPlayer = {};
-    $scope.moving = false;
 
     $scope.showCheckboxes = false;
     $scope.zoom = true;
-    $scope.flip = false;
+    $scope.flipOnDraw = false;
 
     $scope.optionsCard = '';
-    $scope.moveLocation = 'hand';
     $scope.attaching = null;
 
     firebase.auth().onAuthStateChanged(function(user) {
@@ -119,7 +117,6 @@ angular.module('cardeck', ['firebase'])
 
   $scope.moveCardAdvanced = function(card, player, field, moveLocation) {
     if($scope.deckFields.includes(moveLocation)) {
-      $scope.moveLocation = moveLocation
       $scope.addCard(card, $scope.user.uid, moveLocation)
       $scope.removeCard(card, player.$id, field)
       $scope.optionsCard = ''
@@ -208,7 +205,7 @@ angular.module('cardeck', ['firebase'])
     let library = $scope.cardsForPlayer[$scope.user.uid].library
     let card = library[Math.floor(Math.random() * library.length)]
     $scope.removeCard(card, $scope.user.uid, 'library')
-    if($scope.flip) card.flipped = !card.flipped
+    if($scope.flipOnDraw) card.flipped = !card.flipped
     $scope.addCard(card, $scope.user.uid, 'hand')
   }
 

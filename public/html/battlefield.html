@@ -46,7 +46,7 @@
         </span>
       </div>
       <div ng-repeat='field in deckFields'>
-        <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field] || (user.uid == player.$id && moving)'>
+        <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field]'>
           <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
           {{field.charAt(0).toUpperCase() + field.slice(1)}}
         </h3>
@@ -54,7 +54,9 @@
           <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
           <span id="counters" ng-show='card.counters'>{{card.counters}}</span>
           <button id="extraCardOptions" ng-hide='optionsCard == card.$id' ng-click='extraOptions(card)'>...</button>
-          <select ng-show='optionsCard == card.$id' ng-model='moveLocation' ng-change="moveCardAdvanced(card, player, field, moveLocation)" id="dropDown" ng-options="o as o for o in allOptions"></select>
+          <select ng-show='optionsCard == card.$id' ng-model='moveLocation' ng-change="moveCardAdvanced(card, player, field, moveLocation)" id="dropDown" ng-options="o as o.charAt(0).toUpperCase() + o.slice(1) for o in allOptions">
+          <option value="" disabled selected>Move to..</option>
+          </select>
         </span>
       </div>
     </div>
@@ -67,7 +69,7 @@
       <button ng-click="drawCard()" class="button">Draw Card</button>
       <br/>
       <span ng-show='showCheckboxes'>
-        <input type='checkbox' ng-model='flip'>Draw Facedown
+        <input type='checkbox' ng-model='flipOnDraw'>Draw Facedown
         <input type='checkbox' ng-model='zoom'>Zoom Card on Hover
       </span>
     </form>
