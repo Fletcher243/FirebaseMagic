@@ -214,7 +214,6 @@ angular.module('cardeck', ['firebase'])
     } else {
       $scope.manage = true;
       $scope.nameofthatbutton = 'Add Cards'
-      //$scope.footerText = `This is your '${$scope.activeDeck.name}' deck, click a card to remove it.`
       $scope.footerText = ''
       let userId = firebase.auth().currentUser.uid;
       let ref = firebase.database().ref(`/users/${userId}/decks/${$scope.activeDeck.$id}/cards`)

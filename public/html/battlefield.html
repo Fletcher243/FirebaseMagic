@@ -37,25 +37,67 @@
   <span id='images'>
     <div ng-repeat="player in battlefield" id="playerField">
       <div id="playerName">
-        <span>{{player.name}}</span>
-        <span><button id="plusMinus" ng-show="player.$id == user.uid" ng-click="untapAll(player)">Untap</button></span>
+        <span>
+          {{player.name}}
+          <span ng-show="player.$id == user.uid">(You)</span>
+        </span>
+        <span>
+          <button
+            id="plusMinus"
+            ng-show="player.$id == user.uid"
+            ng-click="untapAll(player)">
+            Untap
+          </button>
+        </span>
         <span class="lifeTotal">
-          <button id="plusMinus" ng-click="changeLife(player, -1)">-</button>
+          <button
+            id="plusMinus"
+            ng-click="changeLife(player, -1)">
+            -
+          </button>
           <span>{{player.life}}</span>
-          <button id="plusMinus" ng-click="changeLife(player, 1)">+</button>
+          <button
+            id="plusMinus"
+            ng-click="changeLife(player, 1)">
+            +
+          </button>
         </span>
       </div>
       <div ng-repeat='field in deckFields'>
         <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field]'>
-          <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
-          {{field.charAt(0).toUpperCase() + field.slice(1)}}
+          <input
+            type="checkbox"
+            ng-show="showCheckboxes"
+            ng-model="showForPlayer[player.$id][field]">
+            {{capitalize(field)}}
         </h3>
-        <span id="battleCards" ng-class="{zoom: zoom}" ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img ng-class="{tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)">
-          <span id="counters" ng-show='card.counters'>{{card.counters}}</span>
-          <button id="extraCardOptions" ng-hide='optionsCard == card.$id' ng-click='extraOptions(card)'>...</button>
-          <select ng-show='optionsCard == card.$id' ng-model='moveLocation' ng-change="moveCardAdvanced(card, player, field, moveLocation)" id="dropDown" ng-options="o as o.charAt(0).toUpperCase() + o.slice(1) for o in allOptions">
-          <option value="" disabled selected>Move to..</option>
+        <span
+          id="battleCards"
+          ng-class="{zoom: zoom}"
+          ng-repeat="card in cardsForPlayer[player.$id][field]"
+          ng-show="showForPlayer[player.$id][field]">
+          <img
+          ng-class="{tap: card.tapped, highlightCard: card.highlighted}"
+          src="{{getImage(card)}}"
+          ng-click="clickGameCard(card, player, field)">
+          <span
+            id="counters"
+            ng-show='card.counters'>
+            {{card.counters}}
+          </span>
+          <button
+            id="extraCardOptions"
+            ng-hide='optionsCard == card.$id'
+            ng-click='extraOptions(card)'>
+            ...
+          </button>
+          <select
+            id="dropDown"
+            ng-show='optionsCard == card.$id'
+            ng-model='moveLocation'
+            ng-change="moveCardAdvanced(card, player, field, moveLocation)"
+            ng-options="o as capitalize(o) for o in allOptions">
+            <option value="" disabled selected>Move to...</option>
           </select>
         </span>
       </div>

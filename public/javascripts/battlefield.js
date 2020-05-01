@@ -65,7 +65,7 @@ angular.module('cardeck', ['firebase'])
       }
       $scope.attachCard(card, player.$id)
       $scope.attaching = null;
-    
+
     }
     else if($scope.clickAction === 'Add Counter'){
       const path = `game/${player.$id}/${field}/${card.$id}`
@@ -221,5 +221,9 @@ angular.module('cardeck', ['firebase'])
       const face = card.flipped ? 1 : 0;
       return card.card_faces[face].image_uris.normal
     }
+  }
+
+  $scope.capitalize = function(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }]);
