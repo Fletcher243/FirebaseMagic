@@ -77,9 +77,9 @@
           ng-repeat="card in cardsForPlayer[player.$id][field]"
           ng-show="showForPlayer[player.$id][field]">
           <img
-          ng-class="{tap: card.tapped, highlightCard: card.highlighted}"
-          src="{{getImage(card)}}"
-          ng-click="clickGameCard(card, player, field)">
+            ng-class="{tap: card.tapped, highlightCard: card.highlighted}"
+            src="{{getImage(card)}}"
+            ng-click="clickGameCard(card, player, field)">
           <span
             id="counters"
             ng-show='card.counters'>
@@ -91,6 +91,12 @@
             ng-click='extraOptions(card)'>
             ...
           </button>
+          <span ng-repeat="attach in card.attached_cards">
+            <img
+              ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, slightlySmaller: true}"
+              src="{{getImage(attach)}}"
+              ng-click="clickGameCard(attach, player, field)">
+          </span>
           <select
             id="dropDown"
             ng-show='optionsCard == card.$id'
@@ -107,7 +113,7 @@
   <div class="footer">
     <form>
       When I click a card:
-          <select ng-model='clickAction' id="dropDown" ng-options="o as o for o in clickOptions"></select>
+      <select ng-model='clickAction' id="dropDown" ng-options="o as o for o in clickOptions"></select>
       <button ng-click="drawCard()" class="button">Draw Card</button>
       <br/>
       <span ng-show='showCheckboxes'>

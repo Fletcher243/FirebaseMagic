@@ -12,6 +12,10 @@
     transition-delay: 1s;
   }
 
+  .slightlySmaller {
+    height: 120px;
+  }
+
   #counters {
     position: absolute;
     background: white;
