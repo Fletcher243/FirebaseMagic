@@ -1,0 +1,14 @@
+
+  img {
+    position: relative;
+    display: inline-block;
+    opacity: .95;
+  }
+
+  img:hover {
+    transition: .5s ease;
+    transform: scale(2.5, 2.5); 
+    opacity: 1;
+    z-index: 10;
+    transition-delay: .5s;
+  }

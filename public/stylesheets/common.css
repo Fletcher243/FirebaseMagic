@@ -36,7 +36,7 @@ h1{
   align-items: right;
 }
 
-#dropDown {
+.dropDown {
   box-shadow: 8px 8px 4px #212115;
   cursor: pointer;
   background-color: rgba(12, 88, 114, 0.62);
@@ -50,7 +50,7 @@ h1{
   border-radius: 15px;
 }
 
-#dropDown:hover {
+.dropDown:hover {
   background-color: rgb(12, 88, 114);
   border: 1px solid #42b2da;
 
@@ -103,14 +103,9 @@ img {
   box-shadow: 7px 10px 8px #111108;
   margin: 5px;
   cursor: pointer;
-  transition: 0.3s ease;
   opacity: .95;
   border-radius: 4px;
   height: 150px;
-}
-
-img:hover {
-  opacity: 1;
 }
 
 #displayTextBox{

@@ -1,4 +1,4 @@
-  #battleCards {
+  .battleCards {
     position: relative;
     display: inline-block;
     opacity: .95;
@@ -10,6 +10,7 @@
     opacity: 1;
     z-index: 10;
     transition-delay: 1s;
+    
   }
 
   .slightlySmaller {
@@ -104,4 +105,28 @@
   #plusMinus:hover {
     opacity: 1;
     cursor: pointer;
+  }
+  
+  #extra {
+    display: none;
+    position: absolute;
+    margin-left: -20px;
+    margin-top: -20px;
+    min-width: 160px;
+    z-index: 1;
+  }
+  
+  #extraCardOptions:hover #extra {
+    display: block;
+  }
+  .moveOptions {
+    display: none;
+  }
+
+  .moveExpand:hover .moveOptions {
+    display: block;
+  }
+
+  .moveExpand:hover {
+    color: green
   }
