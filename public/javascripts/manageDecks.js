@@ -22,7 +22,6 @@ angular.module('cardeck', ['firebase'])
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if ($scope.user) {
-        firebase.database().ref('cards/').remove()
         firebase.database().ref(`users/${$scope.user.uid}`).update({
           username: $scope.user.displayName
         });
@@ -118,9 +117,9 @@ angular.module('cardeck', ['firebase'])
     let deckName = $scope.activeDeck.name
     $scope.deckField = '';
     $scope.adding = false;
-    let path = $scope.extras ? `users/${$scope.user.uid}/decks/${deckId}/extras`
- : `users/${$scope.user.uid}/decks/${deckId}/cards`
-   let ref = firebase.database().ref(path);
+    let endpoint = $scope.extras ? 'extras' : 'cards'
+    let path = `users/${$scope.user.uid}/decks/${deckId}/${endpoint}`
+    let ref = firebase.database().ref(path);
     let newRef = ref.push();
     newRef.set(newCard).then(function() {
       $scope.footerText = `${newCard.name} added to your '${deckName}' deck!`;
@@ -161,7 +160,9 @@ angular.module('cardeck', ['firebase'])
 
   $scope.clickDeckCard = function(card){
     if($scope.removeFromDeck) {
-      let ref = firebase.database().ref(`users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/cards/${card.$id}`).remove().then(function(){
+      let endpoint = $scope.extras ? 'extras' : 'cards'
+      let path = `users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/${endpoint}/${card.$id}`
+      let ref = firebase.database().ref().remove().then(function(){
         $scope.footerText = `${card.name} removed from your ${$scope.activeDeck.name} deck!`;
         $scope.$apply();
       });
@@ -216,7 +217,9 @@ angular.module('cardeck', ['firebase'])
       $scope.nameofthatbutton = 'Add Cards'
       $scope.footerText = ''
       let userId = firebase.auth().currentUser.uid;
-      let ref = firebase.database().ref(`/users/${userId}/decks/${$scope.activeDeck.$id}/cards`)
+      let endpoint = $scope.extras ? 'extras' : 'cards'
+      const path = `/users/${userId}/decks/${$scope.activeDeck.$id}/${endpoint}`
+      let ref = firebase.database().ref(path)
       $scope.deckCards = $firebaseArray(ref);
       $scope.deckField = '';
       $scope.adding = false;
