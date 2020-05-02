@@ -162,7 +162,7 @@ angular.module('cardeck', ['firebase'])
     if($scope.removeFromDeck) {
       let endpoint = $scope.extras ? 'extras' : 'cards'
       let path = `users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/${endpoint}/${card.$id}`
-      let ref = firebase.database().ref().remove().then(function(){
+      let ref = firebase.database().ref(path).remove().then(function(){
         $scope.footerText = `${card.name} removed from your ${$scope.activeDeck.name} deck!`;
         $scope.$apply();
       });
