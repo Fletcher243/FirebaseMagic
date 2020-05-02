@@ -41,14 +41,6 @@
           {{player.name}}
           <span ng-show="player.$id == user.uid">(You)</span>
         </span>
-        <span>
-          <button
-            id="plusMinus"
-            ng-show="player.$id == user.uid"
-            ng-click="untapAll(player)">
-            Untap
-          </button>
-        </span>
         <span class="lifeTotal">
           <button
             id="plusMinus"
@@ -113,8 +105,10 @@
   <div class="footer">
     <form>
       When I click a card:
-      <select ng-model='clickAction' id="dropDown" ng-options="o as o for o in clickOptions"></select>
-      <button ng-click="drawCard()" class="button">Draw Card</button>
+      <select ng-model='clickAction' id="dropDown" ng-options="o as o for o in clickOptions">
+      </select>
+      <button class="button" ng-click="drawCard()">Draw Card</button>    
+      <button class="button" ng-click="untapAll()">Untap</button>
       <br/>
       <span ng-show='showCheckboxes'>
         <input type='checkbox' ng-model='flipOnDraw'>Draw Facedown

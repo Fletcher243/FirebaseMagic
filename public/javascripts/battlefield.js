@@ -7,8 +7,8 @@ angular.module('cardeck', ['firebase'])
     $scope.moreOptions = ['attach', 'unattach']
     $scope.allOptions = $scope.deckFields.concat($scope.moreOptions)
 
-    $scope.clickOptions = ['Move', 'Tap', 'Flip', 'Highlight', 'Add Counter', 'Remove Counter']
-    $scope.clickAction = 'Move'
+    $scope.clickOptions = ['Nothing','Move', 'Tap', 'Flip', 'Highlight', 'Add Counter', 'Remove Counter']
+    $scope.clickAction = 'Nothing'
 
     $scope.battlefield = [];
 
@@ -177,12 +177,12 @@ angular.module('cardeck', ['firebase'])
     playerRef.update({life: player.life + life})
   }
 
-  $scope.untapAll = function(player) {
-    $scope.cardsForPlayer[player.$id].battlefield.forEach(function(card) {
-      if (card.tapped) $scope.changeCard(card, player.$id, 'battlefield', 'tapped')
+  $scope.untapAll = function() {
+    $scope.cardsForPlayer[$scope.user.uid].battlefield.forEach(function(card) {
+      if (card.tapped) $scope.changeCard(card, $scope.user.uid, 'battlefield', 'tapped')
     })
-    $scope.cardsForPlayer[player.$id].lands.forEach(function(card) {
-      if (card.tapped) $scope.changeCard(card, player.$id, 'lands', 'tapped')
+    $scope.cardsForPlayer[$scope.user.uid].lands.forEach(function(card) {
+      if (card.tapped) $scope.changeCard(card, $scope.user.uid, 'lands', 'tapped')
     })
   }
 
