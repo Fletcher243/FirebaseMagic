@@ -75,19 +75,42 @@
   </span>
 
   <div class="footer">
-    <form>
-      When I click a card:
-      <select ng-model='clickAction' class="dropDown" ng-options="o as o for o in clickOptions">
-      </select>
+    <form ng-hide='activeCard.id || attaching'>
       <button class="button" ng-click="drawCard()">Draw Card</button>
       <button class="button" ng-click="untapAll()">Untap</button>
-      <br />
+      <br/>
       <span ng-show='showCheckboxes'>
         <input type='checkbox' ng-model='flipOnDraw'>Draw Facedown
       </span>
     </form>
-    <input type='checkbox' ng-model='showCheckboxes'>Slightly More Advanced Options
+    <span ng-show='attaching'>
+      Click on a card to attach {{attaching.name}}
+      <button class="button" ng-click="cancelAttaching()">Cancel</button>
+    </span>
+    <form ng-show='activeCard'>
+      <button class="button" ng-click="moveCard()">Move</button>
+      <span ng-hide="activeCard.type_line.includes('Token')">
+        to
+        <select class='dropDown' id='extra' ng-model='moveLocation'
+          ng-options="o as capitalize(o) for o in deckFields"></select>
+      </span>
+
+      <button class="button" ng-click="changeCard('tapped')">Tap</button>
+      <button class="button" ng-click="changeCard('flipped')">Flip</button>
+      <button class="button" ng-click="changeCard('highlighted')">Highlight</button>
+      <button ng-hide="activeCard.attached_cards" class="button" ng-click='startAttaching()'>Attach</button>
+      <button ng-show="activeCard.attached_cards" class="button" ng-click='unattachAll(true)'>Unattach All</button>
+      <button class="plusMinus" ng-click="changeCounters(false)">
+        -
+      </button>
+      Counters
+      <button class="plusMinus" ng-click="changeCounters(true)">
+        +
+      </button>
+    </form>
+    <br/>
+    <input type='checkbox' ng-model='showCheckboxes'>
+    Slightly More Advanced Options
   </div>
 </body>
-
 </html>
