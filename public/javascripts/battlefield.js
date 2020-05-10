@@ -143,6 +143,7 @@ angular.module('cardeck', ['firebase'])
         $scope.addCard(card, player.$id, 'battlefield')
       }
     } else {
+      $scope.removeCard(card, player.$id, field)
       if(field === 'battlefield' || field === 'lands') {
         $scope.addCard(card, player.$id, 'graveyard')
       } else if(field === 'hand' || field === 'extras') {
@@ -155,7 +156,6 @@ angular.module('cardeck', ['firebase'])
         $scope.addCard(card, player.$id, 'hand')
         console.log('I am not sure what you wanted, but since there is not a default location from there it was added to your hand')
       }
-      $scope.removeCard(card, player.$id, field)
     }
   }
 
