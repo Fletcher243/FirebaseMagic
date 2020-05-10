@@ -104,9 +104,8 @@ angular.module('cardeck', ['firebase'])
       firebase.database().ref(path).update({counters: card.counters})
     }
 
-    $scope.changeCard = function(attribute) {
-      let card = $scope.activeCard
-      const path = `game/${$scope.activeCardPlayer.$id}/${$scope.activeCardField}/${card.$id}`
+    $scope.changeCard = function(attribute, card = $scope.activeCard, playerId = $scope.activeCardPlayer.$id, field = $scope.activeCardField) {
+      const path = `game/${playerId}/${field}/${card.$id}`
       card[attribute] = !card[attribute]
       firebase.database().ref(path).update({[attribute]: card[attribute]})
     }

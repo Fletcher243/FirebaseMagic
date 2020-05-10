@@ -63,7 +63,7 @@
           <span class="counters" ng-show='card.counters'>
             {{card.counters}}
           </span>
-          <button class="tapButton">Tap</button>
+          <button class="tapButton" ng-click="changeCard('tapped', card, player.$id, field)">Tap</button>
           <span ng-repeat="attach in card.attached_cards">
             <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, attachedCards: true}"
               src="{{getImage(attach)}}" ng-click="clickGameCard(attach, player, field)">
@@ -93,8 +93,6 @@
         <select class='dropDown' id='extra' ng-model='moveLocation'
           ng-options="o as capitalize(o) for o in deckFields"></select>
       </span>
-
-      <button class="button" ng-click="changeCard('tapped')">Tap</button>
       <button class="button" ng-click="changeCard('flipped')">Flip</button>
       <button class="button" ng-click="changeCard('highlighted')">Highlight</button>
       <button ng-hide="activeCard.attached_cards" class="button" ng-click='startAttaching()'>Attach</button>
