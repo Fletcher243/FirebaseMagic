@@ -56,20 +56,19 @@
           <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
           {{capitalize(field)}}
         </h3>
-        <div class="battleCard" ng-class="{activeCard: activeCard.$id == card.$id, zoom: activeCard.$id != card.$id}" 
+        <div class="battleCard" ng-class="{activeCard: activeCard.$id == card.$id, zoom: activeCard.$id != card.$id}"
           ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-            <img ng-class="{tap: card.tapped && activeCard.$id != card.$id, highlightCard: card.highlighted}" src="{{getImage(card)}}"
-              ng-click="clickGameCard(card, player, field)" class="battleCardImg">
-            <span class="counters" ng-show='card.counters'>
-              {{card.counters}}
-            </span>
-            <button class="tapButton">Tap</button>
-            <span ng-repeat="attach in card.attached_cards">
-              <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, attachedCards: true}"
-                src="{{getImage(attach)}}" ng-click="clickGameCard(attach, player, field)">
-            </span>
-          </div>
-        </span>
+          <img ng-class="{tap: card.tapped && activeCard.$id != card.$id, highlightCard: card.highlighted}"
+            src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)" class="battleCardImg">
+          <span class="counters" ng-show='card.counters'>
+            {{card.counters}}
+          </span>
+          <button class="tapButton">Tap</button>
+          <span ng-repeat="attach in card.attached_cards">
+            <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, attachedCards: true}"
+              src="{{getImage(attach)}}" ng-click="clickGameCard(attach, player, field)">
+          </span>
+        </div>
       </div>
     </div>
   </span>
@@ -78,7 +77,7 @@
     <form ng-hide='activeCard.id || attaching'>
       <button class="button" ng-click="drawCard()">Draw Card</button>
       <button class="button" ng-click="untapAll()">Untap</button>
-      <br/>
+      <br />
       <span ng-show='showCheckboxes'>
         <input type='checkbox' ng-model='flipOnDraw'>Draw Facedown
       </span>
@@ -108,9 +107,10 @@
         +
       </button>
     </form>
-    <br/>
+    <br />
     <input type='checkbox' ng-model='showCheckboxes'>
     Slightly More Advanced Options
   </div>
 </body>
+
 </html>
