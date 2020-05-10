@@ -68,6 +68,12 @@
     border-radius: 12px;
   }
 
+  .activeCard>.tapButton {
+    left: 100px;
+    transition: .5s ease;
+    transform: scale(2, 2);
+  }
+
   .zoom:hover {
     transition: .5s ease;
     transform: scale(1.2, 1.2); 
@@ -107,12 +113,12 @@
   .tapButton {
     position: absolute;
     z-index: 9;
-    left: 35%;
+    left: 40px;
     bottom: 0;
-    transform: scale(.5, .5);
     opacity: .5;
     border-radius: 11px;
     text-emphasis: bold;
+    transition: .5s ease;
   }
 
   .tapButton:hover {
