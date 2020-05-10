@@ -1,83 +1,12 @@
-  .battleCards {
+  .playerField {
     position: relative;
-    display: inline-block;
-    opacity: .95;
-  }
-
-  .zoom:hover {
-    transition: .5s ease;
-    transform: scale(1.2, 1.2); 
-    opacity: 1;
-    z-index: 10;    
-  }
-
-  .activeCard {
-    height: 500px;
-  }
-
-  .attachedCards {
-    height: 120px;
-  }
-
-  #counters {
-    position: absolute;
-    background: white;
-    color: black;
-    border-radius: 50%;
-    width: 17px;
-    height: 17px;
-    z-index: 9;
-    left: 0;
-    bottom: 0;
-    text-align: center;
-    transform: scale(.5, .5);
- }
-
- #extraCardOptions {
-  position: absolute;
-  z-index: 9;
-  left: 35%;
-  bottom: 0;
-  transform: scale(.5, .5);
-  opacity: .5;
-  border-radius: 11px;
-  text-emphasis: bold;
- }
-
- #extraCardOptions:hover {
-   opacity: 1;
-   cursor: pointer;
- }
-
-  #battlefieldCardStatus {
-    color:white;
-    position: absolute;
-    z-index: 11;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
-    top: 95%; /* Adjust this value to move the positioned div up and down */
-    text-align: center;
-    width: 60%; /* Set the width of the positioned div */
-  }
-
-  .tap {
-    transform: rotate(90deg);
-    margin-left: 10px;
-  }
-
-  #playerField {
     width: 100%; 
     border: 1px solid #2c2424; 
     box-shadow: -5px -10px 30px #ffffff;
     margin-bottom: 10px;
   }
 
-  .highlightCard {
-    border: solid yellow;
-  }
-
-  #playerName {
+  .playerName {
     font-size: 1.5em;
     font-weight: bold;
     margin-top: 5px;
@@ -94,42 +23,114 @@
     right: 40%;
   }
 
+  .plusMinus {
+    border-radius: 10px;
+    opacity: .5;
+  }
+
+  .plusMinus:hover {
+    opacity: 1;
+    cursor: pointer;
+  }
+
   h3 {
     margin-block-start: 0;
     margin-block-end: 0;
   }
 
-  #plusMinus {
-    border-radius: 10px;
-    opacity: .5;
+  .battleCard {
+    display: inline-block;
+    opacity: .95;
+    z-index: 6;
   }
 
-  #plusMinus:hover {
+  .activeCard {
+    z-index: 8;
+  }
+  
+  .activeCard>img {
+    border-radius: 16px;
+    height: 310px;
+    transition: .5s ease;
+  }
+
+  .activeCard>.counters {
+    height: 40px;
+    width: 50px;
+    font-size: 34px;
+  }
+
+  .activeCard>span>.attachedCards {
+    height: 275px;
+    transition: .5s ease;
+    border-radius: 12px;
+  }
+
+  .zoom:hover {
+    transition: .5s ease;
+    transform: scale(1.2, 1.2); 
+    opacity: 1;
+    z-index: 10;    
+  }
+
+  .tap {
+    transform: rotate(90deg);
+    margin-left: 10px;
+  }
+
+  .highlightCard {
+    border: solid yellow;
+  }
+
+  .battleCardImg {
+    position: relative;
+    transition: .5s ease;
+    z-index: 6;
+  }
+
+  .counters {
+    position: absolute;
+    background: white;
+    color: black;
+    /*border-radius: 50%;*/
+    width: 17px;
+    height: 17px;
+    z-index: 9;
+    left: 0;
+    bottom: 0;
+    text-align: center;
+  }
+
+  .tapButton {
+    position: absolute;
+    z-index: 9;
+    left: 35%;
+    bottom: 0;
+    transform: scale(.5, .5);
+    opacity: .5;
+    border-radius: 11px;
+    text-emphasis: bold;
+  }
+
+  .tapButton:hover {
     opacity: 1;
     cursor: pointer;
   }
+
+.attachedCards {
+    height: 120px;
+    transition: .5s ease;
+    z-index: 8;
+  }
   
-  #extra {
-    display: none;
+  #battlefieldCardStatus {
+    color:white;
     position: absolute;
-    margin-left: -20px;
-    margin-top: -20px;
-    min-width: 160px;
-    z-index: 1;
+    z-index: 11;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 95%; /* Adjust this value to move the positioned div up and down */
+    text-align: center;
+    width: 60%; /* Set the width of the positioned div */
   }
-  
-  #extraCardOptions:hover #extra {
-    display: block;
-  }
-
-  .moveExpand:hover .moveOptions {
-    display: block;
-<<<<<<< HEAD
-  }
-=======
-  }
-
-  .moveExpand:hover {
-    color: green
-  }
->>>>>>> Clicking on a card makes it the active card

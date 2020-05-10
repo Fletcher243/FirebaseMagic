@@ -35,18 +35,18 @@
     <h1 id='deckHead'>Battlefield</h1>
   </div>
   <span id='images'>
-    <div ng-repeat="player in battlefield" id="playerField">
-      <div id="playerName">
+    <div ng-repeat="player in battlefield" class="playerField">
+      <div class="playerName">
         <span>
           {{player.name}}
           <span ng-show="player.$id == user.uid">(You)</span>
         </span>
         <span class="lifeTotal">
-          <button id="plusMinus" ng-click="changeLife(player, -1)">
+          <button class="plusMinus" ng-click="changeLife(player, -1)">
             -
           </button>
           <span>{{player.life}}</span>
-          <button id="plusMinus" ng-click="changeLife(player, 1)">
+          <button class="plusMinus" ng-click="changeLife(player, 1)">
             +
           </button>
         </span>
@@ -56,31 +56,19 @@
           <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
           {{capitalize(field)}}
         </h3>
-        <span ng-repeat="card in cardsForPlayer[player.$id][field]">
-          <span class="battleCards" ng-class="{zoom: zoom}" 
-          ng-show="showForPlayer[player.$id][field]">
-            <img ng-class="{activeCard: activeCard.$id == card.$id, tap: card.tapped, highlightCard: card.highlighted}" src="{{getImage(card)}}"
-              ng-click="clickGameCard(card, player, field)">
-            <span id="counters" ng-show='card.counters'>
+        <div class="battleCard" ng-class="{activeCard: activeCard.$id == card.$id, zoom: activeCard.$id != card.$id}" 
+          ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
+            <img ng-class="{tap: card.tapped && activeCard.$id != card.$id, highlightCard: card.highlighted}" src="{{getImage(card)}}"
+              ng-click="clickGameCard(card, player, field)" class="battleCardImg">
+            <span class="counters" ng-show='card.counters'>
               {{card.counters}}
             </span>
-            <button id="extraCardOptions" ng-click='extraOptions(card)'>
-              ...
-              <select class='dropDown' id='extra' ng-model='moveLocation'
-            ng-change="moveCardAdvanced(card, player, field, moveLocation)"
-            ng-options="o as capitalize(o) for o in allOptions">
-            <option class="moveExpand" value="" disabled>
-              Move to...
-            </option>
-            </select>
-          </button>
+            <button class="tapButton">Tap</button>
             <span ng-repeat="attach in card.attached_cards">
               <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, attachedCards: true}"
                 src="{{getImage(attach)}}" ng-click="clickGameCard(attach, player, field)">
             </span>
-          </span>
-          
-        </span>
+          </div>
         </span>
       </div>
     </div>
@@ -96,7 +84,6 @@
       <br />
       <span ng-show='showCheckboxes'>
         <input type='checkbox' ng-model='flipOnDraw'>Draw Facedown
-        <input type='checkbox' ng-model='zoom'>Zoom Card on Hover
       </span>
     </form>
     <input type='checkbox' ng-model='showCheckboxes'>Slightly More Advanced Options
