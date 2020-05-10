@@ -75,7 +75,7 @@
             </select>
           </button>
             <span ng-repeat="attach in card.attached_cards">
-              <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, slightlySmaller: true}"
+              <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, attachedCards: true}"
                 src="{{getImage(attach)}}" ng-click="clickGameCard(attach, player, field)">
             </span>
           </span>

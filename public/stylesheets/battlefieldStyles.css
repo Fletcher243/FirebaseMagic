@@ -6,14 +6,12 @@
 
   .zoom:hover {
     transition: .5s ease;
-    transform: scale(2.5, 2.5); 
+    transform: scale(1.2, 1.2); 
     opacity: 1;
-    z-index: 10;
-    transition-delay: 1s;
-    
+    z-index: 10;    
   }
 
-  .slightlySmaller {
+  .attachedCards {
     height: 120px;
   }
 
@@ -119,14 +117,7 @@
   #extraCardOptions:hover #extra {
     display: block;
   }
-  .moveOptions {
-    display: none;
-  }
 
   .moveExpand:hover .moveOptions {
     display: block;
-  }
-
-  .moveExpand:hover {
-    color: green
   }
