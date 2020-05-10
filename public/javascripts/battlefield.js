@@ -21,6 +21,7 @@ angular.module('cardeck', ['firebase'])
 
     $scope.optionsCard = '';
     $scope.attaching = null;
+    $scope.activeCard = {};
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -65,9 +66,14 @@ angular.module('cardeck', ['firebase'])
       }
       $scope.attachCard(card, player.$id)
       $scope.attaching = null;
-
+      return
     }
-    else if($scope.clickAction === 'Add Counter'){
+    if($scope.activeCard.$id == card.$id) {
+      $scope.activeCard = {};
+    } else {
+      $scope.activeCard = card;
+    }
+    if($scope.clickAction === 'Add Counter'){
       const path = `game/${player.$id}/${field}/${card.$id}`
       card.counters = (card.counters || 0) + 1
       firebase.database().ref(path).update({counters: card.counters})

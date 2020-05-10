@@ -11,6 +11,10 @@
     z-index: 10;    
   }
 
+  .activeCard {
+    height: 500px;
+  }
+
   .attachedCards {
     height: 120px;
   }
@@ -120,4 +124,12 @@
 
   .moveExpand:hover .moveOptions {
     display: block;
+<<<<<<< HEAD
   }
+=======
+  }
+
+  .moveExpand:hover {
+    color: green
+  }
+>>>>>>> Clicking on a card makes it the active card
