@@ -30,11 +30,12 @@
 <body ng-app='cardeck' ng-controller="ManageDecksCtrl">
 
   <span id="floatRight">
-    <button ng-click="removeDeck()" class="button">Delete Deck</button>
+    <button ng-click="initiateRemoveDeck()" class="button">{{removeButtonText}}</button>
+    <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">Remove {{activeDeck.name}}!</button>
     <button ng-click="nameDeck()" ng-hide="adding" class="button">Create New Deck</button>
 
     <form ng-submit="addDeck()" ng-show="adding">
-      <input type="text" ng-model="deckField" value="" placeholder="Deck Name">
+      <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
       <button type="submit" class="button">Add</button><br>
     </form>
     <button class="button" >Remove Cards</button>

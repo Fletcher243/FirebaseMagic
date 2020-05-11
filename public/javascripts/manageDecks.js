@@ -19,6 +19,10 @@ angular.module('cardeck', ['firebase'])
     $scope.removeFromDeck = false;
     $scope.extras = false;
 
+    $scope.maxlength = 30;
+    $scope.removeInitiated = false;
+    $scope.removeButtonText = 'Delete Deck';
+
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if ($scope.user) {
@@ -172,6 +176,8 @@ angular.module('cardeck', ['firebase'])
   $scope.clearDisplay = function(){
     $scope.deckField = '';
     $scope.adding = false;
+    $scope.removeInitiated = false;
+    $scope.removeButtonText = 'Delete Deck'
     if($scope.manage){
       $scope.manage = false;
       $scope.getDeck();
@@ -179,6 +185,16 @@ angular.module('cardeck', ['firebase'])
       $scope.deckCards = [];
     }
     $scope.$apply();
+  }
+
+  $scope.initiateRemoveDeck = function() {
+    if($scope.removeInitiated) {
+      $scope.removeInitiated = false;
+      $scope.removeButtonText = 'Delete Deck';
+    } else {
+      $scope.removeInitiated = true;
+      $scope.removeButtonText = `Cancel! I don't want to delete ${$scope.activeDeck.name}!`
+    }
   }
 
   $scope.removeDeck = function(){
