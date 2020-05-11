@@ -5,20 +5,14 @@ angular.module('cardeck', ['firebase'])
 
     $scope.deckFields = ['battlefield', 'lands', 'library', 'graveyard', 'exile', 'extras', 'hand']
 
-    $scope.clickOptions = ['Nothing','Move', 'Tap', 'Flip', 'Highlight', 'Add Counter', 'Remove Counter']
-    $scope.clickAction = 'Nothing'
-
     $scope.battlefield = [];
-
     $scope.cardsForPlayer = {};
     $scope.showForPlayer = {};
 
     $scope.showCheckboxes = false;
     $scope.flipOnDraw = false;
 
-    $scope.optionsCard = '';
     $scope.attaching = null;
-
     $scope.activeCard = null;
     $scope.activeCardField = '';
     $scope.activeCardPlayer = '';
@@ -33,7 +27,6 @@ angular.module('cardeck', ['firebase'])
         let counter = 0;
         $scope.battlefield.$loaded().then(function() {
           $scope.battlefield.forEach(function(player) {
-          //$scope.battlefield.push({name:player.name, life: player.life, $id: player.$id})
             $scope.showForPlayer[player.$id] = {
               hand: player.$id == user.uid,
               battlefield: true,
@@ -96,9 +89,7 @@ angular.module('cardeck', ['firebase'])
         $scope.attaching = null;
         $scope.activeCardField = '';
         $scope.activeCardPlayer = '';
-        return;
-      }
-      else if($scope.activeCard) {
+      } else if($scope.activeCard) {
         $scope.activeCard = null;
         $scope.activeCardField = '';
         $scope.activeCardPlayer = '';
@@ -133,7 +124,6 @@ angular.module('cardeck', ['firebase'])
       if(attach.hasOwnProperty('$id')) delete attach.$id
       if(attach.hasOwnProperty('$priority')) delete attach.$priority
       attach.playerId = $scope.activeCardPlayer
-      console.log(attach.playerId)
       card.attached_cards.push(attach)
       firebase.database().ref(path).update({attached_cards: JSON.parse(angular.toJson(card.attached_cards))})
       attach.$id = id
@@ -152,11 +142,11 @@ angular.module('cardeck', ['firebase'])
       $scope.activeCardPlayer = '';
     }
 
-    $scope.moveCard = function(card, player, field) {
-      if($scope.activeCard.type_line.includes("Token")) {
-        if(field === 'battlefield') {
+    $scope.moveCard = function() {
+      if($scope.activeCard.type_line.includes('Token')) {
+        if($scope.activeCardField === 'battlefield') {
           $scope.removeCard($scope.activeCard, $scope.activeCardPlayer, $scope.activeCardField)
-        } else if(field === 'extras') {
+        } else if($scope.activeCardField === 'extras') {
           $scope.addCard($scope.activeCard, $scope.user.uid, 'battlefield')
         }
       } else {
