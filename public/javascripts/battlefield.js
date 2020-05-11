@@ -30,6 +30,7 @@ angular.module('cardeck', ['firebase'])
       if (user) {
         let battlefieldRef = firebase.database().ref('game')
         $scope.battlefield = $firebaseArray(battlefieldRef)
+        let counter = 0;
         $scope.battlefield.$loaded().then(function() {
           $scope.battlefield.forEach(function(player) {
           //$scope.battlefield.push({name:player.name, life: player.life, $id: player.$id})
@@ -42,10 +43,22 @@ angular.module('cardeck', ['firebase'])
               extras: false,
               lands: true
             }
+            if(player.$id == $scope.user.uid || counter != 0) {
+              player.orderById = counter;
+              counter++;
+            }
             $scope.cardsForPlayer[player.$id] = {}
             $scope.deckFields.forEach(function(field) {
               $scope.cardsForPlayer[player.$id][field] = $firebaseArray(firebase.database().ref(`game/${player.$id}/${field}`))
             });
+          });
+          $scope.battlefield.forEach(function(player) {
+            if(!player.hasOwnProperty('orderById')){
+              player.orderById = counter;
+              counter++;
+            } else {
+              return;
+            }
           });
         }).catch(function(error) {
           console.log('Error:', error);

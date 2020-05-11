@@ -35,7 +35,7 @@
     <h1 id='deckHead'>Battlefield</h1>
   </div>
   <span id='images'>
-    <div ng-repeat="player in battlefield" class="playerField">
+    <div ng-repeat="player in battlefield | orderBy:'+orderById'" class="playerField">
       <div class="playerName">
         <span>
           {{player.name}}
