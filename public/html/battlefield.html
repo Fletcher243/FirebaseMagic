@@ -1,5 +1,4 @@
 <html>
-
 <head>
   <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
   <script>
@@ -35,7 +34,7 @@
     <h1 id='deckHead'>Battlefield</h1>
   </div>
   <span id='images'>
-    <div ng-repeat="player in battlefield | orderBy:'+orderById'" class="playerField">
+    <div ng-repeat="player in battlefield | orderBy:orderFunction" class="playerField">
       <div class="playerName">
         <span>
           {{player.name}}
@@ -53,20 +52,38 @@
       </div>
       <div ng-repeat='field in deckFields'>
         <h3 ng-show='showCheckboxes || showForPlayer[player.$id][field]'>
-          <input type="checkbox" ng-show="showCheckboxes" ng-model="showForPlayer[player.$id][field]">
+          <input type="checkbox"
+            ng-show="showCheckboxes"
+            ng-model="showForPlayer[player.$id][field]">
           {{capitalize(field)}}
         </h3>
-        <div class="battleCard" ng-class="{activeCard: activeCard.$id == card.$id, zoom: activeCard.$id != card.$id}"
-          ng-repeat="card in cardsForPlayer[player.$id][field]" ng-show="showForPlayer[player.$id][field]">
-          <img ng-class="{tap: card.tapped && activeCard.$id != card.$id, highlightCard: card.highlighted}"
-            src="{{getImage(card)}}" ng-click="clickGameCard(card, player, field)" class="battleCardImg">
+        <div class="battleCard"
+          ng-class="{
+            activeCard: activeCard.$id == card.$id,
+            zoom: activeCard.$id != card.$id}"
+          ng-repeat="card in cardsForPlayer[player.$id][field]"
+          ng-show="showForPlayer[player.$id][field]">
+          <img src="{{getImage(card)}}"
+            ng-class="{
+              tap: card.tapped && activeCard.$id != card.$id,
+              highlightCard: card.highlighted,
+              attachingHighlight: attaching.$id == card.$id}"
+            ng-click="clickGameCard(card, player, field)"
+            class="battleCardImg">
           <span class="counters" ng-show='card.counters'>
             {{card.counters}}
           </span>
-          <button class="tapButton" ng-click="changeCard('tapped', card, player.$id, field)">Tap</button>
+          <button class="tapButton"
+            ng-click="changeCard('tapped', card, player.$id, field)">
+            Tap
+          </button>
           <span ng-repeat="attach in card.attached_cards">
-            <img ng-class="{tap: attach.tapped, highlightCard: attach.highlighted, attachedCards: true}"
-              src="{{getImage(attach)}}" ng-click="clickGameCard(attach, player, field)">
+            <img src="{{getImage(attach)}}"
+              class='attachedCards'
+              ng-class="{
+                tap: attach.tapped,
+                highlightCard: attach.highlighted}"
+              ng-click="clickGameCard(attach, player, field)">
           </span>
         </div>
       </div>
@@ -83,7 +100,7 @@
       </span>
     </form>
     <span ng-show='attaching'>
-      Click on a card to attach {{attaching.name}}
+      Click on a card to attach <em>{{attaching.name}}</em>
       <button class="button" ng-click="cancelAttaching()">Cancel</button>
     </span>
     <form ng-show='activeCard'>
@@ -110,5 +127,4 @@
     Slightly More Advanced Options
   </div>
 </body>
-
 </html>

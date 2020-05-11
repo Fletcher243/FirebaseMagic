@@ -90,6 +90,10 @@
     border: solid yellow;
   }
 
+  .attachingHighlight {
+    border: solid skyblue;
+  }
+
   .battleCardImg {
     position: relative;
     transition: .5s ease;

@@ -18,13 +18,15 @@ angular.module('cardeck', ['firebase'])
     $scope.activeCardPlayer = '';
 
     $scope.moveLocation = 'hand';
+    $scope.playerOrder = [];
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
       if (user) {
         let battlefieldRef = firebase.database().ref('game')
         $scope.battlefield = $firebaseArray(battlefieldRef)
-        let counter = 0;
+        let playerOrder = [];
+        let leftovers = [];
         $scope.battlefield.$loaded().then(function() {
           $scope.battlefield.forEach(function(player) {
             $scope.showForPlayer[player.$id] = {
@@ -36,23 +38,17 @@ angular.module('cardeck', ['firebase'])
               extras: false,
               lands: true
             }
-            if(player.$id == $scope.user.uid || counter != 0) {
-              player.orderById = counter;
-              counter++;
+            if(player.$id == $scope.user.uid || playerOrder.length) {
+              playerOrder.push(player.$id)
+            } else {
+              leftovers.push(player.$id)
             }
             $scope.cardsForPlayer[player.$id] = {}
             $scope.deckFields.forEach(function(field) {
               $scope.cardsForPlayer[player.$id][field] = $firebaseArray(firebase.database().ref(`game/${player.$id}/${field}`))
             });
           });
-          $scope.battlefield.forEach(function(player) {
-            if(!player.hasOwnProperty('orderById')){
-              player.orderById = counter;
-              counter++;
-            } else {
-              return;
-            }
-          });
+          $scope.playerOrder = playerOrder.concat(leftovers)
         }).catch(function(error) {
           console.log('Error:', error);
         });
@@ -61,6 +57,10 @@ angular.module('cardeck', ['firebase'])
         location.href = '../'
       }
     });
+
+    $scope.orderFunction = function(player) {
+      return $scope.playerOrder.indexOf(player.$id)
+    }
 
     const DEFAULT_LOCATIONS = {
       'hand': 'battlefield',
