@@ -38,8 +38,8 @@
       <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
       <button type="submit" class="button">Add</button><br>
     </form>
-    <button class="button" >Remove Cards</button>
-    <button ng-click="getDeck()" class="button">{{nameofthatbutton}}</button>
+    <button ng-click="addCardsClick()" ng-show="manage" class="button">Add Cards</button>
+    <button ng-click="manageDeckClick()" ng-hide='manage' class='button'>Manage Deck</button>
   </span>
 
   <button onclick="location.href='../'" class="button" >Home</button>
@@ -65,7 +65,10 @@
     <div ng-repeat="card in searchResults" ng-hide="manage">
       <img src="{{getImage(card)}}" ng-click="addCard(card)">
     </div>
-    <div ng-show="manage" ng-repeat="card in deckCards | orderBy:['cmc','name']">
+    <div ng-show="manage && !extras" ng-repeat="card in deckCards | orderBy:['cmc','name']">
+      <img id="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
+    </div>
+    <div ng-show="manage && extras" ng-repeat="card in deckExtras | orderBy:['cmc','name']">
       <img id="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
     </div>
   </span>
