@@ -18,14 +18,15 @@ angular.module('cardeck', ['firebase'])
       }
     });
 
-  $scope.logout = function() {
-    if(!$scope.logged) {
-      let provider = new firebase.auth.GoogleAuthProvider();
-      firebase.auth().signInWithRedirect(provider);
-    } else {
-      $scope.logged = false;
-      $scope.logButton = 'Login';
-      firebase.auth().signOut();
+    $scope.logout = function() {
+      if(!$scope.logged) {
+        let provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithRedirect(provider);
+      } else {
+        $scope.logged = false;
+        $scope.logButton = 'Login';
+        firebase.auth().signOut();
+      }
     }
   }
-}]);
+]);

@@ -179,7 +179,12 @@ angular.module('cardeck', ['firebase'])
     }
   }
 
-  $scope.clearDisplay = function(){
+  $scope.selectDeck = function(deck) {
+    $scope.activeDeck = deck;
+    $scope.activateDeck();
+  }
+
+  $scope.clearDisplay = function() {
     $scope.deckField = '';
     $scope.adding = false;
     $scope.removeInitiated = false;

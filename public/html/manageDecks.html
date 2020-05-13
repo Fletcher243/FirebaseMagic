@@ -46,7 +46,7 @@
   <div ng-show="manage">
     <h1 id="deckHead">Manage Decks</h1>
     <div id="deckRow" >
-      <select ng-change="clearDisplay()" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
+      <select ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
       <button  ng-click="joinGame()" class="button" >Join Game</button>
       <input type="checkbox" ng-model="extras" ng-change="clearDisplay()">Show Extras
