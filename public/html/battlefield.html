@@ -31,9 +31,9 @@
   <button onclick="location.href='../'" class="button">Home</button>
 
   <div>
-    <h1 id='deckHead'>Battlefield</h1>
+    <h1 class='deckHead'>Battlefield</h1>
   </div>
-  <span id='images'>
+  <span class='images'>
     <div ng-repeat="player in battlefield | orderBy:orderFunction" class="playerField">
       <div class="playerName">
         <span>
@@ -107,7 +107,7 @@
       <button class="button" ng-click="moveCard()">Move</button>
       <span ng-hide="activeCard.type_line.includes('Token')">
         to
-        <select class='dropDown' id='extra' ng-model='moveLocation'
+        <select class='dropDown' class='extra' ng-model='moveLocation'
           ng-options="o as capitalize(o) for o in deckFields"></select>
       </span>
       <button class="button" ng-click="changeCard('flipped')">Flip</button>

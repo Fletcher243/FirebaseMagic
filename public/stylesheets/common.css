@@ -13,7 +13,7 @@ h1{
   font-family: sans-serif;
 }
 
-#deckHead{
+.deckHead{
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -23,11 +23,11 @@ h1{
 
 }
 
-#floatRight {
+.floatRight {
   float:right;
 }
 
-#deckRow {
+.deckRow {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -88,8 +88,7 @@ input {
 a {
   color: #00B7FF;
 }
-
-#images {
+.images {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -108,7 +107,7 @@ img {
   height: 150px;
 }
 
-#displayTextBox{
+.displayTextBox{
   text-shadow: 4px 4px 8px #000000;
   font-size: 30px;
   width: 50%;

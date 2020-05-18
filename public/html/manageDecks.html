@@ -29,23 +29,25 @@
 
 <body ng-app='cardeck' ng-controller="ManageDecksCtrl">
 
-  <span id="floatRight">
+  <span class="floatRight">
     <button ng-click="initiateRemoveDeck()" class="button">{{removeButtonText}}</button>
     <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">Remove {{activeDeck.name}}!</button>
-    <button ng-click="nameDeck()" ng-hide="adding" class="button">Create New Deck</button>
+    <button ng-click="nameDeck()" ng-hide="showDeckField" class="button">Create New Deck</button>
 
-    <form ng-submit="addDeck()" ng-show="adding">
+    <form ng-submit="addDeck()" ng-show="showDeckField">
       <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
       <button type="submit" class="button">Add</button><br>
     </form>
-    <button ng-click="addCardsClick()" ng-show="manage" class="button">Add Cards</button>
-    <button ng-click="manageDeckClick()" ng-hide='manage' class='button'>Manage Deck</button>
+    <button ng-click="toCardView()" ng-hide="cardView" class="button">Add Cards</button>
+    <button ng-click="toDeckView()" ng-hide='deckView' class='button'>Manage Deck</button>
+    <button ng-click="toCollectionView()" ng-hide='collectionView' class='button'>Collections</button>
+  
   </span>
 
   <button onclick="location.href='../'" class="button" >Home</button>
-  <div ng-show="manage">
-    <h1 id="deckHead">Manage Decks</h1>
-    <div id="deckRow" >
+  <div ng-show="deckView">
+    <h1 class="deckHead">Manage Decks</h1>
+    <div class="deckRow" >
       <select ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
       <button  ng-click="joinGame()" class="button" >Join Game</button>
@@ -53,28 +55,45 @@
       <input type="checkbox" ng-model="removeFromDeck">Remove on Click
     </div>
   </div>
-  <div ng-hide="manage">
-    <h1 id="deckHead">Enter A Card to Find: </h1>
-    <form ng-submit="getCards()" id="deckHead">
-      <input id="centered" type="text" ng-model="cardField" value="">
+  <div ng-show="cardView">
+    <h1 class="deckHead">Enter A Card to Find: </h1>
+    <form ng-submit="getCards()" class="deckHead">
+      <input class="centered" type="text" ng-model="cardField" value="">
       <button type="submit" class="button">Search</button><br>
     </form>
-    <input type="checkbox" ng-model="extras">Add to Extras
+    <input type="checkbox" ng-model="extras">Add to Deck Extras
+    <input type="checkbox" ng-model="addToDeck">Add to Deck
+    <input type="checkbox" ng-model="addToCollection">Add to Collection
   </div>
-  <span id="images">
-    <div ng-repeat="card in searchResults" ng-hide="manage">
+  <div ng-show="collectionView">
+    <h1 class="deckHead">Enter A Search Term:</h1>
+    <form ng-submit="reFilter()" class="deckHead">
+      <input class="centered" type="text" ng-model="filterField" value="">
+      <button type="submit" class="button">Search</button><br>
+    </form>
+    <span ng-repeat="color in colors">
+      <input type="checkbox" ng-checked="activeColors.includes(color.identity)"  ng-click="colorChecked(color)">{{color.name}}
+    </span>
+    <input type="checkbox" ng-model="extras">Add to Deck Extras
+    <input type="checkbox" ng-model="addToDeck">Add to Deck
+  </div>
+  <span class="images">
+    <div ng-repeat="card in searchResults" ng-show="cardView">
       <img src="{{getImage(card)}}" ng-click="addCard(card)">
     </div>
-    <div ng-show="manage && !extras" ng-repeat="card in deckCards | orderBy:['cmc','name']">
-      <img id="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
+    <div ng-show="deckView && !extras" ng-repeat="card in deckCards | orderBy:['cmc','name']">
+      <img class="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
     </div>
-    <div ng-show="manage && extras" ng-repeat="card in deckExtras | orderBy:['cmc','name']">
-      <img id="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
+    <div ng-show="deckView && extras" ng-repeat="card in deckExtras | orderBy:['cmc','name']">
+      <img class="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
+    </div>
+    <div ng-show="collectionView" ng-repeat="card in collectionCards | orderBy:['name','cmc']">
+      <img class="deckCard" src="{{getImage(card)}}" ng-click="addCard(card)">
     </div>
   </span>
 
   <div class="footer" >
-    <div id="displayTextBox">
+    <div class="displayTextBox">
       {{footerText}}
     </div>
   </div>

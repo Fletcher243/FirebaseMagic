@@ -33,8 +33,8 @@
 <body ng-app='cardeck' ng-controller="MainCtrl">
   <button ng-click="logout()" class="button">{{logButton}}</button>
     <div ng-show="logged">
-        <h1 ng-show="logged" id="deckHead">Welcome to Game Night</h1>
-        <div id="deckRow" ng-show="logged">
+        <h1 ng-show="logged" class="deckHead">Welcome to Game Night</h1>
+        <div class="deckRow" ng-show="logged">
 
             <button onclick="location.href = 'manageDecks';" class="button" ng-show="logged">Build Decks</button>
             <button onclick="location.href = 'Battlefield';" class="button" ng-show="logged">Battlefield</button>
