@@ -30,18 +30,31 @@
 <body ng-app='cardeck' ng-controller="ManageDecksCtrl">
 
   <span class="floatRight">
-    <button ng-click="initiateRemoveDeck()" class="button">{{removeButtonText}}</button>
-    <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">Remove {{activeDeck.name}}!</button>
-    <button ng-click="nameDeck()" ng-hide="showDeckField" class="button">Create New Deck</button>
 
-    <form ng-submit="addDeck()" ng-show="showDeckField">
-      <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
-      <button type="submit" class="button">Add</button><br>
-    </form>
+    <span ng-show="deckView">
+      <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
+      <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
+      <button ng-click="nameDeck()" ng-hide="showCreateField" class="button">Create New Deck</button>
+      <form ng-submit="addDeck()" ng-show="showCreateField">
+        <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
+        <button type="submit" class="button">Add</button><br>
+      </form>
+    </span>
+
+    <span ng-show="collectionView">
+      <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
+      <button ng-click="removeCollection()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
+      <button ng-click="nameCollection()" ng-hide="showCreateField" class="button">Create New Collection</button>
+      <form ng-submit="addCollection()" ng-show="showCreateField">
+        <input type="text" ng-model="collectionField" value="" placeholder="Collection Name" maxlength={{maxlength}}>
+        <button type="submit" class="button">Add</button><br>
+      </form>
+    </span>
+
     <button ng-click="toCardView()" ng-hide="cardView" class="button">Add Cards</button>
     <button ng-click="toDeckView()" ng-hide='deckView' class='button'>Manage Deck</button>
     <button ng-click="toCollectionView()" ng-hide='collectionView' class='button'>Collections</button>
-  
+
   </span>
 
   <button onclick="location.href='../'" class="button" >Home</button>
@@ -66,6 +79,8 @@
     <input type="checkbox" ng-model="addToCollection">Add to Collection
   </div>
   <div ng-show="collectionView">
+      <select ng-change="selectCollection(activeCollection)" class="dropDown" ng-model="activeCollection" ng-options="collection.name for collection in collections">
+      </select>
     <h1 class="deckHead">Enter A Search Term:</h1>
     <form ng-submit="reFilter()" class="deckHead">
       <input class="centered" type="text" ng-model="filterField" value="">
