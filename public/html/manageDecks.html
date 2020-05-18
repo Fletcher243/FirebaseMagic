@@ -34,7 +34,7 @@
     <span ng-show="deckView">
       <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
       <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
-      <button ng-click="nameDeck()" ng-hide="showCreateField" class="button">Create New Deck</button>
+      <button ng-click="nameField()" ng-hide="showCreateField" class="button">Create New Deck</button>
       <form ng-submit="addDeck()" ng-show="showCreateField">
         <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
         <button type="submit" class="button">Add</button><br>
@@ -44,7 +44,7 @@
     <span ng-show="collectionView">
       <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
       <button ng-click="removeCollection()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
-      <button ng-click="nameCollection()" ng-hide="showCreateField" class="button">Create New Collection</button>
+      <button ng-click="nameField()" ng-hide="showCreateField" class="button">Create New Collection</button>
       <form ng-submit="addCollection()" ng-show="showCreateField">
         <input type="text" ng-model="collectionField" value="" placeholder="Collection Name" maxlength={{maxlength}}>
         <button type="submit" class="button">Add</button><br>
@@ -86,11 +86,13 @@
       <input class="centered" type="text" ng-model="filterField" value="">
       <button type="submit" class="button">Search</button><br>
     </form>
+    <input type="checkbox" ng-model="extras">Add to Deck Extras
+    <input type="checkbox" ng-model="addToDeck">Add to Deck
+    <input type="checkbox" ng-model="addToSecondCollection">Add to Collection
+    <select ng-change="selectSecondCollection(secondCollection)" class="dropDown" ng-model="secondCollection" ng-options="collection.name for collection in collections" ng-show="addToSecondCollection"></select>
     <span ng-repeat="color in colors">
       <input type="checkbox" ng-checked="activeColors.includes(color.identity)"  ng-click="colorChecked(color)">{{color.name}}
     </span>
-    <input type="checkbox" ng-model="extras">Add to Deck Extras
-    <input type="checkbox" ng-model="addToDeck">Add to Deck
   </div>
   <span class="images">
     <div ng-repeat="card in searchResults" ng-show="cardView">
@@ -102,7 +104,7 @@
     <div ng-show="deckView && extras" ng-repeat="card in deckExtras | orderBy:['cmc','name']">
       <img class="deckCard" src="{{getImage(card)}}" ng-click="clickDeckCard(card)">
     </div>
-    <div ng-show="collectionView" ng-repeat="card in collectionCards | orderBy:['name','cmc']">
+    <div ng-show="collectionView" ng-repeat="card in collectionCards | orderBy:['name','cmc'] | filter:filterFunction">
       <img class="deckCard" src="{{getImage(card)}}" ng-click="addCard(card)">
     </div>
   </span>

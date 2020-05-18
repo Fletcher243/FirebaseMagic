@@ -26,6 +26,7 @@ angular.module('cardeck', ['firebase'])
     $scope.removeInitiated = false;
     $scope.removeButtonText = 'Delete Deck';
 
+    $scope.addToSecondCollection = false;
     $scope.addToCollection = true;
     $scope.addToDeck = true;
 
@@ -77,6 +78,7 @@ angular.module('cardeck', ['firebase'])
           let key = $scope.collections.$keyAt(0);
           $scope.activeCollection = $scope.collections.$getRecord(key);
           $scope.activateCollection();
+          $scope.secondCollection = $scope.activeCollection;
         }).catch(function(error) {
           console.log('Error:', error);
         });
@@ -98,7 +100,7 @@ angular.module('cardeck', ['firebase'])
       }
     });
 
-    $scope.nameDeck = function() {
+    $scope.nameField = function() {
       $scope.showCreateField = true;
     }
 
@@ -173,9 +175,9 @@ angular.module('cardeck', ['firebase'])
       }
       if($scope.addToCollection) {
         let endpoint = $scope.extras ? 'extras' : 'cards'
-        let path2 = `users/${$scope.user.uid}/collections/${$scope.activeCollection.$id}/${endpoint}`
-        let ref2 = firebase.database().ref(path).push();
-        ref2.set(newCard)
+        let path = `users/${$scope.user.uid}/collections/${$scope.activeCollection.$id}/${endpoint}`
+        let ref = firebase.database().ref(path).push();
+        ref.set(newCard)
       }
     }
 
@@ -185,6 +187,8 @@ angular.module('cardeck', ['firebase'])
         let newItem = {
           name: $scope.collectionField
         }
+        $scope.collectionField = '';
+        $scope.showCreateField = false;
         ref.set(newItem).then(function() {
           $scope.activeCollection = $scope.collections.$getRecord(ref.getKey());
         })
@@ -195,9 +199,12 @@ angular.module('cardeck', ['firebase'])
       if($scope.deckField != '') {
         let ref = firebase.database().ref(`users/${$scope.user.uid}/decks`);
         let newRef = ref.push();
+
         let newItem = {
           name: $scope.deckField
         };
+        $scope.deckField = '';
+        $scope.showCreateField = false;
         newRef.set(newItem).then(function() {
           $scope.activeDeck = $scope.decks.$getRecord(newRef.getKey());
         });
@@ -214,9 +221,10 @@ angular.module('cardeck', ['firebase'])
     }
 
     $scope.activateCollection = function() {
-      const path = `/users/${$scope.user.uid}/decks/${$scope.activateDeck.$id}/cards`
+      const path = `/users/${$scope.user.uid}/collections/${$scope.activeCollection.$id}/cards`
       let ref = firebase.database().ref(path)
       $scope.collectionCards = $firebaseArray(ref)
+
     }
 
     $scope.joinGame = function() {
@@ -304,6 +312,7 @@ angular.module('cardeck', ['firebase'])
     }
 
     $scope.filterFunction = function(card) {
+      console.log(card)
       let showCard = card.name.includes($scope.filterField)
       if(showCard) {
         card.color_identity.forEach(function(color) {
@@ -313,7 +322,7 @@ angular.module('cardeck', ['firebase'])
           }
         });
       }
-      if(showCard && !includeColorless) {
+      if(showCard && !$scope.includeColorless) {
         showCard = card.color_identity.length != 0
       }
       if(showCard && $scope.filterCMC) {
@@ -325,6 +334,7 @@ angular.module('cardeck', ['firebase'])
           showCard = card.cmc == $scope.targetCMC
         }
       }
+      console.log(showCard)
       return showCard
     }
 
@@ -339,6 +349,7 @@ angular.module('cardeck', ['firebase'])
       $scope.deckView = true;
       $scope.collectionView = false;
       $scope.removeButtonText = 'Remove Deck';
+      $scope.showCreateField = false;
     }
 
     $scope.toCollectionView = function() {
@@ -346,6 +357,7 @@ angular.module('cardeck', ['firebase'])
       $scope.deckView = false;
       $scope.collectionView = true;
       $scope.removeButtonText = 'Remove Collection';
+      $scope.showCreateField = false;
     }
   }
 ]);
