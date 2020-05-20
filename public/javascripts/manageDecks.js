@@ -116,6 +116,7 @@ angular.module('cardeck', ['firebase'])
 
     $scope.removeExtraFields = function(card) {
       if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
+      if(card.hasOwnProperty('$priority')) delete card.$priority
       if(card.hasOwnProperty('arena_id')) delete card.arena_id
       if(card.hasOwnProperty('artist_ids')) delete card.artist_ids
       if(card.hasOwnProperty('booster')) delete card.booster
@@ -167,6 +168,8 @@ angular.module('cardeck', ['firebase'])
 
     $scope.addCard = function(card) {
       let newCard = $scope.removeExtraFields(card)
+      let id = card.id
+      if(card.hasOwnProperty('$id')) delete card.$id
       if($scope.addToDeck) {
         let endpoint = $scope.extras ? 'extras' : 'cards'
         let path = `users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/${endpoint}`
@@ -175,10 +178,12 @@ angular.module('cardeck', ['firebase'])
       }
       if($scope.addToCollection) {
         let endpoint = $scope.extras ? 'extras' : 'cards'
-        let path = `users/${$scope.user.uid}/collections/${$scope.activeCollection.$id}/${endpoint}`
+        let collectionId = $scope.addToSecondCollection ? $scope.secondCollection.$id : $scope.activeCollection.$id
+        let path = `users/${$scope.user.uid}/collections/${collectionId}/${endpoint}`
         let ref = firebase.database().ref(path).push();
         ref.set(newCard)
       }
+      card.$id = id;
     }
 
     $scope.addCollection = function() {
@@ -255,9 +260,40 @@ angular.module('cardeck', ['firebase'])
       }
     }
 
+    $scope.clickCollectionCard = function(card) {
+      let endpoint = $scope.extras ? 'extras' : 'cards';
+      let id = card.$id;
+      if(card.hasOwnProperty('$id')) delete card.$id
+      if(card.hasOwnProperty('$priority')) delete card.$priority
+      if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
+      if($scope.removeFromCollection) {
+        let path = `users/${$scope.user.uid}/collections/${$scope.activeCollection.$id}/${endpoint}/${id}`
+        let ref = firebase.database().ref(path).remove().then(function() {
+          $scope.footerText = `${card.name} removed from your ${$scope.activeCollection.name} collection!`;
+          $scope.$apply();
+        });
+      }
+      if($scope.addToSecondCollection) {
+        let path = `users/${$scope.user.uid}/collections/${$scope.secondCollection.$id}/${endpoint}`
+        let ref = firebase.database().ref(path).push();
+        ref.set(card)
+      }
+      if($scope.addToDeck) {
+        let path = `users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/${endpoint}`
+        let ref = firebase.database().ref(path).push();
+        ref.set(card) 
+      }
+      card.$id = id;
+    }
+
     $scope.selectDeck = function(deck) {
       $scope.activeDeck = deck;
       $scope.activateDeck();
+    }
+
+    $scope.selectCollection = function(collection) {
+      $scope.activeCollection = collection;
+      $scope.activateCollection();
     }
 
     $scope.clearDisplay = function() {
@@ -342,6 +378,7 @@ angular.module('cardeck', ['firebase'])
       $scope.cardView = true;
       $scope.deckView = false;
       $scope.collectionView = false;
+      $scope.addToSecondCollection = false;
     }
 
     $scope.toDeckView = function() {
@@ -350,6 +387,7 @@ angular.module('cardeck', ['firebase'])
       $scope.collectionView = false;
       $scope.removeButtonText = 'Remove Deck';
       $scope.showCreateField = false;
+      $scope.addToSecondCollection = false;
     }
 
     $scope.toCollectionView = function() {
