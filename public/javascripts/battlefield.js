@@ -185,7 +185,7 @@ angular.module('cardeck', ['firebase'])
       })
     }
 
-    $scope.unattachAll = function(leaveOnBattlefield, card = $scope.activeCard, playerId = $scope.activeCardPlayer, field = $scope.activeCardField) {
+    $scope.unattachAll = function(leaveOnBattlefield, card = $scope.activeCard, playerId = $scope.activeCardPlayer, field = $scope.activeCardField, removeActive = true) {
       if(card.hasOwnProperty('attached_cards')){
         card.attached_cards.forEach(function(card) {
           let putField = (card.type_line.includes('Aura')) && !leaveOnBattlefield ? 'graveyard' : 'battlefield'
@@ -196,15 +196,17 @@ angular.module('cardeck', ['firebase'])
         firebase.database().ref(path).remove().then(function() {
           console.log("Unattached all!")
         });
-        $scope.activeCard = null;
-        $scope.activeCardField = '';
-        $scope.activeCardPlayer = '';
+        if(removeActive) {
+          $scope.activeCard = null;
+          $scope.activeCardField = '';
+          $scope.activeCardPlayer = '';
+        }
       }
     }
 
     $scope.removeCard = function(card, playerId, field) {
       const removePath = `game/${playerId}/${field}/${card.$id}`
-      $scope.unattachAll(false, card, playerId, field)
+      $scope.unattachAll(false, card, playerId, field, false)
       firebase.database().ref(removePath).remove().then(function() {
         $scope.cardsForPlayer[playerId][field] = $firebaseArray(firebase.database().ref(`game/${playerId}/${field}`))
         $scope.cardsForPlayer[playerId][field].$loaded().then(function() {
