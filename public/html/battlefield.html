@@ -110,6 +110,10 @@
         <select class='dropDown' class='extra' ng-model='moveLocation'
           ng-options="o as capitalize(o) for o in deckFields"></select>
       </span>
+      <span ng-show="activeCard.type_line.includes('Token') && activeCardField == 'extras'">
+        Number of Copies:
+        <input class='token-input' type='number' ng-model='tokenCopies'>
+      </span>
       <button class="button" ng-click="changeCard('flipped')">Flip</button>
       <button class="button" ng-click="changeCard('highlighted')">Highlight</button>
       <button ng-hide="activeCard.attached_cards" class="button" ng-click='startAttaching()'>Attach</button>

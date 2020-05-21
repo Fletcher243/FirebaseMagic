@@ -19,6 +19,7 @@ angular.module('cardeck', ['firebase'])
 
     $scope.moveLocation = 'hand';
     $scope.playerOrder = [];
+    $scope.tokenCopies = 1;
 
     firebase.auth().onAuthStateChanged(function(user) {
       $scope.user = user
@@ -147,7 +148,9 @@ angular.module('cardeck', ['firebase'])
         if($scope.activeCardField === 'battlefield') {
           $scope.removeCard($scope.activeCard, $scope.activeCardPlayer, $scope.activeCardField)
         } else if($scope.activeCardField === 'extras') {
-          $scope.addCard($scope.activeCard, $scope.user.uid, 'battlefield')
+          for(let a = 0; a < $scope.tokenCopies; a++){
+            $scope.addCard($scope.activeCard, $scope.user.uid, 'battlefield')
+          }
         }
       } else {
         $scope.removeCard($scope.activeCard, $scope.activeCardPlayer, $scope.activeCardField)
