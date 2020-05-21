@@ -103,12 +103,12 @@ angular.module('cardeck', ['firebase'])
 
     $scope.changeCounters = function(add) {
       let card = $scope.activeCard
-      const path = `game/${$scope.activeCardPlayer.$id}/${$scope.activeCardField}/${card.$id}`
+      const path = `game/${$scope.activeCardPlayer}/${$scope.activeCardField}/${card.$id}`
       card.counters = (card.counters || 0) + (add ? 1 : -1)
       firebase.database().ref(path).update({counters: card.counters})
     }
 
-    $scope.changeCard = function(attribute, card = $scope.activeCard, playerId = $scope.activeCardPlayer.$id, field = $scope.activeCardField) {
+    $scope.changeCard = function(attribute, card = $scope.activeCard, playerId = $scope.activeCardPlayer, field = $scope.activeCardField) {
       const path = `game/${playerId}/${field}/${card.$id}`
       card[attribute] = !card[attribute]
       firebase.database().ref(path).update({[attribute]: card[attribute]})
@@ -178,10 +178,10 @@ angular.module('cardeck', ['firebase'])
 
     $scope.untapAll = function() {
       $scope.cardsForPlayer[$scope.user.uid].battlefield.forEach(function(card) {
-        if (card.tapped) $scope.changeCard(card, $scope.user.uid, 'battlefield', 'tapped')
+        if (card.tapped) $scope.changeCard('tapped', card, $scope.user.uid, 'battlefield')
       })
       $scope.cardsForPlayer[$scope.user.uid].lands.forEach(function(card) {
-        if (card.tapped) $scope.changeCard(card, $scope.user.uid, 'lands', 'tapped')
+        if (card.tapped) $scope.changeCard('tapped', card, $scope.user.uid, 'lands')
       })
     }
 
