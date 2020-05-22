@@ -54,9 +54,12 @@ angular.module('cardeck', ['firebase'])
       'Artifact',
       'Planeswalker'
     ]
+    $scope.activeCardTypes = $scope.cardTypes
 
     $scope.filterField = '';
     $scope.cmc;
+
+    $scope.filterOn = false;
 
     $scope.includeColorless = true;
 
@@ -117,6 +120,7 @@ angular.module('cardeck', ['firebase'])
     $scope.removeExtraFields = function(card) {
       if(card.hasOwnProperty('$$hashKey')) delete card.$$hashKey
       if(card.hasOwnProperty('$priority')) delete card.$priority
+      if(card.hasOwnProperty('all_parts')) delete card.all_parts
       if(card.hasOwnProperty('arena_id')) delete card.arena_id
       if(card.hasOwnProperty('artist_ids')) delete card.artist_ids
       if(card.hasOwnProperty('booster')) delete card.booster
@@ -131,9 +135,11 @@ angular.module('cardeck', ['firebase'])
       if(card.hasOwnProperty('highres_image')) delete card.highres_image
       if(card.hasOwnProperty('illustration_id')) delete card.illustration_id
       if(card.hasOwnProperty('lang')) delete card.lang
-      if(card.hasOwnProperty('image_uris.small')) delete card.image_uris.small
-      if(card.hasOwnProperty('image_uris.png')) delete card.image_uris.png
-      if(card.hasOwnProperty('image_uris.border_crop')) delete card.image_uris.border_crop
+      if(card.hasOwnProperty('image_uris')) {
+        if(card.image_uris.hasOwnProperty('small')) delete card.image_uris.small
+        if(card.image_uris.hasOwnProperty('png')) delete card.image_uris.png
+        if(card.image_uris.hasOwnProperty('border_crop')) delete card.image_uris.border_crop
+      }
       if(card.hasOwnProperty('layout')) delete card.layout
       if(card.hasOwnProperty('legalities')) delete card.legalities
       if(card.hasOwnProperty('mtgo_foil_id')) delete card.mtgo_foil_id
@@ -163,6 +169,9 @@ angular.module('cardeck', ['firebase'])
       if(card.hasOwnProperty('textless')) delete card.textless
       if(card.hasOwnProperty('uri')) delete card.uri
       if(card.hasOwnProperty('variation')) delete card.variation
+      if(card.hasOwnProperty('related_uris')) delete card.related_uris
+      if(card.hasOwnProperty('preview')) delete card.preview
+      if(card.hasOwnProperty('promo_types')) delete card.promo_types
       return card
     }
 
@@ -281,7 +290,7 @@ angular.module('cardeck', ['firebase'])
       if($scope.addToDeck) {
         let path = `users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/${endpoint}`
         let ref = firebase.database().ref(path).push();
-        ref.set(card) 
+        ref.set(card)
       }
       card.$id = id;
     }
@@ -344,13 +353,21 @@ angular.module('cardeck', ['firebase'])
       } else {
         $scope.activeColors.push(color.identity)
       }
-      console.log($scope.activeColors)
+    }
+
+    $scope.typeChecked = function(type) {
+      if($scope.activeCardTypes.includes(type)) {
+        $scope.activeCardTypes = $scope.activeCardTypes.filter(e => e !== type)
+      } else {
+        $scope.activeCardTypes.push(type)
+      }
+      console.log($scope.activeCardTypes)
     }
 
     $scope.filterFunction = function(card) {
-      console.log(card)
+      if(!$scope.filterOn) return true
       let showCard = card.name.includes($scope.filterField)
-      if(showCard) {
+      if(showCard && card.color_identity) {
         card.color_identity.forEach(function(color) {
           if(!$scope.activeColors.includes(color)){
             showCard = false;
@@ -359,7 +376,7 @@ angular.module('cardeck', ['firebase'])
         });
       }
       if(showCard && !$scope.includeColorless) {
-        showCard = card.color_identity.length != 0
+        showCard = card.hasOwnProperty('color_identity')
       }
       if(showCard && $scope.filterCMC) {
         if($scope.greaterThanCMC) {
@@ -370,7 +387,6 @@ angular.module('cardeck', ['firebase'])
           showCard = card.cmc == $scope.targetCMC
         }
       }
-      console.log(showCard)
       return showCard
     }
 

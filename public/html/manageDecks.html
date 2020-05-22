@@ -60,7 +60,7 @@
   <button onclick="location.href='../'" class="button" >Home</button>
   <div ng-show="deckView">
     <h1 class="deckHead">Manage Decks</h1>
-    <div class="deckRow" >
+    <div class="deckRow">
       <select ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
       <button  ng-click="joinGame()" class="button" >Join Game</button>
@@ -86,14 +86,24 @@
       <input class="centered" type="text" ng-model="filterField" value="">
       <button type="submit" class="button">Search</button><br>
     </form>
+    <input type='checkbox' ng-model='filterOn'>Filter Cards
     <input type="checkbox" ng-model="removeFromCollection">Remove on Click
     <input type="checkbox" ng-model="extras">Add to Deck Extras
     <input type="checkbox" ng-model="addToDeck">Add to Deck
+      <select ng-show='addToDeck' ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
+      </select>
     <input type="checkbox" ng-model="addToSecondCollection">Add to Collection
     <select ng-change="selectSecondCollection(secondCollection)" class="dropDown" ng-model="secondCollection" ng-options="collection.name for collection in collections" ng-show="addToSecondCollection"></select>
-    <span ng-repeat="color in colors">
-      <input type="checkbox" ng-checked="activeColors.includes(color.identity)"  ng-click="colorChecked(color)">{{color.name}}
-    </span>
+    <div ng-show='filterOn'>
+      <span ng-repeat="color in colors">
+        <input type="checkbox" ng-checked="activeColors.includes(color.identity)"  ng-click="colorChecked(color)">{{color.name}}
+      </span>
+      <input type='checkbox' ng-model="includeColorless">Include Colorless
+      <br/>
+      <span ng-repeat="type in cardTypes">
+        <input type="checkbox" ng-checked="activeCardTypes.includes(type)" ng-click="typeChecked(type)">{{type}}
+      </span>
+    </div>
   </div>
   <span class="images">
     <div ng-repeat="card in searchResults" ng-show="cardView">
