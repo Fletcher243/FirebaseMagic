@@ -28,7 +28,7 @@ angular.module('cardeck', ['firebase'])
 
     $scope.addToSecondCollection = false;
     $scope.addToCollection = true;
-    $scope.addToDeck = true;
+    $scope.addToDeck = false;
 
     $scope.collections = [];
     $scope.activeCollection;
@@ -52,12 +52,19 @@ angular.module('cardeck', ['firebase'])
       'Sorcery',
       'Enchantment',
       'Artifact',
-      'Planeswalker'
+      'Planeswalker',
+      'Legendary'
     ]
     $scope.activeCardTypes = $scope.cardTypes
 
-    $scope.filterField = '';
-    $scope.cmc;
+    $scope.filterName = '';
+    $scope.filterCardText = '';
+    $scope.filterCardType = '';
+    $scope.filterCMC = false;
+    $scope.targetCMC = 0;
+    $scope.lessThanCMC = false;
+    $scope.equalToCMC = false;
+    $scope.greaterThanCMC = false;
 
     $scope.filterOn = false;
 
@@ -366,7 +373,10 @@ angular.module('cardeck', ['firebase'])
 
     $scope.filterFunction = function(card) {
       if(!$scope.filterOn) return true
-      let showCard = card.name.includes($scope.filterField)
+      let showCard =
+        (card.name && card.name.toLowerCase().includes($scope.filterName.toLowerCase())) &&
+        (card.oracle_text && card.oracle_text.toLowerCase().includes($scope.filterCardText.toLowerCase())) &&
+        (card.type_line && card.type_line.toLowerCase().includes($scope.filterCardType.toLowerCase()))
       if(showCard && card.color_identity) {
         card.color_identity.forEach(function(color) {
           if(!$scope.activeColors.includes(color)){
@@ -378,13 +388,26 @@ angular.module('cardeck', ['firebase'])
       if(showCard && !$scope.includeColorless) {
         showCard = card.hasOwnProperty('color_identity')
       }
+      if(showCard) {
+        showCard = false;
+        $scope.activeCardTypes.forEach(function(type) {
+          if(card.type_line.includes(type)){
+            showCard = true;
+            return;
+          }
+        });
+      }
       if(showCard && $scope.filterCMC) {
+        let cmc = card.cmc || 0
+        console.log($scope.targetCMC)
         if($scope.greaterThanCMC) {
-          showCard = card.cmc > $scope.targetCMC
-        } else if($scope.lessThanCMC) {
-          showCard = card.cmc < $scope.targetCMC
-        } else if($scope.equalCMC) {
-          showCard = card.cmc == $scope.targetCMC
+          showCard = (cmc > $scope.targetCMC)
+        }
+        if($scope.lessThanCMC) {
+          showCard = (cmc < $scope.targetCMC)
+        }
+        if($scope.equalToCMC) {
+          showCard = (cmc == $scope.targetCMC)
         }
       }
       return showCard

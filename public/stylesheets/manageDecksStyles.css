@@ -12,3 +12,8 @@
     z-index: 10;
     transition-delay: .5s;
   }
+
+  .cmc-input {
+    width: 50px;
+    padding: 5px;
+  }

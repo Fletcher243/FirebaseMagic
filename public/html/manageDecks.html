@@ -79,22 +79,36 @@
     <input type="checkbox" ng-model="addToCollection">Add to Collection
   </div>
   <div ng-show="collectionView">
-      <select ng-change="selectCollection(activeCollection)" class="dropDown" ng-model="activeCollection" ng-options="collection.name for collection in collections">
-      </select>
-    <h1 class="deckHead">Enter A Search Term:</h1>
-    <form ng-submit="reFilter()" class="deckHead">
-      <input class="centered" type="text" ng-model="filterField" value="">
-      <button type="submit" class="button">Search</button><br>
-    </form>
-    <input type='checkbox' ng-model='filterOn'>Filter Cards
-    <input type="checkbox" ng-model="removeFromCollection">Remove on Click
-    <input type="checkbox" ng-model="extras">Add to Deck Extras
-    <input type="checkbox" ng-model="addToDeck">Add to Deck
+
+    <select ng-change="selectCollection(activeCollection)" class="dropDown" ng-model="activeCollection" ng-options="collection.name for collection in collections">
+    </select>
+    <input type='checkbox' ng-model="removeFromCollection">Remove on Click
+    <input type='checkbox' ng-model="extras">Add to Deck Extras
+    <input type='checkbox' ng-model="addToDeck">Add to Deck
       <select ng-show='addToDeck' ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
     <input type="checkbox" ng-model="addToSecondCollection">Add to Collection
     <select ng-change="selectSecondCollection(secondCollection)" class="dropDown" ng-model="secondCollection" ng-options="collection.name for collection in collections" ng-show="addToSecondCollection"></select>
+    <br/>
+    <input type='checkbox' ng-model='filterOn'>Filter Cards
     <div ng-show='filterOn'>
+      Card Name
+      <input class='centered' type='text' ng-model='filterName' value=''>
+      <br/>
+      Card Text
+      <input class='centered' type='text' ng-model='filterCardText'>
+      <br/>
+      Card Type
+      <input class='centered' type='text' ng-model='filterCardType'>
+      <br/>
+      <input type='checkbox' ng-model='filterCMC'>Filter CMC
+      <span ng-show='filterCMC'>
+        <input type='number' class='cmc-input' ng-model='targetCMC'>
+        <input type='checkbox' ng-model='lessThanCMC'>Less Than
+        <input type='checkbox' ng-model='equalToCMC'>Equal To
+        <input type='checkbox' ng-model='greaterThanCMC'>Greater Than
+      </span>
+      <br/>
       <span ng-repeat="color in colors">
         <input type="checkbox" ng-checked="activeColors.includes(color.identity)"  ng-click="colorChecked(color)">{{color.name}}
       </span>
