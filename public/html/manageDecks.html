@@ -82,13 +82,14 @@
 
     <select ng-change="selectCollection(activeCollection)" class="dropDown" ng-model="activeCollection" ng-options="collection.name for collection in collections">
     </select>
+    
     <input type='checkbox' ng-model="removeFromCollection">Remove on Click
     <input type='checkbox' ng-model="extras">Add to Deck Extras
     <input type='checkbox' ng-model="addToDeck">Add to Deck
       <select ng-show='addToDeck' ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
     <input type="checkbox" ng-model="addToSecondCollection">Add to Collection
-    <select ng-change="selectSecondCollection(secondCollection)" class="dropDown" ng-model="secondCollection" ng-options="collection.name for collection in collections" ng-show="addToSecondCollection"></select>
+    <select class="dropDown" ng-model="secondCollection" ng-options="collection.name for collection in collections" ng-show="addToSecondCollection"></select>
     <br/>
     <input type='checkbox' ng-model='filterOn'>Filter Cards
     <div ng-show='filterOn'>

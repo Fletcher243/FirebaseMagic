@@ -193,13 +193,43 @@ angular.module('cardeck', ['firebase'])
         ref.set(newCard)
       }
       if($scope.addToCollection) {
+        let returnNow = false;
+        $scope.collectionCards.forEach(function(collectionCard) {
+          if(collectionCard.name == card.name) {
+            console.log(`${card.name} is already in there!`)
+            returnNow = true;
+            return;
+          }
+        })
+        if(returnNow) {
+          return
+        }
         let endpoint = $scope.extras ? 'extras' : 'cards'
         let collectionId = $scope.addToSecondCollection ? $scope.secondCollection.$id : $scope.activeCollection.$id
         let path = `users/${$scope.user.uid}/collections/${collectionId}/${endpoint}`
         let ref = firebase.database().ref(path).push();
         ref.set(newCard)
+        $scope.searchResults = [];
       }
       card.$id = id;
+    }
+
+    $scope.removeDuplicates = function() {
+      let cardsToRemove = [];
+      $scope.collectionCards.forEach(function(card) {
+        if(!cardsToRemove.includes(card.$id)) {
+          $scope.collectionCards.forEach(function(otherCard) {
+            if(card.name == otherCard.name && card.$id != otherCard.$id) {
+              console.log(otherCard.name)
+              cardsToRemove.push(otherCard.$id)
+            }
+          })
+        }
+      })
+      cardsToRemove.forEach(function(card) {
+        let path = `users/${$scope.user.uid}/collections/${$scope.activeCollection.$id}/cards/${card}`
+        let ref = firebase.database().ref(path).remove()
+      })
     }
 
     $scope.addCollection = function() {
@@ -289,6 +319,7 @@ angular.module('cardeck', ['firebase'])
           $scope.$apply();
         });
       }
+      console.log($scope.addToSecondCollection)
       if($scope.addToSecondCollection) {
         let path = `users/${$scope.user.uid}/collections/${$scope.secondCollection.$id}/${endpoint}`
         let ref = firebase.database().ref(path).push();
@@ -343,11 +374,22 @@ angular.module('cardeck', ['firebase'])
       });
     }
 
+    $scope.removeCollection = function() {
+      firebase.database().ref(`users.${scope.user.uid}/collections/${$scope.activeCollection.$id}`).remove().then(function() {
+        if($scope.collections.length == 0) {
+          $scope.collectionField = 'My Collection';
+          $scope.addCollection();
+        }
+        let key = $scope.decks.$keyAt(0);
+        $scope.activeCollection = $scope.collections.$getRecord(key);
+      });
+    }
+
     $scope.getCards = function() {
       if($scope.cardField == '') return
       $scope.deckField = '';
       $scope.showCreateField = false;
-      $scope.footerText = `Click on a card to add it to your '${$scope.activeDeck.name}' deck!`
+      $scope.footerText = `Click on a card to add it tddo your '${$scope.activeDeck.name}' deck!`
       let myurl= `/getcard?q=${$scope.cardField}`;
       return $http.get(myurl).success(function(data) {
         angular.copy(data.data, $scope.searchResults);
