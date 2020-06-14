@@ -226,6 +226,30 @@ angular.module('cardeck', ['firebase'])
       $scope.addCard(card, $scope.user.uid, 'hand')
     }
 
+    $scope.passTurn = function() {
+      let activePlayerId = null
+      $scope.battlefield.forEach(function(player) {
+        if(player.active){
+          activePlayerId = player.$id
+        }
+      })
+      if(!activePlayerId){
+        activePlayerId = $scope.playerOrder[Math.floor(Math.random() * $scope.playerOrder.length)]
+        let path = `game/${activePlayerId}`
+        firebase.database().ref(path).update({'active': true})
+      } else {
+        if(activePlayerId != $scope.playerOrder[0]){
+          console.log("It isn't even your turn!")
+        }
+        else if($scope.playerOrder[1]){
+          playerPath = `game/${$scope.playerOrder[0]}`
+          otherPlayerPath = `game/${$scope.playerOrder[1]}`
+          firebase.database().ref(playerPath).update({'active':false})
+          firebase.database().ref(otherPlayerPath).update({'active':true})
+        }
+      }
+    }
+
     $scope.getImage = function(card) {
       if(!card) return
       if(card.hasOwnProperty('image_uris')) {
