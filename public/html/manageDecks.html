@@ -35,22 +35,30 @@
       <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
       <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
 
+      <br/>
       <button ng-click="initiateBorrowDeck()" ng-hide="showBorrowUser" class="button">Borrow Deck</button>
       <select ng-change="showSharedDecks(shareUser)" class="dropDown" ng-show="showBorrowUser" ng-model="shareUser" ng-options="user.name for user in shareUsers"></select>
+
+      <br/>
       <select class="dropDown" ng-show="showBorrowField" ng-model="sharedDeck" ng-options="deck.name for deck in sharedDecks"></select>
       <button ng-click="borrowDeck()" class="button" ng-show="showBorrowField">Borrow</button>
-      <button ng-click="cancelBorrow()" class="button" ng-show="showBorrowField">Cancel</button>
+      <button ng-click="cancelBorrow()" class="button" ng-show="showBorrowUser">Cancel</button>
+
+      <br/>
       <button ng-click="initiateAddDeck()" ng-hide="showCreateField" class="button">Create New Deck</button>
       <form ng-submit="addDeck()" ng-show="showCreateField">
         <input type="text" ng-model="deckField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
         <button type="submit" class="button">Add</button><br>
+        <button ng-click="cancelCreateDeck()" class="button">Cancel</button>
       </form>
 
+      <br/>
       <button ng-click="initiateRenameDeck()" ng-hide="showRenameField" class="button">Rename Deck</button>
      <form ng-submit="renameDeck()" ng-show="showRenameField">
-        <input type="text" ng-model="renameField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
-        <button type="submit" class="button">Rename</button><br>
-      </form>
+       <input type="text" ng-model="renameField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
+       <button type="submit" class="button">Rename</button>
+       <button class="button" ng-click="cancelRenameDeck()">Cancel</button>
+     </form>
 
     </span>
 

@@ -289,6 +289,16 @@ angular.module('cardeck', ['firebase'])
       $scope.sharedDecks = [];
     }
 
+    $scope.cancelCreateDeck = function() {
+      $scope.showCreateField = false;
+      $scope.deckField = '';
+    }
+
+    $scope.cancelRenameDeck = function() {
+      $scope.showRenameField = false;
+      $scope.renameField = '';
+    }
+
     $scope.showSharedDecks = function(shareUser) {
       if($scope.shareUser) {
         $scope.showBorrowField = true;
@@ -301,6 +311,7 @@ angular.module('cardeck', ['firebase'])
             let name = child.child('name').val();
             $scope.sharedDecks.push({key: key, name: name})
           });
+          $scope.$apply();
         });
       }
     }
@@ -333,11 +344,14 @@ angular.module('cardeck', ['firebase'])
     }
 
     $scope.renameDeck = function() {
-      const path = `/users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}`
-      let ref = firebase.database().ref(path)
-      $scope.activeDeck.name = $scope.renameField;
-      ref.update({name: $scope.renameField})
-      $scope.showRenameField = false;
+      if($scope.activeDeck && $scope.renameField != '') {
+        const path = `/users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}`
+        let ref = firebase.database().ref(path)
+        $scope.activeDeck.name = $scope.renameField;
+        ref.update({name: $scope.renameField})
+        $scope.showRenameField = false;
+        $scope.renameField = '';
+      }
     }
 
     $scope.activateDeck = function() {
