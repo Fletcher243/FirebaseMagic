@@ -14,6 +14,9 @@ angular.module('cardeck', ['firebase'])
 
     $scope.logButton = 'Login'
     $scope.showCreateField = false;
+    $scope.showBorrowUser = false;
+    $scope.showBorrowField = false;
+    $scope.showRenameField = false;
     $scope.deckView = true;
     $scope.removeFromDeck = false;
     $scope.extras = false;
@@ -110,8 +113,12 @@ angular.module('cardeck', ['firebase'])
       }
     });
 
-    $scope.nameField = function() {
+    $scope.initiateAddDeck = function() {
       $scope.showCreateField = true;
+    }
+
+    $scope.initiateRenameDeck = function() {
+      $scope.showRenameField = true;
     }
 
     $scope.getImage = function(card) {
@@ -262,6 +269,77 @@ angular.module('cardeck', ['firebase'])
       }
     }
 
+    $scope.borrowDeck = function() {
+      let path = `/shared/${$scope.shareUser.key}/decks/${$scope.sharedDeck.key}`
+      let oldRef = firebase.database().ref(path);
+
+      let newPath = `/users/${$scope.user.uid}/decks`
+      let newRef = firebase.database().ref(newPath).push();
+
+      oldRef.once('value').then(snap => {
+        newRef.set(snap.val());
+        let name = `${$scope.shareUser.name}'s ${$scope.sharedDeck.name}`
+        newRef.update({name: name})
+      });
+    }
+
+    $scope.cancelBorrow = function() {
+      $scope.showBorrowField = false;
+      $scope.showBorrowUser = false;
+      $scope.sharedDecks = [];
+    }
+
+    $scope.showSharedDecks = function(shareUser) {
+      if($scope.shareUser) {
+        $scope.showBorrowField = true;
+        let path = `shared/${shareUser.key}/decks`
+        let ref = firebase.database().ref(path)
+        $scope.sharedDecks = []
+        ref.once('value').then(function(snapshot) {
+          snapshot.forEach(function(child) {
+            let key = child.key;
+            let name = child.child('name').val();
+            $scope.sharedDecks.push({key: key, name: name})
+          });
+        });
+      }
+    }
+
+    $scope.initiateBorrowDeck = function() {
+      $scope.showBorrowUser = true;
+      let path = '/shared/'
+      let ref = firebase.database().ref(path)
+      $scope.shareUsers = [];
+      ref.once('value').then(function(snapshot) {
+        snapshot.forEach(function(snap) {
+          let key = snap.key;
+          let name = snap.child('name').val()
+          $scope.shareUsers.push({key: key, name: name})
+        });
+        $scope.$apply()
+      });
+    }
+
+    $scope.shareDeck = function() {
+      let oldRefPath = `/users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}`
+      let newRefPath = `/shared/${$scope.user.uid}/decks/${$scope.activeDeck.$id}`
+      let oldRef = firebase.database().ref(oldRefPath)
+      let newRef = firebase.database().ref(newRefPath)
+      oldRef.once('value').then(snap => {
+        return newRef.set(snap.val());
+      });
+      let nameRefPath = `/shared/${$scope.user.uid}/name`
+      firebase.database().ref(nameRefPath).set($scope.user.displayName)
+    }
+
+    $scope.renameDeck = function() {
+      const path = `/users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}`
+      let ref = firebase.database().ref(path)
+      $scope.activeDeck.name = $scope.renameField;
+      ref.update({name: $scope.renameField})
+      $scope.showRenameField = false;
+    }
+
     $scope.activateDeck = function() {
       const path = `/users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/cards`
       const path2 = `/users/${$scope.user.uid}/decks/${$scope.activeDeck.$id}/extras`
@@ -347,7 +425,10 @@ angular.module('cardeck', ['firebase'])
       $scope.deckField = '';
       $scope.showCreateField = false;
       $scope.removeInitiated = false;
-      $scope.removeButtonText = 'Delete Deck'
+      $scope.removeButtonText = 'Delete Deck';
+      $scope.showRenameField = false;
+      $scope.showBorrowUser = false;
+      $scope.showBorrowField = false;
     }
 
     $scope.initiateRemove = function() {
@@ -389,7 +470,7 @@ angular.module('cardeck', ['firebase'])
       if($scope.cardField == '') return
       $scope.deckField = '';
       $scope.showCreateField = false;
-      $scope.footerText = `Click on a card to add it tddo your '${$scope.activeDeck.name}' deck!`
+      $scope.footerText = `Click on a card to add it to your '${$scope.activeDeck.name}' deck!`
       let myurl= `/getcard?q=${$scope.cardField}`;
       return $http.get(myurl).success(function(data) {
         angular.copy(data.data, $scope.searchResults);
