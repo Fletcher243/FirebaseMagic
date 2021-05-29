@@ -56,12 +56,14 @@
     <span ng-show="collectionView">
       <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
       <button ng-click="removeCollection()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
+      <br/>
       <button ng-click="nameField()" ng-hide="showCreateField" class="button">Create New Collection</button>
       <form ng-submit="addCollection()" ng-show="showCreateField">
         <input type="text" ng-model="collectionField" value="" placeholder="Collection Name" maxlength={{maxlength}}>
         <button type="submit" class="button">Add</button><br>
       </form>
     </span>
+      <br/>
 
     <button ng-click="toDeckView()" ng-hide='deckView' class='button'>Manage Deck</button>
     <button ng-click="toCollectionView()" ng-hide='collectionView' class='button'>Collections</button>
