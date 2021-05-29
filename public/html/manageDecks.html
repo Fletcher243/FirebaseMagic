@@ -36,7 +36,6 @@
       <button ng-click="initiateBorrowDeck()" ng-hide="showBorrowUser" class="button">Borrow Deck</button>
       <select ng-change="showSharedDecks(shareUser)" class="dropDown" ng-show="showBorrowUser" ng-model="shareUser" ng-options="user.name for user in shareUsers"></select>
 
-      <br/>
       <select class="dropDown" ng-show="showBorrowField" ng-model="sharedDeck" ng-options="deck.name for deck in sharedDecks"></select>
       <button ng-click="borrowDeck()" class="button" ng-show="showBorrowField">Borrow</button>
       <button ng-click="cancelBorrow()" class="button" ng-show="showBorrowUser">Cancel</button>
