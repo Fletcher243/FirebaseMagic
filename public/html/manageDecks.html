@@ -32,10 +32,7 @@
   <span class="floatRight">
 
     <span ng-show="deckView">
-      <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
-      <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
-
-      <br/>
+      
       <button ng-click="initiateBorrowDeck()" ng-hide="showBorrowUser" class="button">Borrow Deck</button>
       <select ng-change="showSharedDecks(shareUser)" class="dropDown" ng-show="showBorrowUser" ng-model="shareUser" ng-options="user.name for user in shareUsers"></select>
 
@@ -53,12 +50,7 @@
       </form>
 
       <br/>
-      <button ng-click="initiateRenameDeck()" ng-hide="showRenameField" class="button">Rename Deck</button>
-     <form ng-submit="renameDeck()" ng-show="showRenameField">
-       <input type="text" ng-model="renameField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
-       <button type="submit" class="button">Rename</button>
-       <button class="button" ng-click="cancelRenameDeck()">Cancel</button>
-     </form>
+      
 
     </span>
 
@@ -72,7 +64,6 @@
       </form>
     </span>
 
-    <button ng-click="toCardView()" ng-hide="cardView" class="button">Add Cards</button>
     <button ng-click="toDeckView()" ng-hide='deckView' class='button'>Manage Deck</button>
     <button ng-click="toCollectionView()" ng-hide='collectionView' class='button'>Collections</button>
 
@@ -82,12 +73,25 @@
   <div ng-show="deckView">
     <h1 class="deckHead">Manage Decks</h1>
     <div class="deckRow">
+      
       <select ng-change="selectDeck(activeDeck)" class="dropDown" ng-model="activeDeck" ng-options="deck.name for deck in decks">
       </select>
+      
       <button ng-click="joinGame()" class="button">Join Game</button>
       <button ng-click="shareDeck()" class="button">Share Deck</button>
+      <button ng-click="initiateRemove()" class="button">{{removeButtonText}}</button>
+      <button ng-click="removeDeck()" class="button" ng-show="removeInitiated">{{removeInitiatedText}}</button>
+      <button ng-click="initiateRenameDeck()" ng-hide="showRenameField" class="button">Rename Deck</button>
+       <form ng-submit="renameDeck()" ng-show="showRenameField">
+         <input type="text" ng-model="renameField" value="" placeholder="Deck Name" maxlength={{maxlength}}>
+         <button type="submit" class="button">Rename</button>
+         <button class="button" ng-click="cancelRenameDeck()">Cancel</button>
+       </form>
+       <button ng-click="toCardView()" ng-hide="cardView" class="button">Add Cards</button>
+
       <input type="checkbox" ng-model="extras" ng-change="clearDisplay()">Show Extras
       <input type="checkbox" ng-model="removeFromDeck">Remove on Click
+    
     </div>
   </div>
   <div ng-show="cardView">
